@@ -1,0 +1,7 @@
+include setup.py package.json webpack.config.js README.rst MANIFEST.in
+recursive-include drip/templates *
+recursive-include drip/static *
+recursive-include tests *
+recursive-exclude flask_boilerplate *.pyc
+recursive-exclude tests *.pyc
+recursive-exclude drip/static/dist *

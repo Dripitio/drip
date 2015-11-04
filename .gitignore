@@ -1,0 +1,66 @@
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+__pycache__
+env
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.cache
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+.idea
+*.iml
+.ropeproject
+
+# Project
+# No need to store these in repo.
+reachly/static/vendor
+reachly/static/gen
+node_modules
+.tmp
+celery-state-db
+celerybeat-schedule
+.webassets-cache/
+.sass-cache/
+cloc.xml
+htmlcov
+flake8.out
+jslint.xml
+python-junit.xml
+.DS_Store
+
+local_config.py
+dumps
+.vagrant
+npm-debug.log
+
+*.orig
+dumps/

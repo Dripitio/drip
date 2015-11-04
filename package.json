@@ -1,0 +1,35 @@
+{
+  "name": "market-watch",
+  "version": "1.0.0",
+  "description": "Reachly market watch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reachly/market-watch.git"
+  },
+  "author": "Reachly",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reachly/market-watch/issues"
+  },
+  "homepage": "https://github.com/reachly/market-watch#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "event-stream": "^3.3.1",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.0.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.0.4",
+    "gulp-util": "^3.0.6",
+    "gulp-watch": "^4.3.5",
+    "lodash": "^3.10.1",
+    "webpack": "^1.12.2"
+  },
+  "devDependencies": {
+    "bootstrap": "^3.3.5",
+    "webpack-stream": "^2.1.1"
+  }
+}

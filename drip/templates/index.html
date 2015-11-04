@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='dist/style.css')}}ii">
+    <title>Drip Trooper</title>
+</head>
+<body>
+  <h1>Drip Trooper</h1>
+
+  <form action="login" method="post" accept-charset="utf-8">
+    <input type="text" name="shopurl" id="shopurl" value="" />
+  
+    <p><input type="submit" value="Continue →"></p>
+  </form>
+
+  <script type="text/javascript" src="{{url_for('static', filename='dist/bundle.js')}}"
+          charset="utf-8"></script>
+</body>
+</html>
