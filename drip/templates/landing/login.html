@@ -1,0 +1,12 @@
+{% extends "landing/base.html" %}
+
+{% block content_middle %}
+    <h1>login page</h1>
+    <form action="" method="post" id="signin_form" name="signin">
+        {{ form.csrf_token() }}
+        {{ form.email() }}
+        {{ form.password() }}
+        {{ form.remember_me() }}
+        <button type="submit" class="main-cta login-form-cta">SIGN IN</button>
+    </form>
+{% endblock %}

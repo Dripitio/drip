@@ -1,13 +1,13 @@
-from pymongo import MongoClient
+from flask.ext.mongoengine import MongoEngine
 
-client = None
-db = lambda: client.get_database('hustler')
+client = MongoEngine()
 
 
-def create_mongo():
+def create_mongo(app):
     """
     Mongo connection factory
-    :return:
     """
     global client
-    client = MongoClient(host='192.168.99.100', port=27017)
+
+    # get db client
+    client.init_app(app)

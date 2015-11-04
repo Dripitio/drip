@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block assets_head %}
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
+{% endblock %}
+
+{% block content %}
+    <h1>Drip Trooper</h1>
+
+    {% block content_middle %}{% endblock %}
+{% endblock %}
+
+{% block assets_foot %}
+    <script type="text/javascript" src="{{ url_for('static', filename='dist/bundle.js') }}"
+            charset="utf-8"></script>
+{% endblock %}

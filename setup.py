@@ -9,13 +9,11 @@ dev_requires = [
     'flake8',
     'pytest',
     'tox',
-    'pytest-watch',
 ]
 
 install_requires = [
     'flask==0.10.1',
     'pymongo==3.0.3',
-    'flask-restful==0.3.4',
     'Flask-Script==2.0.5',
 ]
 
