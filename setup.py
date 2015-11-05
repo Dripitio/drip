@@ -13,12 +13,15 @@ dev_requires = [
 ]
 
 install_requires = [
+    'bcrypt==2.0.0',
     'flask==0.10.1',
     'pymongo==3.0.3',
     'Flask-Script==2.0.5',
     'flask-mongoengine==0.7.3',
     'Flask-WTF==0.12',
     'Flask-Login==0.3.2',
+    'mailchimp==2.0.9',
+    'ShopifyAPI==2.1.5',
 ]
 
 
