@@ -1,0 +1,11 @@
+{% extends "dashboard/base.html" %}
+
+{% block content_middle %}
+    <h1>Settings</h1>
+
+    <form action="" method="post" id="mailchimp_form" name="mailchimp">
+        {{ form.csrf_token() }}
+        {{ form.api_key() }}
+        <button type="submit" class="main-cta login-form-cta">Set key</button>
+    </form>
+{% endblock %}

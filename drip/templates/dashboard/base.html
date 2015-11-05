@@ -10,6 +10,9 @@
 {% block content %}
     <h1>Drip Trooper</h1>
 
+    <a href="{{ url_for('dashboard.settings') }}">Settings</a>
+    <a href="{{ url_for('main.logout') }}">Logout</a>
+
     {% block content_middle %}{% endblock %}
 {% endblock %}
 

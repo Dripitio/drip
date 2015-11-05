@@ -1,0 +1,16 @@
+{% extends "dashboard/base.html" %}
+
+{% block content_middle %}
+    <h1>Stats page</h1>
+
+    <h2>MailChimp templates:</h2>
+    <ul>
+        {% if mc_templates %}
+            {% for t in mc_templates %}
+                <li>{{ t }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No templates</li>
+        {% endif %}
+    </ul>
+{% endblock %}

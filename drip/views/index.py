@@ -36,7 +36,7 @@ class SignupForm(Form):
 @bp_index.route('/', methods=['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
-        return render_template('dashboard/dashboard.html')
+        return redirect(url_for('dashboard.stats'))
     return render_template('landing/landing.html')
 
 

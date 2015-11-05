@@ -10,6 +10,10 @@ class ShopifyIntegration(EmbeddedDocument):
     installed = BooleanField(default=False)
 
 
+class MailChimpIntegration(EmbeddedDocument):
+    api_key = StringField()
+
+
 class User(Document):
     # Customers registration email
     email = EmailField()
@@ -18,6 +22,7 @@ class User(Document):
     password_hash = StringField()
 
     shopify_integration = EmbeddedDocumentField(ShopifyIntegration)
+    mailchimp_integration = EmbeddedDocumentField(MailChimpIntegration)
 
     def get_password(self):
         """
