@@ -1,19 +1,33 @@
 {% extends "base.html" %}
 
 {% block assets_head %}
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
 {% endblock %}
 
 {% block content %}
-    <h1>Drip Trooper</h1>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">Drip Trooper</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('dashboard.settings') }}">Settings</a></li>
+                    <li><a href="{{ url_for('main.logout') }}">Logout</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
 
-    <a href="{{ url_for('dashboard.settings') }}">Settings</a>
-    <a href="{{ url_for('main.logout') }}">Logout</a>
-
-    {% block content_middle %}{% endblock %}
+    <div class="container dashboard">
+        {% block content_middle %}{% endblock %}
+    </div>
 {% endblock %}
 
 {% block assets_foot %}
