@@ -1,4 +1,5 @@
 import bcrypt
+from flask.ext.login import unicode
 from mongoengine import EmailField, StringField, Document, EmbeddedDocument, EmbeddedDocumentField, \
     BooleanField
 from werkzeug.security import safe_str_cmp

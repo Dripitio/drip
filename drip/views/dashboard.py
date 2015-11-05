@@ -23,7 +23,7 @@ def stats():
     if mc_api_key:
         mc = Mailchimp(apikey=mc_api_key, debug=True)
 
-        mc_templates = mc.templates.list()
+        mc_templates = mc.templates.list(filters={"include_drag_and_drop": True})
 
     return render_template('dashboard/stats.html', mc_templates=mc_templates)
 

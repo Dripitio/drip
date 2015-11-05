@@ -5,8 +5,8 @@
         <h2>MailChimp templates:</h2>
         <ul>
             {% if mc_templates %}
-                {% for t in mc_templates %}
-                    <li>{{ t }}</li>
+                {% for t in mc_templates['user'] %}
+                    <li><pre>{{ t | safe }}</pre></li>
                 {% endfor %}
             {% else %}
                 <li>No templates</li>
