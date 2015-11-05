@@ -10,6 +10,7 @@ from drip.views.index import LoginForm
 class AppTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app(env='TESTING')
+        self.app.config['WTF_CSRF_ENABLED'] = False
         self.tc = self.app.test_client()
 
 
@@ -25,7 +26,6 @@ class MockForm():
 
 
 class LoginTestCase(AppTestCase):
-
     @patch('drip.views.index.LoginForm')
     def test_get_login_page(self, mock_login_form):
         # HACK: LoginForm needs app context on init, so create tmp one
@@ -45,7 +45,7 @@ class LoginTestCase(AppTestCase):
         email = 'example@example.com'
         password = 'testing'
 
-        # HACK: LoginForm needs app context on init, so create tmp one
+        # LoginForm needs app context, so we create one for mock init
         with self.app.test_request_context('/login'):
             login_form = LoginForm()
         login_form.validate_on_submit = MagicMock(return_value=True)
@@ -63,6 +63,25 @@ class LoginTestCase(AppTestCase):
         assert login_form.validate_on_submit.called
         assert mock_from_email.called
         assert mock_login_user.called
+
+    @patch('drip.views.index.User')
+    def test_valid_signup(self, mock_user):
+        email = 'example@example.com'
+        password = 'testing'
+        shop_url = 'example.myshopify.com'
+
+        user = User()
+        user.save = MagicMock()
+        mock_user.return_value = user
+
+        rv = self.tc.post('/signup?shop=' + shop_url, data=dict(
+            email=email,
+            password=password,
+            password_repeat=password,
+        ))
+
+        assert rv.status_code == 302
+        assert user.save.called
 
 
 if __name__ == '__main__':

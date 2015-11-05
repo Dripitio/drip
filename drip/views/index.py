@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from flask.ext.login import current_user, login_user, logout_user
 from flask.ext.wtf import Form
 from wtforms import PasswordField, StringField, BooleanField, ValidationError
+from wtforms.validators import DataRequired, EqualTo
 
 from drip.db.user import User, ShopifyIntegration
 
@@ -10,7 +11,7 @@ bp_index = Blueprint('main', __name__)
 
 class LoginForm(Form):
     email = StringField()
-    password = PasswordField()
+    password = PasswordField('Password', [DataRequired()])
     remember_me = BooleanField('Remember me', default=False)
 
     def validate_email(self, field):
@@ -29,8 +30,9 @@ class LoginForm(Form):
 class SignupForm(Form):
     email = StringField()
     # TODO: validate repeated password
-    password = PasswordField()
-    password_repeat = PasswordField()
+    password = PasswordField('Password', [DataRequired(), EqualTo('password_repeat',
+                                                                  'Password must match')])
+    password_repeat = PasswordField('Repeat password')
 
 
 @bp_index.route('/', methods=['GET', 'POST'])
