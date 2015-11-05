@@ -62,7 +62,6 @@ def logout():
 
 @bp_index.route('/signup', methods=['GET', 'POST'])
 def signup():
-    integrations = request.args.get('integrations')
     shop_url = request.args.get('shop')
 
     form = SignupForm(request.form)
@@ -71,6 +70,7 @@ def signup():
         # FIXME: handle exception
         user = User()
         user.set_password(form.password.data.encode('utf-8'))
+        user.email = form.email.data
 
         # initialize shopify integration
         user.shopify_integration = ShopifyIntegration()

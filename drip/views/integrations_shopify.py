@@ -1,5 +1,6 @@
 import shopify as shopify_api
 from flask import Blueprint, request, url_for, current_app, redirect
+from flask.ext.login import login_user, current_user
 
 from drip.db.user import User, ShopifyIntegration
 
@@ -54,6 +55,10 @@ def access():
     """
     shop_url = request.args.get('shop')
 
+    # user should be authenticated
+    if not current_user.is_authenticated:
+        return redirect(url_for('main.signup', integrations='shopify', shop=shop_url))
+
     api_key = current_app.config['SHOPIFY_API_KEY']
     secret = current_app.config['SHOPIFY_API_SECRET']
     url = get_permission_url(shop_url, api_key, secret)
@@ -71,6 +76,10 @@ def finalize():
     secret = current_app.config['SHOPIFY_API_SECRET']
     shop_url = request.args['shop']
 
+    # user should be authenticated
+    if not current_user.is_authenticated:
+        return redirect(url_for('main.signup', integrations='shopify', shop=shop_url))
+
     shopify_api.Session.setup(api_key=api_key, secret=secret)
     shopify_api_session = shopify_api.Session(shop_url)
 
@@ -81,5 +90,6 @@ def finalize():
     if not user:
         user.shopify_integration = ShopifyIntegration()
         user.shopify_integration.token = shopify_api_session.token
-        user.shopify_integration.shop_url = shop_url
+        user.shopify_integration.installed = True
         user.save()
+    return redirect(url_for('main.index'))
