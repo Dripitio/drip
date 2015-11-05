@@ -6,6 +6,7 @@ from flask.ext.login import LoginManager
 from drip.db.mongo import create_mongo
 from drip.db.user import User
 from drip.views.index import bp_index
+from drip.views.integrations_shopify import shopify
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -34,4 +35,5 @@ def create_app(env=''):
 
     # views with jinja templates
     app.register_blueprint(bp_index)
+    app.register_blueprint(shopify)
     return app

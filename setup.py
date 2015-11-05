@@ -6,15 +6,19 @@ from setuptools.command.develop import develop
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
 
 dev_requires = [
-    'flake8',
     'pytest',
     'tox',
+    'ipython==4.0.0',
+    'mock==1.3.0',
 ]
 
 install_requires = [
     'flask==0.10.1',
     'pymongo==3.0.3',
     'Flask-Script==2.0.5',
+    'flask-mongoengine==0.7.3',
+    'Flask-WTF==0.12',
+    'Flask-Login==0.3.2',
 ]
 
 

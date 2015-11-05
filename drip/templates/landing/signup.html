@@ -1,0 +1,17 @@
+{% extends "landing/base.html" %}
+
+{% block content_middle %}
+    <h1>Signup page</h1>
+
+    <form action="" method="post" id="signup_form" name="signup">
+        {{ form.csrf_token() }}
+        {{ form.email() }}
+        {{ form.password() }}
+        {{ form.password_repeat() }}
+        <button type="submit">SIGN UP</button>
+    </form>
+
+    <a href="{{ url_for('main.login', next=url_for('shopify.access', shop=shop)) }}">
+        Already got account?
+    </a>
+{% endblock %}
