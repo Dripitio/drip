@@ -1,3 +1,5 @@
+from urllib2 import HTTPError
+
 import shopify as shopify_api
 from flask import Blueprint, request, url_for, current_app, redirect
 from flask.ext.login import current_user
@@ -64,11 +66,19 @@ def finalize():
     shopify_api.Session.setup(api_key=api_key, secret=secret)
     shopify_api_session = shopify_api.Session(shop_url)
 
-    shopify_api_session.request_token(param_dict)
+    try:
+        shopify_api_session.request_token(param_dict)
+    except HTTPError:
+        # application is already installed in given shop from another account
+        return redirect(
+            url_for('dashboard.stats',
+                    error='Application is already installed in given shop from another account')
+        )
 
     # check if shopify integration is already registered for given user
     current_user.shopify_integration = ShopifyIntegration()
     current_user.shopify_integration.token = shopify_api_session.token
+    current_user.shopify_integration.shop_url = shop_url
     current_user.shopify_integration.installed = True
     current_user.save()
 
