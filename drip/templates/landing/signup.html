@@ -11,7 +11,7 @@
         <button type="submit">SIGN UP</button>
     </form>
 
-    <a href="{{ url_for('main.login', next=url_for('shopify.access', shop=shop)) }}">
+    <a href="{{ url_for('main.login', next=next) }}">
         Already got account?
     </a>
 {% endblock %}

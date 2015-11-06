@@ -20,7 +20,7 @@ class IndexTestCase(AppTestCase):
         assert rv.status_code == 200
 
 
-class MockForm():
+class MockForm(object):
     def validate_on_submit(self):
         return True
 

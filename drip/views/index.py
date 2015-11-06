@@ -64,26 +64,14 @@ def logout():
 
 @bp_index.route('/signup', methods=['GET', 'POST'])
 def signup():
-    shop_url = request.args.get('shop')
-
     form = SignupForm(request.form)
     if form.validate_on_submit():
         # create user
-        # FIXME: handle exception
         user = User()
         user.set_password(form.password.data.encode('utf-8'))
         user.email = form.email.data
-
-        # initialize shopify integration
-        user.shopify_integration = ShopifyIntegration()
-        user.shopify_integration.shop_url = shop_url
-
         user.save()
 
-        # continue app install processing
-        return redirect(url_for('shopify.access', shop=shop_url))
+        return redirect(url_for('main.login', next=request.args.get('next')))
 
-    if current_user.is_authenticated:
-        return redirect(url_for('shopify.access', shop=shop_url))
-
-    return render_template('landing/signup.html', form=form, shop=shop_url)
+    return render_template('landing/signup.html', form=form, next=request.args.get('next'))

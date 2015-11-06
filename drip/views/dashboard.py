@@ -30,14 +30,15 @@ def stats():
 
 @dashboard.route('/settings', methods=['GET', 'POST'])
 def settings():
-    form = MailChimpForm(request.form)
+    mc_form = MailChimpForm(request.form)
 
-    if form.validate_on_submit():
+    if mc_form.validate_on_submit():
         current_user.mailchimp_integration = MailChimpIntegration()
-        current_user.mailchimp_integration.api_key = form.api_key.data
+        current_user.mailchimp_integration.api_key = mc_form.api_key.data
         current_user.save()
 
+    # prefill mailchimp form
     if current_user.mailchimp_integration:
-        form.api_key.data = current_user.mailchimp_integration.api_key
+        mc_form.api_key.data = current_user.mailchimp_integration.api_key
 
-    return render_template('dashboard/settings.html', form=form)
+    return render_template('dashboard/settings.html', mc_form=mc_form)

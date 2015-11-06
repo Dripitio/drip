@@ -1,8 +1,9 @@
 import shopify as shopify_api
 from flask import Blueprint, request, url_for, current_app, redirect
-from flask.ext.login import login_user, current_user
+from flask.ext.login import current_user
+from werkzeug.urls import url_join
 
-from drip.db.user import User, ShopifyIntegration
+from drip.db.user import ShopifyIntegration
 
 shopify = Blueprint('shopify', __name__)
 
@@ -34,30 +35,10 @@ def initiate():
     shop_url = args.get('shop')
     # TODO: validate HMAC, so we know that request really is from shopify
 
-    if not shop_url:
-        redirect(url_for('main.index'))
-
-    user = User.objects(__raw__={
-        'shopify_integration.shop_url': shop_url
-    }).first()
-    # if there is no integration redirect user to signup page
-    if not user or not user.shopify_integration or not user.shopify_integration.installed:
-        return redirect(url_for('main.signup', integrations='shopify', shop=shop_url))
-
-    return redirect(url_for('shopify.access', shop=shop_url))
-
-
-@shopify.route('/integrations/shopify/access')
-def access():
-    """
-    2. step
-    Redirect to shopify permission page
-    """
-    shop_url = request.args.get('shop')
-
-    # user should be authenticated
     if not current_user.is_authenticated:
-        return redirect(url_for('main.signup', integrations='shopify', shop=shop_url))
+        return redirect(url_for('main.signup', next=url_join(request.host_url,
+                                                             url_for('shopify.initiate',
+                                                                     shop=shop_url))))
 
     api_key = current_app.config['SHOPIFY_API_KEY']
     secret = current_app.config['SHOPIFY_API_SECRET']
@@ -78,18 +59,17 @@ def finalize():
 
     # user should be authenticated
     if not current_user.is_authenticated:
-        return redirect(url_for('main.signup', integrations='shopify', shop=shop_url))
+        return redirect(url_for('main.signup', next=url_for('shopify.finalize', **param_dict)))
 
     shopify_api.Session.setup(api_key=api_key, secret=secret)
     shopify_api_session = shopify_api.Session(shop_url)
 
     shopify_api_session.request_token(param_dict)
 
-    user = User.objects(__raw__={'shopify_integration.shop_url': shop_url}).first()
-    # check if shop is already registered for given user
-    if not user:
-        user.shopify_integration = ShopifyIntegration()
-        user.shopify_integration.token = shopify_api_session.token
-        user.shopify_integration.installed = True
-        user.save()
+    # check if shopify integration is already registered for given user
+    current_user.shopify_integration = ShopifyIntegration()
+    current_user.shopify_integration.token = shopify_api_session.token
+    current_user.shopify_integration.installed = True
+    current_user.save()
+
     return redirect(url_for('main.index'))

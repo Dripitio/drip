@@ -1,5 +1,4 @@
 import bcrypt
-from flask.ext.login import unicode
 from mongoengine import EmailField, StringField, Document, EmbeddedDocument, EmbeddedDocumentField, \
     BooleanField
 from werkzeug.security import safe_str_cmp
@@ -16,6 +15,17 @@ class MailChimpIntegration(EmbeddedDocument):
 
 
 class User(Document):
+    meta = {
+        'allow_inheritance': True,
+        'indexes': [
+            {
+                'fields': ['email'],
+                'sparse': True,
+                'unique': True,
+            },
+        ],
+    }
+
     # Customers registration email
     email = EmailField()
 
