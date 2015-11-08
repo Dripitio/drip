@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from flask.ext.login import current_user
+from flask.ext.login import current_user, login_required
 from flask.ext.wtf import Form
 from mailchimp import Mailchimp
 from wtforms import StringField
@@ -13,6 +13,7 @@ class MailChimpForm(Form):
     api_key = StringField()
 
 
+@login_required
 @dashboard.route('/stats')
 def stats():
     mc_templates = []
@@ -28,6 +29,7 @@ def stats():
     return render_template('dashboard/stats.html', mc_templates=mc_templates)
 
 
+@login_required
 @dashboard.route('/settings', methods=['GET', 'POST'])
 def settings():
     mc_form = MailChimpForm(request.form)
