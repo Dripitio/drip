@@ -1,0 +1,119 @@
+---
+
+- name: Install common packages needed for Python application development
+  sudo: yes
+  apt:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - git
+    - libffi-dev
+    - python-dev
+    - python-setuptools
+    - python-pip
+  tags: ['app']
+
+- name: Install virtualenv
+  sudo: yes
+  pip: name=virtualenv state=present
+  tags: ['app']
+
+- name: Ensure web file and directory basic structure is in place
+  sudo: yes
+  file:
+    path: '{{ item.path }}'
+    state: '{{ item.state}}'
+    owner: '{{ item.owner }}'
+    group: '{{ item.group }}'
+    mode: '{{ item.mode }}'
+  with_items:
+    - path: /var/log/drip
+      owner: www-data
+      group: www-data
+      state: directory
+      mode: '0755'
+    - path: /opt/drip
+      owner: www-data
+      group: www-data
+      state: directory
+      mode: '0755'
+    - path: /opt/drip/app
+      owner: www-data
+      group: www-data
+      state: directory
+      mode: '0755'
+  tags: [ 'app' ]
+
+- name: Ensure we have latest Drip source
+  sudo: yes
+  sudo_user: root
+  git: repo=git@bitbucket.org:r5y/drip.git
+       dest=/opt/drip/app
+       accept_hostkey=True
+       key_file=/home/ubuntu/.ssh/id_rsa
+  tags: [ 'app', 'deploy' ]
+
+- name: Ensure Drip source has correct permisions
+  sudo: yes
+  file: path=/opt/drip/app state=directory recurse=yes owner=www-data group=www-data
+  tags: [ 'app', 'deploy' ]
+
+- name: Add empty virtualenv
+  sudo: yes
+  sudo_user: www-data
+  file:
+    path: /opt/drip/env
+    state: directory
+  tags: [ 'app', 'deploy' ]
+
+- name: Install virtualenv
+  sudo: yes
+  sudo_user: www-data
+  pip:
+    name: /opt/drip/app
+    virtualenv: /opt/drip/env
+  tags: [ 'app', 'deploy' ]
+
+- name: Ensure Web Nginx config is in place
+  sudo: yes
+  template:
+    src: drip.conf.j2
+    dest: '/etc/nginx/sites-available/drip.conf'
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Reload Nginx
+  tags: [ 'app' ]
+
+- name: Ensure Web Nginx config is activated
+  sudo: yes
+  file:
+    src: '/etc/nginx/sites-available/drip.conf'
+    dest: '/etc/nginx/sites-enabled/drip.conf'
+    owner: root
+    group: root
+    state: link
+  notify: Restart Nginx
+  tags: [ 'app' ]
+
+- name: Ensure Web uWSGI config is in place
+  sudo: yes
+  template:
+    src: drip.uwsgi.ini.j2
+    dest: '/etc/uwsgi/apps-available/drip.uwsgi.ini'
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Reload uWSGI
+  tags: [ 'app' ]
+
+- name: Ensure Web uWSGI config is activated
+  sudo: yes
+  file:
+    src: '/etc/uwsgi/apps-available/drip.uwsgi.ini'
+    dest: '/etc/uwsgi/apps-enabled/drip.uwsgi.ini'
+    owner: root
+    group: root
+    state: link
+  notify: Reload uWSGI
+  tags: [ 'app' ]

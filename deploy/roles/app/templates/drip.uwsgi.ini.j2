@@ -1,0 +1,36 @@
+[uwsgi]
+project = web
+base_dir = /opt/drip
+
+uid = www-data
+gid = www-data
+
+procname = %(project)
+
+processes = 2
+
+logto = /var/log/drip/uwsgi.log
+
+chdir = %(base_dir)/app
+module = server:app
+
+env = REACHLY_ENV=production
+virtualenv = %(base_dir)/env
+
+socket = /var/run/uwsgi/web.sock
+chmod-socket = 666
+chown-socket = www-data
+
+vacuum = true
+
+# Check if needed later.
+master = true
+master-as-root = true
+
+touch-reload = %(base_dir)/touch-reload
+
+# For newrelic.
+enable-threads = true
+single-interpreter = true
+
+plugins = python

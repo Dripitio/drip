@@ -1,0 +1,10 @@
+---
+- name: Deploy tasks
+  hosts: webservers
+  remote_user: ubuntu
+
+  roles:
+    - nginx
+    - mongodb
+    - uwsgi
+    - app

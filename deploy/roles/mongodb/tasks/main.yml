@@ -1,0 +1,11 @@
+---
+
+- name: Setup Mongodb
+  sudo: yes
+  apt: name=mongodb state=present
+  tags: ['mongodb']
+
+- name: Start Mongodb
+  sudo: yes
+  service: name=mongodb state=started
+  tags: ['mongodb']

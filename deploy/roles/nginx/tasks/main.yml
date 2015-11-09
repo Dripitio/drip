@@ -1,0 +1,30 @@
+---
+
+- name: Setup Nginx
+  sudo: yes
+  apt: name=nginx state=present
+  tags: ['nginx']
+
+- name: Ensure default Nginx site is disabled
+  sudo: yes
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Restart Nginx
+  tags: [ 'nginx' ]
+
+- name: Create Nginx configuration
+  sudo: yes
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Restart Nginx
+  tags: [ 'nginx' ]
+
+- name: Start Nginx
+  sudo: yes
+  service: name=nginx state=started
+  tags: ['nginx']

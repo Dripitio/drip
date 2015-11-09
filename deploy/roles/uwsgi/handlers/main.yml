@@ -1,0 +1,11 @@
+- name: Restart uWSGI
+  sudo: yes
+  service:
+    name: uwsgi-emperor
+    state: restarted
+
+- name: Reload uWSGI
+  sudo: yes
+  service:
+    name: uwsgi-emperor
+    state: reloaded

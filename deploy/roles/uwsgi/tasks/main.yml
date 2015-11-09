@@ -1,0 +1,33 @@
+---
+
+- name: Setup uWSGI
+  sudo: yes
+  apt:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - uwsgi
+    - uwsgi-emperor
+    - uwsgi-plugin-python
+  tags: ['uwsgi']
+
+- name: Set config file
+  sudo: yes
+  template:
+    src: emperor.ini.j2
+    dest: /etc/uwsgi/emperor.ini
+    mode: '0644'
+    owner: root
+    group: root
+  tags: ['uwsgi']
+  notify: Restart uWSGI
+
+- name: Start uWSGI
+  sudo: yes
+  service:
+    name: '{{ item }}'
+    state: started
+  with_items:
+    - uwsgi
+    - uwsgi-emperor
+  tags: ['uwsgi']

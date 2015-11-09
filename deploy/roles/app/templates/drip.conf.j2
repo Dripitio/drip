@@ -1,0 +1,40 @@
+server {
+    charset utf-8;
+
+    server_name driptrooper.com localhost;
+
+    access_log /var/log/drip/access.log reachly;
+    error_log /var/log/drip/error.log info;
+
+    location  /static {
+        alias /opt/drip/app/drip/static;
+    }
+
+    location /static/gen {
+        alias /opt/drip/app/drip/static/dist;
+        expires max;
+    }
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:///var/run/uwsgi/web.sock;
+        uwsgi_intercept_errors on;
+        uwsgi_read_timeout 60;
+    }
+
+    location /robots.txt {
+        alias /opt/reachly/web/app/reachly/static/robots.txt;
+    }
+
+    location /sitemap.xml {
+        alias /opt/reachly/web/app/reachly/static/sitemap.xml;
+    }
+}
+
+# Redirect www to https without www.
+server {
+    listen 80;
+
+    server_name www.driptrooper.com;
+}
+
