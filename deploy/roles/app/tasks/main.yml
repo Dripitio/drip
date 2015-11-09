@@ -11,6 +11,8 @@
     - python-dev
     - python-setuptools
     - python-pip
+    - npm
+    - nodejs-legacy
   tags: ['app']
 
 - name: Install virtualenv
@@ -117,3 +119,15 @@
     state: link
   notify: Reload uWSGI
   tags: [ 'app' ]
+
+- name: Install npm deps
+  sudo: yes
+  npm: path=/opt/drip/app
+  tags: [ 'app', 'deploy' ]
+
+- name: Build static assets
+  sudo: yes
+  command: 'node /opt/drip/app/node_modules/gulp/bin/gulp.js build sass'
+  args:
+    chdir: /opt/drip/app
+  tags: [ 'app', 'deploy' ]
