@@ -22,6 +22,7 @@ install_requires = [
     'Flask-Login==0.3.2',
     'mailchimp==2.0.9',
     'ShopifyAPI==2.1.5',
+    'newrelic==2.56.0.42',
 ]
 
 

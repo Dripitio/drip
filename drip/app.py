@@ -1,5 +1,6 @@
 import os
 
+import newrelic.agent
 from flask import Flask
 from flask.ext.login import LoginManager
 
@@ -22,6 +23,9 @@ def create_app(env=''):
     app = Flask(__name__)
 
     app.config.from_object('drip.config.Config')
+
+    # Monitoring.
+    newrelic.agent.initialize(os.path.join(PATH, '..', 'newrelic-web.ini'), 'development')
 
     app.template_folder = os.path.join(PATH, 'templates')
 
