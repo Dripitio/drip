@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 
+{#
+Dashboard Base View
+
+:param active_nav: variable tells which view right now is active
+#}
+
 {% block assets_head %}
 {% endblock %}
 
 {% block content %}
     <div class="wrapper">
-        <div class="sidebar" data-color="purple" data-image="/light-bootstrap-dashboard/assets/img/sidebar-5.jpg">
+        <div class="sidebar" data-color="purple"
+             data-image="/light-bootstrap-dashboard/assets/img/sidebar-5.jpg">
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="{{ url_for('main.index') }}" class="simple-text">
@@ -30,7 +37,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="sidebar-background" style="background-image: url('/static/img/dashboard/sidebar-5.jpg');"></div>
+            <div class="sidebar-background"
+                 style="background-image: url('/static/img/dashboard/sidebar-5.jpg');"></div>
         </div>
 
         <div class="main-panel">

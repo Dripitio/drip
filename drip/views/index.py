@@ -4,7 +4,7 @@ from flask.ext.wtf import Form
 from wtforms import PasswordField, StringField, BooleanField, ValidationError
 from wtforms.validators import DataRequired, EqualTo
 
-from drip.db.user import User, ShopifyIntegration
+from drip.db.user import User
 
 bp_index = Blueprint('main', __name__)
 

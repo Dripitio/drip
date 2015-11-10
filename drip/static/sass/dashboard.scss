@@ -1,3 +1,26 @@
+/*           Font Smoothing      */
+body,
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6,
+p,
+.navbar,
+.brand,
+.btn-simple,
+.alert,
+a,
+.td-name,
+td,
+button.close {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+}
+
 .wrapper {
   position: relative;
   top: 0;
@@ -12,13 +35,16 @@
   width: calc(100% - 260px);
   min-height: 100%;
 }
+
 .main-panel > .content {
   padding: 30px 15px;
   min-height: calc(100% - 123px);
 }
+
 .main-panel > .footer {
   border-top: 1px solid #e7e7e7;
 }
+
 .main-panel .navbar {
   margin-bottom: 0;
 }
@@ -28,15 +54,14 @@
   overflow: auto;
   max-height: 100%;
   height: 100%;
-  -webkit-transition-property: top,bottom;
-  transition-property: top,bottom;
-  -webkit-transition-duration: .2s,.2s;
-  transition-duration: .2s,.2s;
-  -webkit-transition-timing-function: linear,linear;
-  transition-timing-function: linear,linear;
+  -webkit-transition-property: top, bottom;
+  transition-property: top, bottom;
+  -webkit-transition-duration: .2s, .2s;
+  transition-duration: .2s, .2s;
+  -webkit-transition-timing-function: linear, linear;
+  transition-timing-function: linear, linear;
   -webkit-overflow-scrolling: touch;
 }
-
 
 .sidebar {
   position: absolute;
@@ -236,6 +261,7 @@ body > .navbar-collapse[data-image]:after,
 body > .navbar-collapse.has-image:after {
   opacity: .77;
 }
+
 .sidebar[data-color="purple"]:after,
 body > .navbar-collapse[data-color="purple"]:after {
   background: #9368E9;
