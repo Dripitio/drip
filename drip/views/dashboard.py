@@ -14,19 +14,9 @@ class MailChimpForm(Form):
 
 
 @login_required
-@dashboard.route('/stats')
-def stats():
-    mc_templates = []
-
-    mc_api_key = current_user.mailchimp_integration.api_key \
-        if current_user.mailchimp_integration else None
-
-    if mc_api_key:
-        mc = Mailchimp(apikey=mc_api_key, debug=True)
-
-        mc_templates = mc.templates.list(filters={"include_drag_and_drop": True})
-
-    return render_template('dashboard/stats.html', active_nav='index', mc_templates=mc_templates)
+@dashboard.route('/drip')
+def drip():
+    return render_template('dashboard/drip.html', active_nav='index')
 
 
 @login_required

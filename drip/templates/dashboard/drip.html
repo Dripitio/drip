@@ -1,0 +1,12 @@
+{% extends "dashboard/base.html" %}
+
+{% block content_middle %}
+    <div id="drip"></div>
+{% endblock %}
+
+{% block assets_foot %}
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='dist/dashboard.bundle.js') }}"
+            charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='dist/drip.bundle.js') }}"></script>
+{% endblock %}

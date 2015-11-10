@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, EqualTo
 
 from drip.db.user import User
 
-bp_index = Blueprint('main', __name__)
+main = Blueprint('main', __name__)
 
 
 class LoginForm(Form):
@@ -35,14 +35,14 @@ class SignupForm(Form):
     password_repeat = PasswordField('Repeat password')
 
 
-@bp_index.route('/', methods=['GET', 'POST'])
+@main.route('/', methods=['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard.stats'))
+        return redirect(url_for('dashboard.drip'))
     return render_template('landing/landing.html')
 
 
-@bp_index.route('/login', methods=['GET', 'POST'])
+@main.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
 
@@ -55,14 +55,14 @@ def login():
     return render_template('landing/login.html', form=form)
 
 
-@bp_index.route('/logout', methods=['GET'])
+@main.route('/logout', methods=['GET'])
 def logout():
     if not current_user.is_anonymous():
         logout_user()
     return redirect(url_for('main.index'))
 
 
-@bp_index.route('/signup', methods=['GET', 'POST'])
+@main.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm(request.form)
     if form.validate_on_submit():

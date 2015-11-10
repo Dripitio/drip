@@ -71,7 +71,7 @@ def finalize():
     except HTTPError:
         # application is already installed in given shop from another account
         return redirect(
-            url_for('dashboard.stats',
+            url_for('dashboard.drip',
                     error='Application is already installed in given shop from another account')
         )
 
