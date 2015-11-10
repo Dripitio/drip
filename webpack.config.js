@@ -3,7 +3,10 @@ var path = require('path'),
 
 module.exports = {
   context: path.join(__dirname, './drip/static'),
-  entry: './js/index.js',
+  entry: {
+    dashboard: './js/dashboard/index.js',
+    landingpage: './js/landingpage/index.js'
+  },
   module: {
     loaders: [{
       test: /\.scss$/,
@@ -15,7 +18,7 @@ module.exports = {
     extensions: ['', '.js', '.scss']
   },
   output: {
-    filename: 'bundle.js'
+    filename: '[name].bundle.js'
   }
 };
 
