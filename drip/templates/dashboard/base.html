@@ -42,7 +42,25 @@ Dashboard Base View
         </div>
 
         <div class="main-panel">
-            {% block content_middle %}{% endblock %}
+            <div class="content">
+                {% if notifications %}
+                    <div class="notifications">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {% for notification in notifications %}
+                                        <div class="alert alert-warning">
+                                            <span><b> Warning - </b> {{ notification }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% block content_middle %}{% endblock %}
+            </div>
         </div>
     </div>
 {% endblock %}
