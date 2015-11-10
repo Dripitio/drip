@@ -26,7 +26,7 @@ def stats():
 
         mc_templates = mc.templates.list(filters={"include_drag_and_drop": True})
 
-    return render_template('dashboard/stats.html', mc_templates=mc_templates)
+    return render_template('dashboard/stats.html', active_nav='index', mc_templates=mc_templates)
 
 
 @login_required
@@ -43,4 +43,4 @@ def settings():
     if current_user.mailchimp_integration:
         mc_form.api_key.data = current_user.mailchimp_integration.api_key
 
-    return render_template('dashboard/settings.html', mc_form=mc_form)
+    return render_template('dashboard/settings.html', active_nav='settings', mc_form=mc_form)
