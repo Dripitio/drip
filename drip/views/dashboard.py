@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request
 from flask.ext.login import current_user, login_required
 from flask.ext.wtf import Form
-from mailchimp import Mailchimp
 from wtforms import StringField
 
 from drip.db.user import MailChimpIntegration
@@ -13,14 +12,39 @@ class MailChimpForm(Form):
     api_key = StringField()
 
 
+notifications_data_views = []
+
+
+def include_notifications(fn):
+    notifications_data_views.append(fn.__name__)
+    return fn
+
+
+@dashboard.context_processor
+def additional_context():
+    # this code work if endpoint equals to view function name
+    if request.endpoint.split('.')[1] not in notifications_data_views:
+        return {}
+
+    notifications = []
+    if not current_user.mailchimp_integration or not current_user.mailchimp_integration.api_key:
+        notifications.append('Please add Mailchimp API Key')
+    if not current_user.shopify_integration or not current_user.shopify_integration.installed:
+        notifications.append('Please install Shopify app')
+
+    return {'notifications': notifications}
+
+
 @login_required
 @dashboard.route('/drip')
+@include_notifications
 def drip():
     return render_template('dashboard/drip.html', active_nav='index')
 
 
 @login_required
 @dashboard.route('/settings', methods=['GET', 'POST'])
+@include_notifications
 def settings():
     mc_form = MailChimpForm(request.form)
 

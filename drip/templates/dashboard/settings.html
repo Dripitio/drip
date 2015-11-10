@@ -1,11 +1,32 @@
 {% extends "dashboard/base.html" %}
 
 {% block content_middle %}
-    <h1>Settings</h1>
-
-    <form action="" method="post" id="mailchimp_form" name="mailchimp">
-        {{ mc_form.csrf_token() }}
-        {{ mc_form.api_key() }}
-        <button type="submit" class="main-cta login-form-cta">Set key</button>
-    </form>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Edit User Settings</h4>
+                    </div>
+                    <div class="content">
+                        <form action="" method="post" id="mailchimp_form" name="mailchimp">
+                            {{ mc_form.csrf_token() }}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Mailchimp API key</label>
+                                        {{ mc_form.api_key(class_='form-control', placeholder='API KEY') }}
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-info btn-fill pull-right">
+                                Update
+                            </button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
