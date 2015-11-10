@@ -127,7 +127,7 @@
 
 - name: Build static assets
   sudo: yes
-  command: 'node /opt/drip/app/node_modules/gulp/bin/gulp.js build sass'
+  command: 'node /opt/drip/app/node_modules/gulp/bin/gulp.js dist'
   args:
     chdir: /opt/drip/app
   tags: [ 'app', 'deploy' ]
