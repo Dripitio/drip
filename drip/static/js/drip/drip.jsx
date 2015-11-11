@@ -20,7 +20,7 @@ class GeneralFields extends Component {
         />
         <Input type="select" label="List">
           <option value="">Select List</option>
-          {lists.map((list) => {return <option value={list.id}>{list.name}</option>})}
+          {lists.map((list) => {return <option key={list.id} value={list.id}>{list.name}</option>})}
         </Input>
       </div>
     )
@@ -44,9 +44,45 @@ class DripDatetime extends Component {
 }
 
 
+class DripNode extends Component {
+  render() {
+    let templates = this.props.node.templates;
+    return (
+      <form action="">
+        <Input
+          type="text"
+          placeholder="Name"
+          value={this.props.node.name}
+          label="Name"
+        />
+        <Input
+          type="text"
+          placeholder="Description"
+          value={this.props.node.description}
+          label="Description"
+        />
+        <Input type="select" label="Templates">
+          <option value="">Select Template</option>
+          {templates.map((t) => {return <option key={t.id} value={t.id}>{t.name}</option>})}
+        </Input>
+      </form>
+    )
+  }
+}
+
+
 class DripNodes extends Component {
   render() {
-    return <h3>Nodes</h3>
+    let nodes = this.props.nodes;
+    return (
+      <div className="drip-blocks">
+        {nodes.map((node) => {
+          return (
+          <DripNode key={node.id} node={node}/>
+            );
+          })}
+      </div>
+    );
   }
 }
 
@@ -55,14 +91,31 @@ class DripBlock extends Component {
   render() {
     return (
       <Row>
-        <Col md={3}>
-          <DripDatetime></DripDatetime>
-        </Col>
-        <Col md={9}>
-          <DripNodes></DripNodes>
-        </Col>
+        <div>
+          <Col md={3}>
+            <DripDatetime datetime={this.props.block.datetime}></DripDatetime>
+          </Col>
+          <Col md={9}>
+            <DripNodes nodes={this.props.block.nodes}></DripNodes>
+          </Col>
+        </div>
       </Row>
     )
+  }
+}
+
+class DripBlocks extends Component {
+  render() {
+    let blocks = this.props.blocks;
+    return (
+      <div className="drip-blocks">
+        {blocks.map((block) => {
+          return (
+          <DripBlock key={block.id} block={block}/>
+            );
+          })}
+      </div>
+    );
   }
 }
 
@@ -75,15 +128,9 @@ class DripCampaign extends Component {
           <Col md={12}>
             <div className="card">
               <div className="content">
-                <form action="">
-                  <GeneralFields campaign={this.props.campaign}></GeneralFields>
-                </form>
-
+                <GeneralFields campaign={this.props.campaign}/>
                 <hr/>
-
-                <form action="">
-                  <DripBlock></DripBlock>
-                </form>
+                <DripBlocks blocks={this.props.campaign.blocks}></DripBlocks>
               </div>
             </div>
           </Col>
@@ -120,7 +167,7 @@ DripCampaign.propTypes = {
       datetime: React.PropTypes.string,
 
       /**
-       * Each block contains multiple nodes. Node repesents an message, with template,
+       * Each block contains multiple nodes. Node represents an message, with template,
        * action triggers
        *
        * :name: node name
