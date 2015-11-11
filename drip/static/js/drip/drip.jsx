@@ -44,9 +44,39 @@ class DripDatetime extends Component {
 }
 
 
+class Trigger extends Component {
+  render() {
+    let actions = this.props.actions;
+
+    return (
+      <Row>
+        <Col md={6}>
+          <Input type="select" label="Events">
+            <option value="">Select List</option>
+            {actions.map((action) => {
+              return (
+              <option key={action.id} value={action.id}>{action.name}</option>
+                );
+              })}
+          </Input>
+        </Col>
+        <Col md={6}>
+          <Input type="select" label="Actions">
+            <option value="">Select List</option>
+          </Input>
+        </Col>
+      </Row>
+    );
+  }
+}
+
+
 class DripNode extends Component {
   render() {
-    let templates = this.props.node.templates;
+    let templates = this.props.node.templates,
+      triggers = this.props.node.triggers,
+      actions = this.props.node.actions;
+
     return (
       <form action="">
         <Input
@@ -65,6 +95,13 @@ class DripNode extends Component {
           <option value="">Select Template</option>
           {templates.map((t) => {return <option key={t.id} value={t.id}>{t.name}</option>})}
         </Input>
+        {triggers.map((trigger) => {
+          return (
+          <Trigger key={trigger.id}
+                   trigger={trigger}
+                   actions={actions}
+          />);
+          })}
       </form>
     )
   }
@@ -226,6 +263,22 @@ let campaignState = {
           actions: [
             {id: 'actionOpen', name: 'Open'},
             {id: 'actionAnyClicked', name: 'Clicked any link'}
+          ],
+          triggers: [
+            {id: 'onetrigger1', actionId: 'actionOpen', nodeId: 'node2'}
+          ]
+        },
+        {
+          id: 'nodeid2',
+          name: '',
+          description: '',
+          templates: [
+            {id: 'footemplate1', name: 'Other Template 1', selected: false},
+            {id: 'footemplate3', name: 'Other Template 3', selected: false}
+          ],
+          actions: [
+            {id: 'fooactionOpen', name: 'Open'},
+            {id: 'fooactionAnyClicked', name: 'Clicked any link'}
           ],
           triggers: []
         }
