@@ -28,6 +28,45 @@ class GeneralFields extends Component {
 }
 
 
+class DripDatetime extends Component {
+  render() {
+    return (
+      <div className="drip-datetime-box">
+        <div className="date">
+          Dec 20
+        </div>
+        <div className="time">
+          11:00 PM
+        </div>
+      </div>
+    )
+  }
+}
+
+
+class DripNodes extends Component {
+  render() {
+    return <h3>Nodes</h3>
+  }
+}
+
+
+class DripBlock extends Component {
+  render() {
+    return (
+      <Row>
+        <Col md={3}>
+          <DripDatetime></DripDatetime>
+        </Col>
+        <Col md={9}>
+          <DripNodes></DripNodes>
+        </Col>
+      </Row>
+    )
+  }
+}
+
+
 class DripCampaign extends Component {
   render() {
     return (
@@ -38,6 +77,12 @@ class DripCampaign extends Component {
               <div className="content">
                 <form action="">
                   <GeneralFields campaign={this.props.campaign}></GeneralFields>
+                </form>
+
+                <hr/>
+
+                <form action="">
+                  <DripBlock></DripBlock>
                 </form>
               </div>
             </div>

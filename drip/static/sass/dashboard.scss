@@ -520,3 +520,17 @@ body > .navbar-collapse[data-color="purple"]:after {
   background-color: #fc727a;
 }
 
+// Drip Campaign builder
+
+.drip-datetime-box {
+  text-align: center;
+  padding: 45px 0 30px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  margin: 15px 0;
+
+  .date {
+    font-weight: 700;
+    font-size: 30px;
+  }
+}
