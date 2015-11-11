@@ -107,25 +107,19 @@ class DripNode extends Component {
   }
 }
 
-
-class DripNodes extends Component {
+class AddButton extends Component {
   render() {
-    let nodes = this.props.nodes;
     return (
-      <div className="drip-blocks">
-        {nodes.map((node) => {
-          return (
-          <DripNode key={node.id} node={node}/>
-            );
-          })}
+      <div className="add-node">
+        <div className="btn">+</div>
       </div>
     );
   }
 }
 
-
 class DripBlock extends Component {
   render() {
+    let nodes = this.props.block.nodes;
     return (
       <Row>
         <div>
@@ -133,7 +127,18 @@ class DripBlock extends Component {
             <DripDatetime datetime={this.props.block.datetime}></DripDatetime>
           </Col>
           <Col md={9}>
-            <DripNodes nodes={this.props.block.nodes}></DripNodes>
+            <div className="drip-blocks">
+              {nodes.map((node) => {
+                return (
+                <div key={node.id} className="card">
+                  <div className="content">
+                    <DripNode node={node}/>
+                  </div>
+                </div>
+                  );
+                })}
+            </div>
+            <AddButton />
           </Col>
         </div>
       </Row>
@@ -141,24 +146,10 @@ class DripBlock extends Component {
   }
 }
 
-class DripBlocks extends Component {
-  render() {
-    let blocks = this.props.blocks;
-    return (
-      <div className="drip-blocks">
-        {blocks.map((block) => {
-          return (
-          <DripBlock key={block.id} block={block}/>
-            );
-          })}
-      </div>
-    );
-  }
-}
-
 
 class DripCampaign extends Component {
   render() {
+    let blocks = this.props.campaign.blocks;
     return (
       <Grid fluid={true}>
         <Row>
@@ -166,9 +157,18 @@ class DripCampaign extends Component {
             <div className="card">
               <div className="content">
                 <GeneralFields campaign={this.props.campaign}/>
-                <hr/>
-                <DripBlocks blocks={this.props.campaign.blocks}></DripBlocks>
               </div>
+            </div>
+            <div className="drip-blocks">
+              {blocks.map((block) => {
+                return (
+                <div className="drip-block">
+                  <DripBlock key={block.id} block={block}/>
+                  <hr/>
+                </div>
+                  );
+                })}
+              <AddButton />
             </div>
           </Col>
         </Row>
@@ -265,7 +265,7 @@ let campaignState = {
             {id: 'actionAnyClicked', name: 'Clicked any link'}
           ],
           triggers: [
-            {id: 'onetrigger1', actionId: 'actionOpen', nodeId: 'node2'}
+            {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
           ]
         },
         {
@@ -273,14 +273,41 @@ let campaignState = {
           name: '',
           description: '',
           templates: [
-            {id: 'footemplate1', name: 'Other Template 1', selected: false},
-            {id: 'footemplate3', name: 'Other Template 3', selected: false}
+            {id: 'template1', name: 'ML Template 1', selected: false},
+            {id: 'template2', name: 'ML Template 2', selected: false},
+            {id: 'template3', name: 'ML Template 3', selected: false}
           ],
           actions: [
-            {id: 'fooactionOpen', name: 'Open'},
-            {id: 'fooactionAnyClicked', name: 'Clicked any link'}
+            {id: 'actionOpen', name: 'Open'},
+            {id: 'actionAnyClicked', name: 'Clicked any link'}
           ],
-          triggers: []
+          triggers: [
+            {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
+          ]
+        }
+      ]
+    },
+    {
+      id: 'blockid2',
+      datetime: moment.utc().add(10, 'days').toISOString(),
+
+      nodes: [
+        {
+          id: 'nodeid1',
+          name: '',
+          description: '',
+          templates: [
+            {id: 'template1', name: 'ML Template 1', selected: false},
+            {id: 'template2', name: 'ML Template 2', selected: false},
+            {id: 'template3', name: 'ML Template 3', selected: false}
+          ],
+          actions: [
+            {id: 'actionOpen', name: 'Open'},
+            {id: 'actionAnyClicked', name: 'Clicked any link'}
+          ],
+          triggers: [
+            {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
+          ]
         }
       ]
     }
