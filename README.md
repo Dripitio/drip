@@ -27,7 +27,7 @@ Build static assets
 ```
 #!bash
 
-gulp
+gulp build
 ```
 
 Finally run development server
@@ -37,3 +37,6 @@ Finally run development server
 
 python manage.py runserver
 ```
+
+## Used libraries
+### Backend
