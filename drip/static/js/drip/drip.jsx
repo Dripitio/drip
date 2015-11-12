@@ -13,7 +13,7 @@ import App from './components/App.jsx';
 let campaignState = {
   campaign: {
     id: 'abc',
-    name: '',
+    name: 'gooof',
     userLists: [
       {id: 'abclist', name: 'Default List', selected: false},
       {id: 'abccustomlist', name: 'Shopify Orders List', selected: false}
@@ -55,11 +55,15 @@ var reducer = (state, action) => {
   "use strict";
   switch (action.type) {
     case 'SAVE_NODE':
-      let newState = Object.assign({}, state);
+      var newState = Object.assign({}, state);
       // Set node as completed
       _.findWhere(newState.campaign.nodes, {id: action.node.id}).complete = true;
       return newState;
+    case 'SETTINGS_GENERAL':
+      var newState = Object.assign(state.campaign, action.campaign);
+      return {campaign: newState};
     default:
+      console.log('default');
       return state;
   }
 };

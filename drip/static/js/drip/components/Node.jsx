@@ -48,13 +48,13 @@ export default class Node extends Component {
         <Input
           type="text"
           placeholder="Name"
-          value={this.props.node.name}
+          defaultValue={this.props.node.name}
           label="Name"
         />
         <Input
           type="text"
           placeholder="Description"
-          value={this.props.node.description}
+          defaultValue={this.props.node.description}
           label="Description"
         />
         <Input type="select" label="Templates">

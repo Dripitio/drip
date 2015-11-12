@@ -18,8 +18,9 @@ class App extends Component {
                   <Input
                     type="text"
                     placeholder="Campaign name"
-                    value={campaign.name}
+                    defaultValue={campaign.name}
                     label="Campaing name"
+                    onChange={(e) => dispatch({type: 'SETTINGS_GENERAL', campaign: {name: e.target.value}})}
                   />
                   <Input type="select" label="List">
                     <option value="">Select List</option>
