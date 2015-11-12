@@ -2,7 +2,6 @@ require('sass/dashboard.scss');
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Input, Grid, Row, Col } from 'react-bootstrap';
 
 import moment from 'moment';
 

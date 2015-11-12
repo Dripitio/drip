@@ -3,6 +3,25 @@ import ReactDOM from 'react-dom';
 import { Input, Grid, Row, Col } from 'react-bootstrap';
 
 
+class Controls extends Component {
+  render() {
+    return (
+      <div className="node-controle">
+        <div className="btn controle-btn success">
+          <i className="fa fa-check"></i>
+        </div>
+        <div className="btn controle-btn danger">
+          <i className="fa fa-trash"></i>
+        </div>
+        <div className="btn controle-btn primary">
+          <i className="fa fa-pencil"></i>
+        </div>
+      </div>
+    );
+  }
+}
+
+
 class Trigger extends Component {
   render() {
     let actions = this.props.actions,
@@ -43,6 +62,7 @@ export default class Node extends Component {
 
     return (
       <form action="">
+        <Controls />
         <Input
           type="text"
           placeholder="Name"
