@@ -168,7 +168,6 @@ class DripCampaign extends Component {
                 </div>
                   );
                 })}
-              <AddButton />
             </div>
           </Col>
         </Row>
@@ -183,7 +182,7 @@ DripCampaign.propTypes = {
     /**
      * General campaign configuration fields
      *
-     * :name: Just for convinience. Each campaign should have a name
+     * :name: Campaign name
      * :userList: Array of available recipiant lists
      */
     id: React.PropTypes.string,
@@ -224,7 +223,11 @@ DripCampaign.propTypes = {
         })),
         actions: React.PropTypes.arrayOf(React.PropTypes.shape({
           id: React.PropTypes.string,
-          name: React.PropTypes.string
+          name: React.PropTypes.string,
+          /**
+           * Reference template if this action is specific to it.
+           */
+          templateId: React.PropTypes.string
         })),
         triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
           id: React.PropTypes.string,
