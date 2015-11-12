@@ -6,8 +6,8 @@ var staticPath = './drip/static';
 module.exports = {
   context: path.join(__dirname, staticPath),
   entry: {
-    dashboard: './js/dashboard/index.jsx',
-    landingpage: './js/landingpage/index.jsx',
+    dashboard: './js/dashboard/dashboard.jsx',
+    landingpage: './js/landingpage/landingpage.jsx',
     drip: './js/drip/drip.jsx'
   },
   module: {
