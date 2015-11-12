@@ -6,16 +6,18 @@ import { Input, Grid, Row, Col } from 'react-bootstrap';
 
 import moment from 'moment';
 
+import Utils from './utils.jsx';
+
 
 class GeneralFields extends Component {
   render() {
-    let lists = this.props.campaign.userList;
+    let lists = this.props.userList;
     return (
       <div>
         <Input
           type="text"
           placeholder="Campaign name"
-          value={this.props.campaign.name}
+          value={this.props.name}
           label="Campaing name"
         />
         <Input type="select" label="List">
@@ -46,7 +48,8 @@ class DripDatetime extends Component {
 
 class Trigger extends Component {
   render() {
-    let actions = this.props.actions;
+    let actions = this.props.actions,
+      allNodes = this.props.allNodes;
 
     return (
       <Row>
@@ -63,6 +66,11 @@ class Trigger extends Component {
         <Col md={6}>
           <Input type="select" label="Actions">
             <option value="">Select List</option>
+            {allNodes.map((node) => {
+              return (
+              <option key={node.id} value={node.id}>{node.name}</option>
+                );
+              })}
           </Input>
         </Col>
       </Row>
@@ -100,6 +108,7 @@ class DripNode extends Component {
           <Trigger key={trigger.id}
                    trigger={trigger}
                    actions={actions}
+                   allNodes={this.props.allNodes}
           />);
           })}
       </form>
@@ -132,7 +141,7 @@ class DripBlock extends Component {
                 return (
                 <div key={node.id} className="card">
                   <div className="content">
-                    <DripNode node={node}/>
+                    <DripNode node={node} allNodes={this.props.allNodes}/>
                   </div>
                 </div>
                   );
@@ -142,28 +151,38 @@ class DripBlock extends Component {
           </Col>
         </div>
       </Row>
-    )
+    );
   }
 }
-
 
 class DripCampaign extends Component {
   render() {
     let blocks = this.props.campaign.blocks;
+    let allNodes = this.props.campaign.blocks.map((block) => {
+      return block.nodes.map((node) => {
+        return {
+          id: node.id,
+          name: node.name
+        };
+      });
+    });
+    allNodes = Utils.flatten(allNodes);
+
     return (
       <Grid fluid={true}>
         <Row>
           <Col md={12}>
             <div className="card">
               <div className="content">
-                <GeneralFields campaign={this.props.campaign}/>
+                <GeneralFields name={this.props.campaign.name}
+                               userList={this.props.campaign.userList}/>
               </div>
             </div>
             <div className="drip-blocks">
               {blocks.map((block) => {
                 return (
-                <div className="drip-block">
-                  <DripBlock key={block.id} block={block}/>
+                <div key={block.id} className="drip-block">
+                  <DripBlock block={block} allNodes={allNodes}/>
                   <hr/>
                 </div>
                   );
@@ -296,7 +315,7 @@ let campaignState = {
 
       nodes: [
         {
-          id: 'nodeid1',
+          id: 'nodeid3',
           name: '',
           description: '',
           templates: [
