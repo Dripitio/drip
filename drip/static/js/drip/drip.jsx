@@ -11,7 +11,7 @@ import Utils from './utils.jsx';
 
 class GeneralFields extends Component {
   render() {
-    let lists = this.props.userList;
+    let lists = this.props.userLists;
     return (
       <div>
         <Input
@@ -189,7 +189,7 @@ class DripCampaign extends Component {
             <div className="card">
               <div className="content">
                 <GeneralFields name={this.props.campaign.name}
-                               userList={this.props.campaign.userList}/>
+                               userLists={this.props.campaign.userLists}/>
               </div>
             </div>
             <div className="drip-blocks">
@@ -216,11 +216,11 @@ DripCampaign.propTypes = {
      * General campaign configuration fields
      *
      * :name: Campaign name
-     * :userList: Array of available recipiant lists
+     * :userLists: Array of available recipiant lists
      */
     id: React.PropTypes.string,
     name: React.PropTypes.string,
-    userList: React.PropTypes.arrayOf(React.PropTypes.shape({
+    userLists: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.string,
       name: React.PropTypes.string,
       selected: React.PropTypes.bool
@@ -276,7 +276,7 @@ DripCampaign.propTypes = {
 let campaignState = {
   id: 'abc',
   name: '',
-  userList: [
+  userLists: [
     {id: 'abclist', name: 'Default List', selected: false},
     {id: 'abccustomlist', name: 'Shopify Orders List', selected: false}
   ],
@@ -289,47 +289,6 @@ let campaignState = {
       nodes: [
         {
           id: 'nodeid1',
-          name: '',
-          description: '',
-          templates: [
-            {id: 'template1', name: 'ML Template 1', selected: false},
-            {id: 'template2', name: 'ML Template 2', selected: false},
-            {id: 'template3', name: 'ML Template 3', selected: false}
-          ],
-          actions: [
-            {id: 'actionOpen', name: 'Open'},
-            {id: 'actionAnyClicked', name: 'Clicked any link'}
-          ],
-          triggers: [
-            {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
-          ]
-        },
-        {
-          id: 'nodeid2',
-          name: '',
-          description: '',
-          templates: [
-            {id: 'template1', name: 'ML Template 1', selected: false},
-            {id: 'template2', name: 'ML Template 2', selected: false},
-            {id: 'template3', name: 'ML Template 3', selected: false}
-          ],
-          actions: [
-            {id: 'actionOpen', name: 'Open'},
-            {id: 'actionAnyClicked', name: 'Clicked any link'}
-          ],
-          triggers: [
-            {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
-          ]
-        }
-      ]
-    },
-    {
-      id: 'blockid2',
-      datetime: moment.utc().add(10, 'days').toISOString(),
-
-      nodes: [
-        {
-          id: 'nodeid3',
           name: '',
           description: '',
           templates: [
