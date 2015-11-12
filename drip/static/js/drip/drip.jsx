@@ -79,6 +79,20 @@ class Trigger extends Component {
 }
 
 
+class FormControleStaticInput extends Component {
+  render() {
+    return (
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{this.props.label}</label>
+        <div class="col-sm-10">
+          <p class="form-control-static">{this.props.value}</p>
+        </div>
+      </div>
+    )
+  }
+}
+
+
 class DripNode extends Component {
   render() {
     let templates = this.props.node.templates,
