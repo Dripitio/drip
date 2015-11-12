@@ -5,6 +5,7 @@ import { Input, Grid, Row, Col } from 'react-bootstrap';
 import moment from 'moment';
 
 import Node from './Node.jsx';
+import StaticNode from './StaticNode.jsx';
 
 
 class DripDatetime extends Component {
@@ -36,7 +37,7 @@ class AddButton extends Component {
 
 export default class Block extends Component {
   render() {
-    let nodes = this.props.block.nodes;
+    let nodes = this.props.nodes;
     return (
       <Row>
         <div>
@@ -45,11 +46,18 @@ export default class Block extends Component {
           </Col>
           <Col md={9}>
             <div className="drip-blocks">
-              {nodes.map((node) => {
+              {this.props.block.nodeIds.map((nid) => {
+                let node = _.findWhere(nodes, {id: nid});
                 return (
                 <div key={node.id} className="card">
                   <div className="content">
-                    <Node node={node} allNodes={this.props.allNodes}/>
+                    {(() => {
+                      if (node.complete) {
+                        return <StaticNode node={node} nodes={this.props.nodes}/>
+                        } else {
+                        return <Node node={node} nodes={this.props.nodes}/>
+                        }
+                      })()}
                   </div>
                 </div>
                   );
@@ -67,44 +75,32 @@ Block.propTypes = {
   block: React.PropTypes.shape({
     id: React.PropTypes.string,
     datetime: React.PropTypes.string,
-
-    /**
-     * Each block contains multiple nodes. Node represents an message, with template,
-     * action triggers
-     *
-     * :name: node name
-     * :description: users note about given node
-     * :templates: available templates from e.g. mailchimp
-     * :actions: events that can trigger next message scheduling
-     * :triggers: couples actions with nodes
-     */
-    nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      name: React.PropTypes.string,
-      description: React.PropTypes.string,
-      templates: React.PropTypes.arrayOf(React.PropTypes.shape({
-        id: React.PropTypes.string,
-        name: React.PropTypes.string,
-        selected: React.PropTypes.bool
-      })),
-      actions: React.PropTypes.arrayOf(React.PropTypes.shape({
-        id: React.PropTypes.string,
-        name: React.PropTypes.string,
-        /**
-         * Reference template if this action is specific to it.
-         */
-        templateId: React.PropTypes.string
-      })),
-      triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
-        id: React.PropTypes.string,
-        actionId: React.PropTypes.string,
-        nodeId: React.PropTypes.string
-      }))
-    }))
+    nodeIds: React.PropTypes.arrayOf(React.PropTypes.string)
   }),
 
-  allNodes: React.PropTypes.arrayOf(React.PropTypes.shape({
+  nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
     id: React.PropTypes.string,
-    name: React.PropTypes.string
+    name: React.PropTypes.string,
+    description: React.PropTypes.string,
+    templates: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.string,
+      name: React.PropTypes.string,
+      selected: React.PropTypes.bool
+    })),
+    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.string,
+      name: React.PropTypes.string,
+      /**
+       * Reference template if this action is specific to it.
+       */
+      templateId: React.PropTypes.string
+    })),
+    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.string,
+      actionId: React.PropTypes.string,
+      nodeId: React.PropTypes.string
+    })),
+    // if form not complete show edit form
+    complete: React.PropTypes.bool
   }))
 };

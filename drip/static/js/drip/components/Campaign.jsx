@@ -2,22 +2,12 @@ import React, { Component } from 'react';
 import { Input, Grid, Row, Col } from 'react-bootstrap';
 
 import Block from './Block.jsx';
-import Utils from '../utils.jsx';
 
 
 export default class Campaign extends Component {
   render() {
     let blocks = this.props.campaign.blocks,
       lists = this.props.campaign.userLists;
-    let allNodes = this.props.campaign.blocks.map((block) => {
-      return block.nodes.map((node) => {
-        return {
-          id: node.id,
-          name: node.name
-        };
-      });
-    });
-    allNodes = Utils.flatten(allNodes);
 
     return (
       <Grid fluid={true}>
@@ -45,7 +35,7 @@ export default class Campaign extends Component {
               {blocks.map((block) => {
                 return (
                 <div key={block.id} className="drip-block">
-                  <Block block={block} allNodes={allNodes}/>
+                  <Block block={block} nodes={this.props.campaign.nodes}/>
                   <hr/>
                 </div>
                   );
@@ -83,7 +73,9 @@ Campaign.propTypes = {
     blocks: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.string,
       datetime: React.PropTypes.string,
-
+      nodeIds: React.PropTypes.arrayOf(React.PropTypes.string)
+    })),
+    nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
       /**
        * Each block contains multiple nodes. Node represents an message, with template,
        * action triggers
@@ -94,29 +86,30 @@ Campaign.propTypes = {
        * :actions: events that can trigger next message scheduling
        * :triggers: couples actions with nodes
        */
-      nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
+
+      id: React.PropTypes.string,
+      name: React.PropTypes.string,
+      description: React.PropTypes.string,
+      templates: React.PropTypes.arrayOf(React.PropTypes.shape({
         id: React.PropTypes.string,
         name: React.PropTypes.string,
-        description: React.PropTypes.string,
-        templates: React.PropTypes.arrayOf(React.PropTypes.shape({
-          id: React.PropTypes.string,
-          name: React.PropTypes.string,
-          selected: React.PropTypes.bool
-        })),
-        actions: React.PropTypes.arrayOf(React.PropTypes.shape({
-          id: React.PropTypes.string,
-          name: React.PropTypes.string,
-          /**
-           * Reference template if this action is specific to it.
-           */
-          templateId: React.PropTypes.string
-        })),
-        triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
-          id: React.PropTypes.string,
-          actionId: React.PropTypes.string,
-          nodeId: React.PropTypes.string
-        }))
-      }))
+        selected: React.PropTypes.bool
+      })),
+      actions: React.PropTypes.arrayOf(React.PropTypes.shape({
+        id: React.PropTypes.string,
+        name: React.PropTypes.string,
+        /**
+         * Reference template if this action is specific to it.
+         */
+        templateId: React.PropTypes.string
+      })),
+      triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
+        id: React.PropTypes.string,
+        actionId: React.PropTypes.string,
+        nodeId: React.PropTypes.string
+      })),
+      // if form not complete show edit form
+      complete: React.PropTypes.bool
     }))
   })
 };

@@ -3,78 +3,67 @@ import ReactDOM from 'react-dom';
 import { Input, Grid, Row, Col } from 'react-bootstrap';
 
 import Controls from './Controls.jsx';
+import * as _ from 'lodash';
 
 
-class Trigger extends Component {
+class FormControleStaticInput extends Component {
   render() {
-    let actions = this.props.actions;
-
     return (
-      <Row>
-        <Col md={6}>
-          <Input type="select" label="Events">
-            <option value="">Select List</option>
-            {actions.map((action) => {
-              return (
-              <option key={action.id} value={action.id}>{action.name}</option>
-                );
-              })}
-          </Input>
-        </Col>
-        <Col md={6}>
-          <Input type="select" label="Actions">
-            <option value="">Select List</option>
-            {this.props.nodes.map((node) => {
-              return (
-              <option key={node.id} value={node.id}>{node.name}</option>
-                );
-              })}
-          </Input>
-        </Col>
-      </Row>
-    );
-  }
-}
-
-export default class Node extends Component {
-  render() {
-    let templates = this.props.node.templates,
-      triggers = this.props.node.triggers,
-      actions = this.props.node.actions;
-
-    return (
-      <form action="">
-        <Controls />
-        <Input
-          type="text"
-          placeholder="Name"
-          value={this.props.node.name}
-          label="Name"
-        />
-        <Input
-          type="text"
-          placeholder="Description"
-          value={this.props.node.description}
-          label="Description"
-        />
-        <Input type="select" label="Templates">
-          <option value="">Select Template</option>
-          {templates.map((t) => {return <option key={t.id} value={t.id}>{t.name}</option>})}
-        </Input>
-        {triggers.map((trigger) => {
-          return (
-          <Trigger key={trigger.id}
-                   trigger={trigger}
-                   actions={actions}
-                   nodes={this.props.nodes}
-          />);
-          })}
-      </form>
+      <div>
+        <label>{this.props.label}</label>
+        <div>
+          <p>{this.props.value}</p>
+        </div>
+      </div>
     )
   }
 }
 
-Node.propTypes = {
+export default class StaticNode extends Component {
+  render() {
+    let template = _.result(_.findWhere(this.props.node.templates, {selected: true}), 'name');
+    let actions = this.props.node.actions;
+    let triggers = this.props.node.triggers;
+
+    return (
+      <div>
+        <Controls />
+        <FormControleStaticInput
+          value={this.props.node.name}
+          label="Name"
+        />
+        <FormControleStaticInput
+          value={this.props.node.description}
+          label="Description"
+        />
+        <FormControleStaticInput
+          value={template}
+          label="Template"
+        />
+        {triggers.map((trigger) => {
+          return (
+          <Row key={trigger.id}>
+            <Col md={6}>
+              <FormControleStaticInput
+                label="Event"
+                value={_.result(_.findWhere(actions, {id: trigger.actionId}), 'name')}
+              />
+            </Col>
+            <Col md={6}>
+              <FormControleStaticInput
+                label="Action"
+                value={_.result(_.findWhere(this.props.nodes, {id: trigger.nodeId}), 'name')}
+              />
+            </Col>
+          </Row>
+            );
+          })}
+      </div>
+    )
+  }
+}
+
+StaticNode.propTypes = {
   node: React.PropTypes.shape({
     id: React.PropTypes.string,
     name: React.PropTypes.string,
