@@ -20,9 +20,13 @@ class App extends Component {
                     placeholder="Campaign name"
                     defaultValue={campaign.name}
                     label="Campaing name"
-                    onChange={(e) => dispatch({type: 'SETTINGS_GENERAL', campaign: {name: e.target.value}})}
+                    onChange={(e) => dispatch({type: 'UPDATE_CAMPAIGN_NAME', campaign: {name: e.target.value}})}
                   />
-                  <Input type="select" label="List">
+                  <Input
+                    type="select"
+                    label="List"
+                    onChange={(e) => dispatch({type: 'UPDATE_CAMPAIGN_LIST', campaign: {userList: e.target.value}})}
+                  >
                     <option value="">Select List</option>
                     {campaign.userLists.map((list) =>
                     <option key={list.id} value={list.id}>{list.name}</option>

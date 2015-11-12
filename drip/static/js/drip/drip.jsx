@@ -59,9 +59,21 @@ var reducer = (state, action) => {
       // Set node as completed
       _.findWhere(newState.campaign.nodes, {id: action.node.id}).complete = true;
       return newState;
-    case 'SETTINGS_GENERAL':
+    case 'UPDATE_CAMPAIGN_NAME':
       var newState = Object.assign(state.campaign, action.campaign);
       return {campaign: newState};
+    case 'UPDATE_CAMPAIGN_LIST':
+      var newState = Object.assign({}, state), tmp;
+      // TODO: simplify. too much iterations.
+      tmp = _.findWhere(newState.campaign.userLists, {selected: true});
+      if (tmp) {
+        tmp.selected = false;
+      }
+      tmp = _.findWhere(newState.campaign.userLists, {id: action.campaign.userList});
+      if (tmp) {
+        tmp.selected = true
+      }
+      return newState;
     default:
       console.log('default');
       return state;
