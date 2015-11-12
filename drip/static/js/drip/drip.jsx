@@ -32,13 +32,14 @@ class GeneralFields extends Component {
 
 class DripDatetime extends Component {
   render() {
+    let datetime = moment(this.props.datetime);
     return (
       <div className="drip-datetime-box">
         <div className="date">
-          Dec 20
+          {datetime.format('D MMM')}
         </div>
         <div className="time">
-          11:00 PM
+          {datetime.format('h:mm A')}
         </div>
       </div>
     )
@@ -284,7 +285,7 @@ let campaignState = {
   blocks: [
     {
       id: 'blockid1',
-      datetime: moment.utc().toISOString(),
+      datetime: moment.utc().add(1, 'days').toISOString(),
 
       nodes: [
         {
