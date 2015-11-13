@@ -522,6 +522,12 @@ body > .navbar-collapse[data-color="purple"]:after {
 
 // Drip Campaign builder
 
+.drip-blocks {
+  .drip-block {
+    position: relative;
+  }
+}
+
 .drip-datetime-box {
   text-align: center;
   padding: 45px 0 30px;
@@ -570,7 +576,7 @@ body > .navbar-collapse[data-color="purple"]:after {
 
 .node-controle {
   position: absolute;
-  right: 20px;
+  right: 7px;
   top: -20px;
 
   .controle-btn {

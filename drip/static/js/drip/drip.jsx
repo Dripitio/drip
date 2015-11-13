@@ -23,7 +23,7 @@ let campaignState = {
       {
         id: 'blockid1',
         datetime: moment.utc().add(1, 'days').toISOString(),
-        nodeIds: ['nodeid1']
+        nodeIds: ['nodeid1', 'nodeid2']
       }
     ],
 
@@ -45,6 +45,24 @@ let campaignState = {
           {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
         ],
         complete: false
+      },
+      {
+        id: 'nodeid2',
+        name: 'foobar',
+        description: 'barfoo',
+        templates: [
+          {id: 'template1', name: 'ML Template 1', selected: false},
+          {id: 'template2', name: 'ML Template 2', selected: true},
+          {id: 'template3', name: 'ML Template 3', selected: false}
+        ],
+        actions: [
+          {id: 'actionOpen', name: 'Open'},
+          {id: 'actionAnyClicked', name: 'Clicked any link'}
+        ],
+        triggers: [
+          {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
+        ],
+        complete: true
       }
     ]
   }

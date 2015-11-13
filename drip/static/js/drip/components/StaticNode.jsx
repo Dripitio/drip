@@ -27,7 +27,7 @@ export default class StaticNode extends Component {
 
     return (
       <div>
-        <Controls />
+        <Controls complete={this.props.node.complete}/>
         <FormControleStaticInput
           value={this.props.node.name}
           label="Name"

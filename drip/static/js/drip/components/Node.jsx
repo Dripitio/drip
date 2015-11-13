@@ -44,7 +44,7 @@ export default class Node extends Component {
 
     return (
       <form action="">
-        <Controls />
+        <Controls complete={this.props.node.complete}/>
         <Input
           type="text"
           placeholder="Name"

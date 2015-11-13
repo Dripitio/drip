@@ -6,6 +6,10 @@ import Block from './Block.jsx';
 
 
 class App extends Component {
+  handleSaveNode() {
+    debugger;
+  }
+
   render() {
     const { dispatch, campaign } = this.props;
     return (
@@ -39,7 +43,7 @@ class App extends Component {
               {campaign.blocks.map((block) => {
                 return (
                 <div key={block.id} className="drip-block">
-                  <Block block={block} nodes={campaign.nodes}/>
+                  <Block block={block} nodes={campaign.nodes} onSave={this.handleSaveNode}/>
                   <hr/>
                 </div>
                   );

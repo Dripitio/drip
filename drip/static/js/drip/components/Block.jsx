@@ -49,7 +49,7 @@ export default class Block extends Component {
               {this.props.block.nodeIds.map((nid) => {
                 let node = _.findWhere(nodes, {id: nid});
                 return (
-                <div key={node.id} className="card">
+                <div key={node.id} className="card drip-block">
                   <div className="content">
                     {(() => {
                       if (node.complete) {
@@ -102,5 +102,7 @@ Block.propTypes = {
     })),
     // if form not complete show edit form
     complete: React.PropTypes.bool
-  }))
+  })),
+
+  onSave: React.PropTypes.func.isRequired
 };
