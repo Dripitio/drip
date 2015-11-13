@@ -520,3 +520,89 @@ body > .navbar-collapse[data-color="purple"]:after {
   background-color: #fc727a;
 }
 
+// Drip Campaign builder
+
+.drip-datetime-box {
+  text-align: center;
+  padding: 45px 0 30px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  background-color: white;
+
+  .date {
+    font-weight: 700;
+    font-size: 30px;
+  }
+}
+
+.add-node {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 32px;
+
+  &:before {
+    border-top: 2px solid #dfdfdf;
+    content: "";
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 95%;
+    z-index: -1;
+  }
+
+  .btn {
+    background: #8BC34A;
+    color: #fff;
+    border: 4px solid #FFFFFF;
+
+    margin-left: 10px;
+    margin-right: 10px;
+
+    box-shadow: 0 0 18px -6px #777;
+    border-radius: 50%;
+  }
+}
+
+.node-controle {
+  position: absolute;
+  right: 20px;
+  top: -20px;
+
+  .controle-btn {
+    width: 40px;
+    height: 40px;
+
+    display: inline-flex;
+    background: #8BC34A;
+    color: #fff;
+    border: 4px solid #FFFFFF;
+
+    margin-left: 5px;
+    margin-right: 5px;
+
+    box-shadow: 0 0 18px -6px #777;
+    border-radius: 50%;
+
+    i {
+      margin-top: 3px;
+      margin-left: -2px;
+    }
+
+    &.primary {
+      background: #1DC7EA;
+    }
+
+    &.danger {
+      background: #FB404B;
+    }
+
+    &.success {
+      background: #87CB16;
+    }
+  }
+}
