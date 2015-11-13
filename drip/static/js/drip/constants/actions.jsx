@@ -1,0 +1,5 @@
+export const
+  NODE_SAVE = 'NODE_SAVE',
+  NODE_DELETE = 'NODE_DELETE',
+  NODE_ADD = 'NODE_ADD',
+  NODE_EDIT = 'NODE_EDIT';
