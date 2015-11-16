@@ -28,42 +28,7 @@ var FormControleStaticInput = React.createClass({
 });
 
 
-class Trigger extends Component {
-  render() {
-    let actions = this.props.actions;
-
-    return (
-      <Row>
-        <Col md={6}>
-          <Input type="select"
-                 label="Events"
-                 defaultValue={this.props.node.actionId}>
-            <option value="">Select List</option>
-            {actions.map((action) => {
-              return (
-              <option key={action.id} value={action.id}>{action.name}</option>
-                );
-              })}
-          </Input>
-        </Col>
-        <Col md={6}>
-          <Input type="select"
-                 label="Actions"
-                 defaultValue={this.props.node.nodeId}>
-            <option value="">Select List</option>
-            {this.props.nodes.map((node) => {
-              return (
-              <option key={node.id} value={node.id}>{node.name}</option>
-                );
-              })}
-          </Input>
-        </Col>
-      </Row>
-    );
-  }
-}
-
-export default Node = React.createClass({
+var Node = React.createClass({
   getInitialState: function () {
     return {
       complete: this.props.node.complete
@@ -90,9 +55,7 @@ export default Node = React.createClass({
   },
 
   render: function () {
-    let templates = this.props.templates,
-      triggers = this.props.node.triggers,
-      actions = this.props.actions;
+    let templates = this.props.templates
 
     return (
       <form action="">
@@ -138,44 +101,64 @@ export default Node = React.createClass({
               );
             }
           })()}
-        {triggers.map((trigger) => {
-          if (this.props.node.complete) {
-            return (
-            <Row key={trigger.id}>
-              <Col md={6}>
-                <FormControleStaticInput
-                  label="Event"
-                  defaultValue={_.result(_.findWhere(actions, {id: trigger.actionId}), 'name')}
-                  complete={this.props.node.complete}
-                />
-              </Col>
-              <Col md={6}>
-                <FormControleStaticInput
-                  label="Action"
-                  defaultValue={_.result(_.findWhere(this.props.nodes, {id: trigger.nodeId}), 'name')}
-                  complete={this.props.node.complete}
-                />
-              </Col>
-            </Row>
-              );
-            } else {
-
-            return (
-            <Trigger key={trigger.id}
-                     trigger={trigger}
-                     actions={actions}
-                     node={this.props.node}
-                     nodes={this.props.nodes}
-            />);
-            }
-          })}
       </form>
     )
   }
 });
 
 Node.propTypes = {
+  node: React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string,
+    description: React.PropTypes.string,
+
+    template: React.PropTypes.shape({
+      id: React.PropTypes.string
+    }),
+
+    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.string,
+      actionId: React.PropTypes.string,
+      nodeId: React.PropTypes.string
+    })),
+
+    // if form not complete show edit form
+    complete: React.PropTypes.bool
+  }),
+
+  nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string,
+    description: React.PropTypes.string,
+
+    template: React.PropTypes.shape({
+      id: React.PropTypes.string
+    }),
+
+    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.string,
+      actionId: React.PropTypes.string,
+      nodeId: React.PropTypes.string
+    })),
+
+    // if form not complete show edit form
+    complete: React.PropTypes.bool
+  })).isRequired,
+
+  templates: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.string,
+    name: React.PropTypes.string
+  })).isRequired,
+
+  actions: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.string,
+    name: React.PropTypes.string,
+    templates: React.PropTypes.arrayOf(React.PropTypes.string)
+  })).isRequired,
+
   onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
-  onDelete: React.PropTypes.func.isRequired
+  onDelete: React.PropTypes.func.isRequired,
 };
+
+export default Node;
