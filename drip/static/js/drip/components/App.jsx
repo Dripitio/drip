@@ -3,6 +3,7 @@ import { Input, Grid, Row, Col,  ButtonToolbar, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import Block from './Block.jsx';
+import Campaign from './Campaign.jsx';
 
 import {
   NODE_EDIT,
@@ -28,28 +29,28 @@ var App = React.createClass({
     });
   },
 
-  handleEditNode: function(dispatch) {
+  handleEditNode: function (dispatch) {
     return (id) => {
       dispatch({type: NODE_EDIT, node: {id: id}});
       this.updateNodeState();
     };
   },
 
-  handleSaveNode: function(dispatch) {
+  handleSaveNode: function (dispatch) {
     return (id) => {
       dispatch({type: NODE_SAVE, node: {id: id}});
       this.updateNodeState();
     };
   },
 
-  handleAddNode: function(dispatch) {
+  handleAddNode: function (dispatch) {
     return (id) => {
       dispatch({type: NODE_ADD, block: {id: id}});
       this.updateNodeState();
     };
   },
 
-  handleDeleteNode: function(dispatch) {
+  handleDeleteNode: function (dispatch) {
     return (id) => {
       dispatch({type: NODE_DELETE, node: {id: id}});
       this.updateNodeState();
@@ -63,7 +64,7 @@ var App = React.createClass({
     };
   },
 
-  render: function() {
+  render: function () {
     const { dispatch, campaign, blocks, nodes, userLists, templates, actions } = this.props;
     return (
       <Grid fluid={true}>
@@ -76,19 +77,9 @@ var App = React.createClass({
                     Save campaign
                   </Button>
                 </ButtonToolbar>
-                <Input
-                  type="text"
-                  placeholder="Campaign name"
-                  defaultValue={campaign.name}
-                  label="Campaing name"/>
-                <Input
-                  type="select"
-                  label="List">
-                  <option value="">Select List</option>
-                  {userLists.map((list) =>
-                  <option key={list.id} value={list.id}>{list.name}</option>
-                    )}
-                </Input>
+                <Campaign
+                  userLists={userLists}
+                  campaign={campaign}/>
               </div>
             </div>
             <div className="drip-blocks">
