@@ -83,13 +83,13 @@ export default Node = React.createClass({
   },
 
   render: function() {
-    let templates = this.props.node.templates,
+    let templates = this.props.templates,
       triggers = this.props.node.triggers,
-      actions = this.props.node.actions;
+      actions = this.props.actions;
 
     var template;
     if (this.props.node.complete) {
-      template = _.result(_.findWhere(this.props.node.templates, {selected: true}), 'name');
+      template = _.result(_.findWhere(templates, {selected: true}), 'name');
     }
 
     return (
@@ -168,53 +168,6 @@ export default Node = React.createClass({
 });
 
 Node.propTypes = {
-  node: React.PropTypes.shape({
-    id: React.PropTypes.string,
-    name: React.PropTypes.string,
-    description: React.PropTypes.string,
-    templates: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      name: React.PropTypes.string,
-      selected: React.PropTypes.bool
-    })),
-    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      name: React.PropTypes.string,
-      /**
-       * Reference template if this action is specific to it.
-       */
-      templateId: React.PropTypes.string
-    })),
-    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      actionId: React.PropTypes.string,
-      nodeId: React.PropTypes.string
-    }))
-  }),
-  nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
-    id: React.PropTypes.string,
-    name: React.PropTypes.string,
-    description: React.PropTypes.string,
-    templates: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      name: React.PropTypes.string,
-      selected: React.PropTypes.bool
-    })),
-    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      name: React.PropTypes.string,
-      /**
-       * Reference template if this action is specific to it.
-       */
-      templateId: React.PropTypes.string
-    })),
-    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      actionId: React.PropTypes.string,
-      nodeId: React.PropTypes.string
-    }))
-  })),
-
   onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired
 };

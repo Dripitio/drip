@@ -53,6 +53,9 @@ export default class Block extends Component {
                       return <Node
                         node={node}
                         nodes={this.props.nodes}
+                        templates={this.props.templates}
+                        actions={this.props.actions}
+
                         onSave={this.props.onSave}
                         onEdit={this.props.onEdit}
                       />
@@ -71,37 +74,16 @@ export default class Block extends Component {
 }
 
 Block.propTypes = {
-  block: React.PropTypes.shape({
+  templates: React.PropTypes.arrayOf(React.PropTypes.shape({
     id: React.PropTypes.string,
-    datetime: React.PropTypes.string,
-    nodeIds: React.PropTypes.arrayOf(React.PropTypes.string)
-  }),
+    name: React.PropTypes.string
+  })).isRequired,
 
-  nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
+  actions: React.PropTypes.arrayOf(React.PropTypes.shape({
     id: React.PropTypes.string,
     name: React.PropTypes.string,
-    description: React.PropTypes.string,
-    templates: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      name: React.PropTypes.string,
-      selected: React.PropTypes.bool
-    })),
-    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      name: React.PropTypes.string,
-      /**
-       * Reference template if this action is specific to it.
-       */
-      templateId: React.PropTypes.string
-    })),
-    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      actionId: React.PropTypes.string,
-      nodeId: React.PropTypes.string
-    })),
-    // if form not complete show edit form
-    complete: React.PropTypes.bool
-  })),
+    templates: React.PropTypes.arrayOf(React.PropTypes.string)
+  })).isRequired,
 
   onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired
