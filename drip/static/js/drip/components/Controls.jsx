@@ -21,7 +21,8 @@ export default class Controls extends Component {
           </div>
             );
           })()}
-        <div className="btn controle-btn danger">
+        <div className="btn controle-btn danger"
+             onClick={this.props.onDelete}>
           <i className="fa fa-trash"></i>
         </div>
       </div>
@@ -31,5 +32,7 @@ export default class Controls extends Component {
 
 Controls.propTypes = {
   onEdit: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired
+  onSave: React.PropTypes.func.isRequired,
+  onDelete: React.PropTypes.func.isRequired
+
 };

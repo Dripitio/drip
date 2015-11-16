@@ -37,6 +37,15 @@ var Block = React.createClass({
     });
   },
 
+  handleDeleteNode: function () {
+    return (id) => {
+      this.props.onDelete(id);
+      this.setState({
+        blockNodes: this.props.block.nodeIds
+      });
+    }
+  },
+
   render: function () {
     let nodes = this.props.nodes;
     return (
@@ -61,6 +70,7 @@ var Block = React.createClass({
 
                         onSave={this.props.onSave}
                         onEdit={this.props.onEdit}
+                        onDelete={this.handleDeleteNode()}
                       />
                       })()}
                   </div>
@@ -96,5 +106,6 @@ Block.propTypes = {
 
   onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
-  addNode: React.PropTypes.func.isRequired
+  addNode: React.PropTypes.func.isRequired,
+  onDelete: React.PropTypes.func.isRequired
 };

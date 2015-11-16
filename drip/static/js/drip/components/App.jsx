@@ -25,6 +25,10 @@ class App extends Component {
     return (id) => dispatch({type: NODE_ADD, block: {id: id}});
   }
 
+  handleDeleteNode(dispatch) {
+    return (id) => dispatch({type: NODE_DELETE, node: {id: id}});
+  }
+
   render() {
     const { dispatch, campaign, blocks, nodes, userLists, templates, actions } = this.props;
     return (
@@ -65,6 +69,7 @@ class App extends Component {
                     actions={actions}
 
                     addNode={this.handleAddNode(dispatch)}
+                    onDelete={this.handleDeleteNode(dispatch)}
                     onEdit={this.handleEditNode(dispatch)}
                     onSave={this.handleSaveNode(dispatch)}/>
                   <hr/>

@@ -82,6 +82,10 @@ export default Node = React.createClass({
     });
   },
 
+  handleDelete: function () {
+    this.props.onDelete(this.props.node.id);
+  },
+
   render: function() {
     let templates = this.props.templates,
       triggers = this.props.node.triggers,
@@ -98,6 +102,7 @@ export default Node = React.createClass({
           complete={this.props.node.complete}
           onSave={this.handleSave}
           onEdit={this.handleEdit}
+          onDelete={this.handleDelete}
         />
         <FormControleStaticInput
           type="text"
@@ -169,5 +174,6 @@ export default Node = React.createClass({
 
 Node.propTypes = {
   onEdit: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired
+  onSave: React.PropTypes.func.isRequired,
+  onDelete: React.PropTypes.func.isRequired
 };

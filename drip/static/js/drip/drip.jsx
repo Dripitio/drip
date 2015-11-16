@@ -20,9 +20,7 @@ import {
 
 let campaignState = {
   campaign: {
-    id: 'abc',
-    name: 'gooof',
-    userList: {id: 'abclist'}
+    id: 'abc'
   },
   userLists: [
     {id: 'abclist', name: 'Default List'},
@@ -61,30 +59,17 @@ let campaignState = {
     {
       id: 'blockid1',
       datetime: moment.utc().add(1, 'days').toISOString(),
-      nodeIds: ['nodeid1', 'nodeid2']
+      nodeIds: ['nodeid1']
     }
   ],
 
   nodes: [
     {
       id: 'nodeid1',
-      name: '',
-      description: '',
-      template: {id: 'template1'},
       triggers: [
         {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
       ],
       complete: false
-    },
-    {
-      id: 'nodeid2',
-      name: 'foobar',
-      description: 'barfoo',
-      template: {id: 'template2'},
-      triggers: [
-        {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
-      ],
-      complete: true
     }
   ]
 };
@@ -110,6 +95,12 @@ var reducer = (state, action) => {
       var node = {id: _.uniqueId('node_'), triggers: [{id: _.uniqueId('trigger_')}]};
       newState.nodes.push(node);
       _.findWhere(newState.blocks, {id: action.block.id}).nodeIds.push(node.id);
+      return newState;
+    case NODE_DELETE:
+      newState = Object.assign({}, state);
+      // remove node and references to from ALL nodes in ALL blocks
+      _.remove(newState.nodes, (node) => node.id == action.node.id);
+      _.forEach(newState.blocks, (block) => _.remove(block.nodeIds, (id) => id == action.node.id));
       return newState;
     default:
       console.log('default');
