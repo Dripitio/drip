@@ -5,7 +5,6 @@ import { Input, Grid, Row, Col } from 'react-bootstrap';
 import moment from 'moment';
 
 import Node from './Node.jsx';
-import StaticNode from './StaticNode.jsx';
 
 
 class DripDatetime extends Component {
@@ -23,7 +22,6 @@ class DripDatetime extends Component {
     )
   }
 }
-
 
 class AddButton extends Component {
   render() {
@@ -52,11 +50,12 @@ export default class Block extends Component {
                 <div key={node.id} className="card drip-block">
                   <div className="content">
                     {(() => {
-                      if (node.complete) {
-                        return <StaticNode node={node} nodes={this.props.nodes}/>
-                        } else {
-                        return <Node node={node} nodes={this.props.nodes}/>
-                        }
+                      return <Node
+                        node={node}
+                        nodes={this.props.nodes}
+                        onSave={this.props.onSave}
+                        onEdit={this.props.onEdit}
+                      />
                       })()}
                   </div>
                 </div>
@@ -104,5 +103,6 @@ Block.propTypes = {
     complete: React.PropTypes.bool
   })),
 
+  onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired
 };

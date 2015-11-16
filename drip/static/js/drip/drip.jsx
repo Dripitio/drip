@@ -9,6 +9,11 @@ import moment from 'moment';
 
 import App from './components/App.jsx';
 
+import {
+  NODE_SAVE,
+  NODE_EDIT
+} from './constants/actions.jsx';
+
 
 let campaignState = {
   campaign: {
@@ -71,18 +76,23 @@ let campaignState = {
 
 var reducer = (state, action) => {
   "use strict";
-  var newState;
+  var newState, tmp;
   switch (action.type) {
-    case 'SAVE_NODE':
+    case NODE_SAVE:
       newState = Object.assign({}, state);
       // Set node as completed
       _.findWhere(newState.campaign.nodes, {id: action.node.id}).complete = true;
+      return newState;
+    case NODE_EDIT:
+      newState = Object.assign({}, state);
+      // Set node as incomplete
+      _.findWhere(newState.campaign.nodes, {id: action.node.id}).complete = false;
       return newState;
     case 'UPDATE_CAMPAIGN_NAME':
       newState = Object.assign(state.campaign, action.campaign);
       return {campaign: newState};
     case 'UPDATE_CAMPAIGN_LIST':
-      newState = Object.assign({}, state), tmp;
+      newState = Object.assign({}, state);
       // TODO: simplify. too much iterations.
       tmp = _.findWhere(newState.campaign.userLists, {selected: true});
       if (tmp) {

@@ -4,10 +4,18 @@ import { connect } from 'react-redux';
 
 import Block from './Block.jsx';
 
+import {
+  NODE_EDIT, NODE_SAVE
+} from '../constants/actions.jsx';
+
 
 class App extends Component {
-  handleSaveNode() {
-    debugger;
+  handleEditNode(dispatch) {
+    return (id) => dispatch({type:NODE_EDIT, node: {id: id}});
+  }
+
+  handleSaveNode(dispatch) {
+    return (id) => dispatch({type:NODE_SAVE, node: {id: id}});
   }
 
   render() {
@@ -47,7 +55,11 @@ class App extends Component {
               {campaign.blocks.map((block) => {
                 return (
                 <div key={block.id} className="drip-block">
-                  <Block block={block} nodes={campaign.nodes} onSave={this.handleSaveNode}/>
+                  <Block
+                    block={block}
+                    nodes={campaign.nodes}
+                    onEdit={this.handleEditNode(dispatch)}
+                    onSave={this.handleSaveNode(dispatch)}/>
                   <hr/>
                 </div>
                   );

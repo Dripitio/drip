@@ -8,13 +8,15 @@ export default class Controls extends Component {
         {(() => {
           if (this.props.complete) {
             return (
-            <div className="btn controle-btn primary">
+            <div className="btn controle-btn primary"
+                 onClick={this.props.onEdit}>
               <i className="fa fa-pencil"></i>
             </div>
               );
             }
           return (
-          <div className="btn controle-btn success">
+          <div className="btn controle-btn success"
+               onClick={this.props.onSave}>
             <i className="fa fa-check"></i>
           </div>
             );
@@ -27,3 +29,7 @@ export default class Controls extends Component {
   }
 }
 
+Controls.propTypes = {
+  onEdit: React.PropTypes.func.isRequired,
+  onSave: React.PropTypes.func.isRequired
+};
