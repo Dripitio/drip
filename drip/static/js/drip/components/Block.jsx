@@ -64,7 +64,7 @@ var Block = React.createClass({
                     {(() => {
                       return <Node
                         node={node}
-                        nodes={this.props.nodes}
+                        nodes={this.props.nodes.filter((node) => !this.props.block.nodeIds.find((id) => (id == node.id)))}
                         templates={this.props.templates}
                         actions={this.props.actions}
 

@@ -60,12 +60,26 @@ let campaignState = {
       id: 'blockid1',
       datetime: moment.utc().add(1, 'days').toISOString(),
       nodeIds: ['nodeid1']
+    },
+    {
+      id: 'blockid2',
+      datetime: moment.utc().add(1, 'days').toISOString(),
+      nodeIds: ['nodeid2']
     }
   ],
 
   nodes: [
     {
       id: 'nodeid1',
+      name: 'node in block 1',
+      triggers: [
+        {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
+      ],
+      complete: false
+    },
+    {
+      id: 'nodeid2',
+      name: 'node in block 2',
       triggers: [
         {id: 'onetrigger1', actionId: 'actionOpen', nodeId: ''}
       ],

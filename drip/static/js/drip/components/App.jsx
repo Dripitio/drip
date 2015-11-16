@@ -12,24 +12,50 @@ import {
 } from '../constants/actions.jsx';
 
 
-class App extends Component {
-  handleEditNode(dispatch) {
-    return (id) => dispatch({type: NODE_EDIT, node: {id: id}});
-  }
+var App = React.createClass({
+  getInitialState: function () {
+    // FIXME: do we really need to store nodes state? I think there is simpler solution for node
+    // list sync between blocks;
+    return {
+      nodes: this.props.nodes
+    };
+  },
 
-  handleSaveNode(dispatch) {
-    return (id) => dispatch({type: NODE_SAVE, node: {id: id}});
-  }
+  updateNodeState: function () {
+    this.setState({
+      nodes: this.props.nodes
+    });
+  },
 
-  handleAddNode(dispatch) {
-    return (id) => dispatch({type: NODE_ADD, block: {id: id}});
-  }
+  handleEditNode: function(dispatch) {
+    return (id) => {
+      dispatch({type: NODE_EDIT, node: {id: id}});
+      this.updateNodeState();
+    };
+  },
 
-  handleDeleteNode(dispatch) {
-    return (id) => dispatch({type: NODE_DELETE, node: {id: id}});
-  }
+  handleSaveNode: function(dispatch) {
+    return (id) => {
+      dispatch({type: NODE_SAVE, node: {id: id}});
+      this.updateNodeState();
+    };
+  },
 
-  render() {
+  handleAddNode: function(dispatch) {
+    return (id) => {
+      dispatch({type: NODE_ADD, block: {id: id}});
+      this.updateNodeState();
+    };
+  },
+
+  handleDeleteNode: function(dispatch) {
+    return (id) => {
+      dispatch({type: NODE_DELETE, node: {id: id}});
+      this.updateNodeState();
+    };
+  },
+
+  render: function() {
     const { dispatch, campaign, blocks, nodes, userLists, templates, actions } = this.props;
     return (
       <Grid fluid={true}>
@@ -82,7 +108,7 @@ class App extends Component {
       </Grid>
     );
   }
-}
+});
 
 App.propTypes = {
   /**
