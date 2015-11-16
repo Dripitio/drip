@@ -23,18 +23,21 @@ class DripDatetime extends Component {
   }
 }
 
-class AddButton extends Component {
-  render() {
-    return (
-      <div className="add-node">
-        <div className="btn">+</div>
-      </div>
-    );
-  }
-}
+var Block = React.createClass({
+  getInitialState: function () {
+    return {
+      blockNodes: this.props.block.nodeIds
+    }
+  },
 
-export default class Block extends Component {
-  render() {
+  handleAddNode: function () {
+    this.props.addNode(this.props.block.id);
+    this.setState({
+      blockNodes: this.props.block.nodeIds
+    });
+  },
+
+  render: function () {
     let nodes = this.props.nodes;
     return (
       <Row>
@@ -65,13 +68,19 @@ export default class Block extends Component {
                   );
                 })}
             </div>
-            <AddButton />
+            <div className="add-node"
+                 onClick={this.handleAddNode}>
+              <div className="btn">+</div>
+            </div>
           </Col>
         </div>
       </Row>
     );
   }
-}
+});
+
+export default Block;
+
 
 Block.propTypes = {
   templates: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -86,5 +95,6 @@ Block.propTypes = {
   })).isRequired,
 
   onEdit: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired
+  onSave: React.PropTypes.func.isRequired,
+  addNode: React.PropTypes.func.isRequired
 };

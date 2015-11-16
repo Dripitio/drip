@@ -6,12 +6,15 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux'
 import moment from 'moment';
+import * as _ from 'lodash';
 
 import App from './components/App.jsx';
 
 import {
   NODE_SAVE,
-  NODE_EDIT
+  NODE_EDIT,
+  NODE_ADD,
+  NODE_DELETE
 } from './constants/actions.jsx';
 
 
@@ -101,6 +104,12 @@ var reducer = (state, action) => {
       newState = Object.assign({}, state);
       // Set node as incomplete
       _.findWhere(newState.nodes, {id: action.node.id}).complete = false;
+      return newState;
+    case NODE_ADD:
+      newState = Object.assign({}, state);
+      var node = {id: _.uniqueId('node_'), triggers: [{id: _.uniqueId('trigger_')}]};
+      newState.nodes.push(node);
+      _.findWhere(newState.blocks, {id: action.block.id}).nodeIds.push(node.id);
       return newState;
     default:
       console.log('default');

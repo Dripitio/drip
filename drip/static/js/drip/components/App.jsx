@@ -5,7 +5,10 @@ import { connect } from 'react-redux';
 import Block from './Block.jsx';
 
 import {
-  NODE_EDIT, NODE_SAVE
+  NODE_EDIT,
+  NODE_SAVE,
+  NODE_ADD,
+  NODE_DELETE
 } from '../constants/actions.jsx';
 
 
@@ -16,6 +19,10 @@ class App extends Component {
 
   handleSaveNode(dispatch) {
     return (id) => dispatch({type: NODE_SAVE, node: {id: id}});
+  }
+
+  handleAddNode(dispatch) {
+    return (id) => dispatch({type: NODE_ADD, block: {id: id}});
   }
 
   render() {
@@ -57,6 +64,7 @@ class App extends Component {
                     templates={templates}
                     actions={actions}
 
+                    addNode={this.handleAddNode(dispatch)}
                     onEdit={this.handleEditNode(dispatch)}
                     onSave={this.handleSaveNode(dispatch)}/>
                   <hr/>
