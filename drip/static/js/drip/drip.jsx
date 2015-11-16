@@ -15,6 +15,7 @@ import {
   NODE_EDIT,
   NODE_ADD,
   NODE_DELETE,
+  NODE_CHANGE,
   BLOCK_ADD
 } from './constants/actions.jsx';
 
@@ -103,6 +104,11 @@ var reducer = (state = campaignState, action) => {
         _.remove(block.nodeIds, (id) => id == action.node.id);
       });
       return newState;
+    case NODE_CHANGE:
+      newState = Object.assign({}, state);
+      let node = newState.nodes.find((node) => node.id === action.node.id);
+      _.assign(node, action.node);
+      return newState;
     case BLOCK_ADD:
       newState = Object.assign({}, state);
       newState.blocks.push({
@@ -113,6 +119,7 @@ var reducer = (state = campaignState, action) => {
       return newState;
     default:
       console.log('default');
+      console.log(action);
       return state;
   }
 };

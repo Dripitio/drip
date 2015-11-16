@@ -6,6 +6,10 @@ import * as _ from 'lodash';
 import Controls from './Controls.jsx';
 
 var FormControleStaticInput = React.createClass({
+  handleChange() {
+    this.props.onChange(this.refs.input.getValue());
+  },
+
   render() {
     if (this.props.complete) {
       return (
@@ -20,7 +24,8 @@ var FormControleStaticInput = React.createClass({
           placeholder={this.props.placeholder}
           defaultValue={this.props.defaultValue}
           label={this.props.label}
-          onChange={this.props.onChange}
+          ref="input"
+          onChange={this.handleChange}
         />
       );
     }
@@ -31,6 +36,7 @@ var FormControleStaticInput = React.createClass({
 var Node = React.createClass({
   getInitialState: function () {
     return {
+      name: this.props.node.name,
       complete: this.props.node.complete
     };
   },
@@ -54,13 +60,22 @@ var Node = React.createClass({
     this.props.onDelete(this.props.node.id);
   },
 
+  handleInputChange: function (value) {
+    return (data) => {
+      let update = {id: this.props.node.id};
+      update[value] = data;
+      this.props.onNodeChange(update);
+      this.setState(update);
+    };
+  },
+
   render: function () {
-    let templates = this.props.templates
+    let templates = this.props.templates;
 
     return (
       <form action="">
         <Controls
-          complete={this.props.node.complete}
+          complete={this.state.complete}
           onSave={this.handleSave}
           onEdit={this.handleEdit}
           onDelete={this.handleDelete}
@@ -68,10 +83,10 @@ var Node = React.createClass({
         <FormControleStaticInput
           type="text"
           placeholder="Name"
-          defaultValue={this.props.node.name}
+          defaultValue={this.state.name}
           label="Name"
-          complete={this.props.node.complete}
-          onChange={this.handleInput}
+          complete={this.state.complete}
+          onChange={this.handleInputChange('name')}
         />
         <FormControleStaticInput
           type="text"
@@ -79,6 +94,7 @@ var Node = React.createClass({
           defaultValue={this.props.node.description}
           label="Description"
           complete={this.props.node.complete}
+          onChange={this.handleInputChange('description')}
         />
         {(() => {
           if (this.props.node.complete) {
@@ -94,6 +110,7 @@ var Node = React.createClass({
             return (
             <Input type="select"
                    label="Templates"
+                   onChange={(e) => this.handleInputChange('template')({id: e.target.value})}
                    defaultValue={this.props.node.template ? this.props.node.template.id : ''}>
               <option value="">Select Template</option>
               {templates.map((t) => {return <option key={t.id} value={t.id}>{t.name}</option>})}
@@ -159,6 +176,7 @@ Node.propTypes = {
   onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onDelete: React.PropTypes.func.isRequired,
+  onNodeChange: React.PropTypes.func.isRequired
 };
 
 export default Node;

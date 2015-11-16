@@ -10,6 +10,7 @@ import {
   NODE_SAVE,
   NODE_ADD,
   NODE_DELETE,
+  NODE_CHANGE,
   BLOCK_ADD
 } from '../constants/actions.jsx';
 
@@ -64,6 +65,12 @@ var App = React.createClass({
     };
   },
 
+  handleNodeChange: function(dispatch) {
+    return (node) => {
+      dispatch({type: NODE_CHANGE, node});
+    };
+  },
+
   render: function () {
     const { dispatch, campaign, blocks, nodes, userLists, templates, actions } = this.props;
     return (
@@ -92,6 +99,7 @@ var App = React.createClass({
                     templates={templates}
                     actions={actions}
 
+                    onNodeChange={this.handleNodeChange(dispatch)}
                     addNode={this.handleAddNode(dispatch)}
                     onDelete={this.handleDeleteNode(dispatch)}
                     onEdit={this.handleEditNode(dispatch)}
