@@ -179,6 +179,7 @@ App.propTypes = {
   actions: React.PropTypes.arrayOf(React.PropTypes.shape({
     id: React.PropTypes.string,
     name: React.PropTypes.string,
+    // list of templates that can use this action
     templates: React.PropTypes.arrayOf(React.PropTypes.string)
   }))
 };

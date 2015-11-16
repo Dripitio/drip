@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Input, Grid, Row, Col } from 'react-bootstrap';
+import { Input, Grid, Row, Col, FormControls } from 'react-bootstrap';
 import * as _ from 'lodash';
 
 import Controls from './Controls.jsx';
 
-class FormControleStaticInput extends Component {
+var FormControleStaticInput = React.createClass({
   render() {
     if (this.props.complete) {
       return (
-        <div>
-          <label>{this.props.label}</label>
-          <div>
-            <p>{this.props.defaultValue}</p>
-          </div>
-        </div>
+        <FormControls.Static
+          value={this.props.defaultValue}
+          label={this.props.label}/>
       );
     } else {
       return (
@@ -23,11 +20,13 @@ class FormControleStaticInput extends Component {
           placeholder={this.props.placeholder}
           defaultValue={this.props.defaultValue}
           label={this.props.label}
+          onChange={this.props.onChange}
         />
       );
     }
   }
-}
+});
+
 
 class Trigger extends Component {
   render() {
@@ -61,13 +60,13 @@ class Trigger extends Component {
 }
 
 export default Node = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       complete: this.props.node.complete
     };
   },
 
-  handleSave: function() {
+  handleSave: function () {
     this.props.onSave(this.props.node.id);
     // TODO: validate fields before saving
     this.setState({
@@ -75,7 +74,7 @@ export default Node = React.createClass({
     });
   },
 
-  handleEdit: function() {
+  handleEdit: function () {
     this.props.onEdit(this.props.node.id);
     this.setState({
       complete: this.props.node.complete
@@ -86,7 +85,7 @@ export default Node = React.createClass({
     this.props.onDelete(this.props.node.id);
   },
 
-  render: function() {
+  render: function () {
     let templates = this.props.templates,
       triggers = this.props.node.triggers,
       actions = this.props.actions;
@@ -110,6 +109,7 @@ export default Node = React.createClass({
           defaultValue={this.props.node.name}
           label="Name"
           complete={this.props.node.complete}
+          onChange={this.handleInput}
         />
         <FormControleStaticInput
           type="text"
@@ -130,7 +130,7 @@ export default Node = React.createClass({
             }
             else {
             return (
-            <Input type="select" label="Templates">
+            <Input type="select" label="Templates" ref="template">
               <option value="">Select Template</option>
               {templates.map((t) => {return <option key={t.id} value={t.id}>{t.name}</option>})}
             </Input>
