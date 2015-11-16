@@ -14,7 +14,8 @@ import {
   NODE_SAVE,
   NODE_EDIT,
   NODE_ADD,
-  NODE_DELETE
+  NODE_DELETE,
+  BLOCK_ADD
 } from './constants/actions.jsx';
 
 
@@ -73,7 +74,7 @@ let campaignState = {
 };
 
 
-var reducer = (state, action) => {
+var reducer = (state = campaignState, action) => {
   "use strict";
   var newState;
   console.log('reducing');
@@ -98,7 +99,17 @@ var reducer = (state, action) => {
       newState = Object.assign({}, state);
       // remove node and references to from ALL nodes in ALL blocks
       _.remove(newState.nodes, (node) => node.id == action.node.id);
-      _.forEach(newState.blocks, (block) => _.remove(block.nodeIds, (id) => id == action.node.id));
+      _.forEach(newState.blocks, (block) => {
+        _.remove(block.nodeIds, (id) => id == action.node.id);
+      });
+      return newState;
+    case BLOCK_ADD:
+      newState = Object.assign({}, state);
+      newState.blocks.push({
+        id: _.uniqueId('block_'),
+        datetime: moment.utc().add(1, 'days').toISOString(),
+        nodeIds: []
+      });
       return newState;
     default:
       console.log('default');
@@ -106,7 +117,7 @@ var reducer = (state, action) => {
   }
 };
 
-let store = createStore(reducer, campaignState);
+let store = createStore(reducer);
 console.log(store);
 
 ReactDOM.render(

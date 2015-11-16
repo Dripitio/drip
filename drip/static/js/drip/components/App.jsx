@@ -8,7 +8,8 @@ import {
   NODE_EDIT,
   NODE_SAVE,
   NODE_ADD,
-  NODE_DELETE
+  NODE_DELETE,
+  BLOCK_ADD
 } from '../constants/actions.jsx';
 
 
@@ -55,6 +56,13 @@ var App = React.createClass({
     };
   },
 
+  handleAddBlock: function (dispatch) {
+    return () => {
+      dispatch({type: BLOCK_ADD});
+      this.updateNodeState();
+    };
+  },
+
   render: function() {
     const { dispatch, campaign, blocks, nodes, userLists, templates, actions } = this.props;
     return (
@@ -68,7 +76,6 @@ var App = React.createClass({
                     Save campaign
                   </Button>
                 </ButtonToolbar>
-                <div className="clearfix"></div>
                 <Input
                   type="text"
                   placeholder="Campaign name"
@@ -102,6 +109,10 @@ var App = React.createClass({
                 </div>
                   );
                 })}
+            </div>
+            <div className="add-node"
+                 onClick={this.handleAddBlock(dispatch)}>
+              <div className="btn">+</div>
             </div>
           </Col>
         </Row>
