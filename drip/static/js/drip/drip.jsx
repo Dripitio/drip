@@ -71,17 +71,18 @@ let campaignState = {
 
 var reducer = (state, action) => {
   "use strict";
+  var newState;
   switch (action.type) {
     case 'SAVE_NODE':
-      var newState = Object.assign({}, state);
+      newState = Object.assign({}, state);
       // Set node as completed
       _.findWhere(newState.campaign.nodes, {id: action.node.id}).complete = true;
       return newState;
     case 'UPDATE_CAMPAIGN_NAME':
-      var newState = Object.assign(state.campaign, action.campaign);
+      newState = Object.assign(state.campaign, action.campaign);
       return {campaign: newState};
     case 'UPDATE_CAMPAIGN_LIST':
-      var newState = Object.assign({}, state), tmp;
+      newState = Object.assign({}, state), tmp;
       // TODO: simplify. too much iterations.
       tmp = _.findWhere(newState.campaign.userLists, {selected: true});
       if (tmp) {

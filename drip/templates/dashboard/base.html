@@ -12,7 +12,7 @@ Dashboard Base View
 {% block content %}
     <div class="wrapper">
         <div class="sidebar" data-color="purple"
-             data-image="/light-bootstrap-dashboard/assets/img/sidebar-5.jpg">
+             data-image="{{ url_for('static', filename='img/backgrounds/sidebar-5.jpg') }}">
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="{{ url_for('main.index') }}" class="simple-text">
@@ -38,7 +38,7 @@ Dashboard Base View
                 </ul>
             </div>
             <div class="sidebar-background"
-                 style="background-image: url('/static/img/dashboard/sidebar-5.jpg');"></div>
+                 style="background-image: url('/static/img/backgrounds/sidebar-5.jpg');"></div>
         </div>
 
         <div class="main-panel">

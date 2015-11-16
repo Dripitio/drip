@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Grid, Row, Col } from 'react-bootstrap';
+import { Input, Grid, Row, Col,  ButtonToolbar, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import Block from './Block.jsx';
@@ -18,25 +18,29 @@ class App extends Component {
           <Col md={12}>
             <div className="card">
               <div className="content">
-                <div>
-                  <Input
-                    type="text"
-                    placeholder="Campaign name"
-                    defaultValue={campaign.name}
-                    label="Campaing name"
-                    onChange={(e) => dispatch({type: 'UPDATE_CAMPAIGN_NAME', campaign: {name: e.target.value}})}
-                  />
-                  <Input
-                    type="select"
-                    label="List"
-                    onChange={(e) => dispatch({type: 'UPDATE_CAMPAIGN_LIST', campaign: {userList: e.target.value}})}
-                  >
-                    <option value="">Select List</option>
-                    {campaign.userLists.map((list) =>
-                    <option key={list.id} value={list.id}>{list.name}</option>
-                      )}
-                  </Input>
-                </div>
+                <ButtonToolbar>
+                  <Button bsStyle="success" className="btn-fill pull-right">
+                    Save campaign
+                  </Button>
+                </ButtonToolbar>
+                <div className="clearfix"></div>
+                <Input
+                  type="text"
+                  placeholder="Campaign name"
+                  defaultValue={campaign.name}
+                  label="Campaing name"
+                  onChange={(e) => dispatch({type: 'UPDATE_CAMPAIGN_NAME', campaign: {name: e.target.value}})}
+                />
+                <Input
+                  type="select"
+                  label="List"
+                  onChange={(e) => dispatch({type: 'UPDATE_CAMPAIGN_LIST', campaign: {userList: e.target.value}})}
+                >
+                  <option value="">Select List</option>
+                  {campaign.userLists.map((list) =>
+                  <option key={list.id} value={list.id}>{list.name}</option>
+                    )}
+                </Input>
               </div>
             </div>
             <div className="drip-blocks">

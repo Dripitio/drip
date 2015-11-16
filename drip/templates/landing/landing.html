@@ -7,27 +7,26 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-8 col-sm-offset-2 text">
-                        <h1>Beautiful <strong>Landing Page</strong></h1>
+                        <h1>Personalised and engaging <strong>emails</strong></h1>
 
                         <div class="description">
                             <p>
-                                This is a free responsive landing page made with the Bootstrap
-                                framework.
-                                Check it out now. Download it, customize and use it as you like!
+                                Boost your sales by sending email drip campaigns!
                             </p>
                         </div>
                         <div class="top-big-link">
-                            <a class="btn btn-link-1" href="http://azmind.com">Download it</a>
-                            <a class="btn btn-link-2 scroll-link" href="#features">Learn more</a>
+                            <a class="btn btn-link-1" href="{{ url_for('main.signup') }}">Get it</a>
+                            <a class="btn btn-link-2 scroll-link" href="#features">Why Drip
+                                campaigns?</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="backstretch"
-             style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 815px; width: 934px; z-index: -999998; position: absolute;">
+             style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 785px; width: 1218px; z-index: -999998; position: absolute;">
             <img src="{{ url_for('static', filename='img/backgrounds/1.jpg') }}"
-                 style="position: absolute; margin: 0px; padding: 0px; border: none; width: 1222.5px; height: 815px; max-height: none; max-width: none; z-index: -999999; left: -144.25px; top: 0px;">
+                 style="position: absolute; margin: 0px; padding: 0px; border: none; width: 1218px; height: 812px; max-height: none; max-width: none; z-index: -999999; left: 0px; top: -13.5px;">
         </div>
 
     </div>
@@ -47,103 +46,28 @@
                     <div class="features-box-icon">
                         <i class="fa fa-magic"></i>
                     </div>
-                    <h3>Easy To Use</h3>
+                    <h3>Right timing</h3>
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et.</p>
+                    <p>Set right time for each of your emails to reach your customer at the right
+                        time.</p>
                 </div>
                 <div class="col-sm-4 features-box">
                     <div class="features-box-icon">
                         <i class="fa fa-thumbs-o-up"></i>
                     </div>
-                    <h3>Responsive Design</h3>
+                    <h3>Adaptive content</h3>
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et.</p>
+                    <p>Personalise your email campaign by changing content based on reciepient
+                        behaviour</p>
                 </div>
                 <div class="col-sm-4 features-box">
                     <div class="features-box-icon">
                         <i class="fa fa-cog"></i>
                     </div>
-                    <h3>Uses Bootstrap</h3>
+                    <h3>Track performance</h3>
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 section-bottom-button">
-                    <a class="btn btn-link-1 scroll-link" href="#more-features">Learn more</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- More features -->
-    <div class="more-features-container section-container section-container-gray-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 more-features section-description">
-                    <h2><strong>More</strong> features</h2>
-
-                    <div class="divider-1"><span></span></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-5 more-features-box">
-                    <img src="{{ url_for('static', filename='img/devices/iphone.png') }}" alt="">
-                </div>
-                <div class="col-sm-7 more-features-box">
-
-                    <div class="more-features-box-text">
-                        <div class="more-features-box-text-icon">
-                            <i class="fa fa-paperclip"></i>
-                        </div>
-                        <h3>Ut wisi enim ad minim</h3>
-
-                        <div class="more-features-box-text-description">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et.
-                            Ut wisi enim ad minim veniam, quis nostrud.
-                        </div>
-                    </div>
-                    <div class="more-features-box-text">
-                        <div class="more-features-box-text-icon">
-                            <i class="fa fa-user"></i>
-                        </div>
-                        <h3>Quis nostrud exerci tat</h3>
-
-                        <div class="more-features-box-text-description">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et.
-                            Ut wisi enim ad minim veniam, quis nostrud.
-                        </div>
-                    </div>
-                    <div class="more-features-box-text">
-                        <div class="more-features-box-text-icon">
-                            <i class="fa fa-pencil"></i>
-                        </div>
-                        <h3>Sed do eiusmod tempor</h3>
-
-                        <div class="more-features-box-text-description">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et.
-                            Ut wisi enim ad minim veniam, quis nostrud.
-                        </div>
-                    </div>
-                    <div class="more-features-box-text">
-                        <div class="more-features-box-text-icon">
-                            <i class="fa fa-twitter"></i>
-                        </div>
-                        <h3>Minim veniam quis nostrud</h3>
-
-                        <div class="more-features-box-text-description">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et.
-                            Ut wisi enim ad minim veniam, quis nostrud.
-                        </div>
-                    </div>
-
+                    <p>Measure campaign performance and know what is working and where changes are
+                        needed!</p>
                 </div>
             </div>
         </div>
@@ -162,20 +86,24 @@
             <div class="row">
                 <div class="col-sm-7 great-support-box">
                     <div class="great-support-box-text great-support-box-text-left">
-                        <h3>Ut wisi enim ad minim</h3>
+                        <h3>Why drip campaigns?</h3>
 
                         <p>
-                            Lorem ipsum dolor sit amet, elit,
-                            sed do eiusmod tempor incididunt ut labore et. Ut wisi enim ad minim
-                            veniam, quis nostrud.
+                            Drip e-mail campaigns are part of marketing automation tools.
                         </p>
 
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore eUt wisi enim ad minim veniam, quis nostrud.
-                            Exerci tation ullamcorper suscipit ut aliquip ex ea commodo consequat.
-                            Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                            suscipit lobortis nisl.
+                            Campaign usually consists of series of emails which are scheduled with
+                            aim to move customer down the sales funnel. The main goal is to build
+                            build relationship gradually and not trying to put every piece of
+                            content in one hard sales email.. Because campaign consists of set of
+                            emails it is possible to adapt content on the way. For example based on
+                            customer click history or purchase behaviour.
+                        </p>
+
+                        <p>
+                            As a result customers have personalised experience and store owners have
+                            boosted revenue and increased customer loyalty!
                         </p>
                     </div>
                 </div>
@@ -186,252 +114,12 @@
         </div>
     </div>
 
-    <!-- How it works -->
-    <div class="how-it-works-container section-container section-container-image-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 how-it-works section-description">
-                    <h2><strong>How</strong> it works</h2>
-
-                    <div class="divider-1"><span></span></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-1 how-it-works-box">
-                    <div class="how-it-works-box-icon">1</div>
-                    <h3>Sign up</h3>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et.</p>
-                </div>
-                <div class="col-sm-4 col-sm-offset-2 how-it-works-box">
-                    <div class="how-it-works-box-icon">2</div>
-                    <h3>Make payment</h3>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-1 how-it-works-box">
-                    <div class="how-it-works-box-icon">3</div>
-                    <h3>Log in</h3>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et.</p>
-                </div>
-                <div class="col-sm-4 col-sm-offset-2 how-it-works-box">
-                    <div class="how-it-works-box-icon">4</div>
-                    <h3>Start learning</h3>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 section-bottom-button">
-                    <a class="btn btn-link-1 scroll-link" href="#top-content">Sign up now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Testimonials -->
-    <div class="testimonials-container section-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 testimonials section-description">
-                    <h2><strong>Our</strong> clients</h2>
-
-                    <div class="divider-1"><span></span></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1 testimonial-list">
-                    <div role="tabpanel">
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade in active" id="tab1">
-                                <div class="testimonial-image">
-                                    <img src="{{ url_for('static', filename='img/testimonials/1.jpg') }}">
-                                </div>
-                                <div class="testimonial-text">
-                                    <p>
-                                        "Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et.
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et.
-                                        Lorem ipsum dolor sit amet, consectetur..."<br>
-                                        <a href="#">Lorem Ipsum, dolor.co.uk</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab2">
-                                <div class="testimonial-image">
-                                    <img src="{{ url_for('static', filename='img/testimonials/2.jpg') }}">
-                                </div>
-                                <div class="testimonial-text">
-                                    <p>
-                                        "Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                                        ullamcorper suscipit lobortis nisl ut aliquip
-                                        ex ea commodo consequat. Ut wisi enim ad minim veniam, quis
-                                        nostrud exerci tation ullamcorper suscipit
-                                        lobortis nisl ut aliquip ex ea commodo consequat..."<br>
-                                        <a href="#">Minim Veniam, nostrud.com</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab3">
-                                <div class="testimonial-image">
-                                    <img src="{{ url_for('static', filename='img/testimonials/3.jpg') }}">
-                                </div>
-                                <div class="testimonial-text">
-                                    <p>
-                                        "Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et.
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et.
-                                        Lorem ipsum dolor sit amet, consectetur..."<br>
-                                        <a href="#">Lorem Ipsum, dolor.co.uk</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab4">
-                                <div class="testimonial-image">
-                                    <img src="{{ url_for('static', filename='img/testimonials/4.jpg') }}">
-                                </div>
-                                <div class="testimonial-text">
-                                    <p>
-                                        "Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                                        ullamcorper suscipit lobortis nisl ut aliquip
-                                        ex ea commodo consequat. Ut wisi enim ad minim veniam, quis
-                                        nostrud exerci tation ullamcorper suscipit
-                                        lobortis nisl ut aliquip ex ea commodo consequat..."<br>
-                                        <a href="#">Minim Veniam, nostrud.com</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active">
-                                <a href="#tab1" aria-controls="tab1" role="tab"
-                                   data-toggle="tab"></a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#tab2" aria-controls="tab2" role="tab"
-                                   data-toggle="tab"></a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#tab3" aria-controls="tab3" role="tab"
-                                   data-toggle="tab"></a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#tab4" aria-controls="tab4" role="tab"
-                                   data-toggle="tab"></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Call to action -->
-    <div class="call-to-action-container section-container section-container-image-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 call-to-action section-descriptio">
-                    <h2><strong>Call</strong> to action</h2>
-
-                    <div class="divider-1"><span></span></div>
-                    <p>
-                        Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                        suscipit lobortis nisl ut
-                        aliquip ex ea commodo consequat. Ut wisi enim ad minim veniam, quis nostrud.
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 section-bottom-button">
-                    <a class="btn btn-link-1 scroll-link" href="#top-content">Sign up now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- About us -->
-    <div class="about-us-container section-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 about-us section-description">
-                    <h2><strong>About</strong> us</h2>
-
-                    <div class="divider-1"><span></span></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 about-us-box">
-                    <div class="about-us-photo">
-                        <img src="{{ url_for('static', filename='img/about/1.jpg') }}">
-                    </div>
-                    <h3>Jim Black</h3>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
-
-                    <div class="about-us-social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-dribbble"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                    </div>
-                </div>
-                <div class="col-sm-4 about-us-box">
-                    <div class="about-us-photo">
-                        <img src="{{ url_for('static', filename='img/about/2.jpg') }}">
-                    </div>
-                    <h3>Tom Brown</h3>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
-
-                    <div class="about-us-social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-dribbble"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                    </div>
-                </div>
-                <div class="col-sm-4 about-us-box">
-                    <div class="about-us-photo">
-                        <img src="{{ url_for('static', filename='img/about/3.jpg') }}">
-                    </div>
-                    <h3>Sarah Green</h3>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
-
-                    <div class="about-us-social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-dribbble"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Footer -->
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-sm-12 footer-social">
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-dribbble"></i></a>
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <a href="#"><i class="fa fa-instagram"></i></a>
-                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-sm-12 footer-copyright">
-                    &copy; Jedy Bootstrap Template by <a href="http://azmind.com">Azmind</a>.
+                    &copy; Dripit.
                 </div>
             </div>
         </div>
