@@ -49,15 +49,3 @@ ansible-playbook -i deploy/hosts.ini deploy/site.yml -t deploy
 # or this if uwsgi/nginx has been updated or needs to be bootstrapped (should not break anything in any case)
 ansible-playbook -i deploy/hosts.ini deploy/site.yml -t app
 ```
-
-## Used libraries
-### Backend
-  * flask
-
-### Frontend
-  * React
-  * Redux
-  * React-Bootstrap
-
-### DB
-  * Mongo
