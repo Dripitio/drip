@@ -35,7 +35,9 @@ class Trigger extends Component {
     return (
       <Row>
         <Col md={6}>
-          <Input type="select" label="Events">
+          <Input type="select"
+                 label="Events"
+                 defaultValue={this.props.node.actionId}>
             <option value="">Select List</option>
             {actions.map((action) => {
               return (
@@ -45,7 +47,9 @@ class Trigger extends Component {
           </Input>
         </Col>
         <Col md={6}>
-          <Input type="select" label="Actions">
+          <Input type="select"
+                 label="Actions"
+                 defaultValue={this.props.node.nodeId}>
             <option value="">Select List</option>
             {this.props.nodes.map((node) => {
               return (
@@ -90,11 +94,6 @@ export default Node = React.createClass({
       triggers = this.props.node.triggers,
       actions = this.props.actions;
 
-    var template;
-    if (this.props.node.complete) {
-      template = _.result(_.findWhere(templates, {selected: true}), 'name');
-    }
-
     return (
       <form action="">
         <Controls
@@ -122,7 +121,7 @@ export default Node = React.createClass({
           if (this.props.node.complete) {
             return (
             <FormControleStaticInput
-              defaultValue={template}
+              defaultValue={(() => _.findWhere(templates, {id: this.props.node.template.id}))()}
               label="Template"
               complete={this.props.node.complete}
             />
@@ -130,7 +129,9 @@ export default Node = React.createClass({
             }
             else {
             return (
-            <Input type="select" label="Templates" ref="template">
+            <Input type="select"
+                   label="Templates"
+                   defaultValue={this.props.node.template ? this.props.node.template.id : ''}>
               <option value="">Select Template</option>
               {templates.map((t) => {return <option key={t.id} value={t.id}>{t.name}</option>})}
             </Input>
@@ -163,6 +164,7 @@ export default Node = React.createClass({
             <Trigger key={trigger.id}
                      trigger={trigger}
                      actions={actions}
+                     node={this.props.node}
                      nodes={this.props.nodes}
             />);
             }
