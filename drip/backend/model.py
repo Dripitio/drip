@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class List(Document):
-    shop_url = StringField()
+    user_id = ObjectIdField()
     name = StringField()
     list_id = StringField()
     active = BooleanField()
@@ -15,7 +15,7 @@ class List(Document):
 
 
 class Template(Document):
-    shop_url = StringField()
+    user_id = ObjectIdField()
     name = StringField()
     template_id = IntField()
     source = StringField()
@@ -26,7 +26,7 @@ class Template(Document):
     updated_at = DateTimeField()
 
 class DripCampaign(Document):
-    shop_url = StringField()
+    user_id = ObjectIdField()
     name = StringField()
     description = StringField()
     list_id = StringField()

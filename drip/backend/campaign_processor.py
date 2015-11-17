@@ -1,9 +1,11 @@
 from datetime import datetime
 from data_captain import DataCaptain
 from model import DripCampaign, Node
+from drip.backend.mailchimp_wrapper import MailchimpWrapper
+from drip.db.user import User
 
 
-def process_campaigns(mw):
+def process_campaigns():
     """
     processes all campaigns
     looks for nodes that have to be processed
@@ -15,8 +17,14 @@ def process_campaigns(mw):
     # iterate over all active drip campaigns
     for drip_campaign in DripCampaign.objects(active=True):
         print "   ", "checking drip campaign", drip_campaign.name, drip_campaign.id
+        # get user
+        user_id = drip_campaign["user_id"]
+        usr = User.objects(id=user_id)[0]
+        # get mailchimp api key and initialize mailchimp wrapper
+        mc_api_key = usr["mailchimp_integration"]["api_key"]
+        mw = MailchimpWrapper(mc_api_key)
         # initialize data captain for this shop
-        dc = DataCaptain(drip_campaign["shop_url"], mw)
+        dc = DataCaptain(user_id, mw)
         dc.update_lists()
         dc.get_folder()
         # update lists
@@ -37,3 +45,14 @@ def process_campaigns(mw):
             # mark node as processed
             node.update(set__done=True, set__updated_at=datetime.utcnow())
             print "   ", "   ", "node processing finished!"
+
+
+# def start_process():
+#     from drip.config import Config
+#     conf = Config()
+#     import mongoengine
+#     mongoengine.connect(
+#         conf.MONGODB_SETTINGS["db"],
+#         host=conf.MONGODB_SETTINGS["host"],
+#         port=conf.MONGODB_SETTINGS["port"])
+#     process_campaigns()

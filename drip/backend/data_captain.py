@@ -14,8 +14,8 @@ class DataCaptain:
     PREFIX = "REACHLY"
     FOLDER_NAME = "DripCampaignWorkFolder"
 
-    def __init__(self, shop_url, mailchimp_wrapper):
-        self.shop_url = shop_url
+    def __init__(self, user_id, mailchimp_wrapper):
+        self.user_id = user_id
         self.mw = mailchimp_wrapper
 
     def update_lists(self):
@@ -27,7 +27,7 @@ class DataCaptain:
         """
         current_lists = self.mw.get_lists()
         current_list_ids = set([lst["list_id"] for lst in current_lists])
-        previous_list_ids = set([lst["list_id"] for lst in List.objects(shop_url=self.shop_url)])
+        previous_list_ids = set([lst["list_id"] for lst in List.objects(user_id=self.user_id)])
         # set active:false to all not in current set
         List.objects(list_id__in=list(previous_list_ids-current_list_ids)).update(set__active=False,
                                                                                   set__updated_at=datetime.utcnow())
@@ -35,7 +35,7 @@ class DataCaptain:
         List.objects(list_id__in=list(previous_list_ids & current_list_ids)).delete()
         # save all new lsits
         for lst in current_lists:
-            new_list = List(shop_url=self.shop_url, name=lst["name"], list_id=lst["list_id"], active=True,
+            new_list = List(user_id=self.user_id, name=lst["name"], list_id=lst["list_id"], active=True,
                             members_euid=[])
             new_list.save()
 
@@ -48,7 +48,7 @@ class DataCaptain:
         """
         current_templates = self.mw.get_templates()
         current_template_ids = set([tmplt["template_id"] for tmplt in current_templates])
-        previous_template_ids = set([tmplt["template_id"] for tmplt in Template.objects(shop_url=self.shop_url)])
+        previous_template_ids = set([tmplt["template_id"] for tmplt in Template.objects(user_id=self.user_id)])
         # set active:false to all not in current set
         Template.objects(template_id__in=list(previous_template_ids-current_template_ids)).update(set__active=False,
                                                                                                   set__updated_at=datetime.utcnow())
@@ -58,7 +58,7 @@ class DataCaptain:
         for tmplt in current_templates:
             source = self.mw.get_template_source(tmplt["template_id"])
             links = self.parse_links(source)
-            new_template = Template(shop_url=self.shop_url, name=tmplt["name"], template_id=tmplt["template_id"],
+            new_template = Template(user_id=self.user_id, name=tmplt["name"], template_id=tmplt["template_id"],
                                     source=source, links=links, active=True)
             new_template.save()
 
@@ -97,7 +97,7 @@ class DataCaptain:
         return object id
         """
         new_drip_campaign = DripCampaign(
-            shop_url=self.shop_url,
+            user_id=self.user_id,
             name=name,
             list_id=list_id,
             description=description,
@@ -122,7 +122,7 @@ class DataCaptain:
         """
         return list of all drip campaigns for this shop
         """
-        return list(DripCampaign.objects(shop_url=self.shop_url))
+        return list(DripCampaign.objects(user_id=self.user_id))
 
     def create_node(self, drip_campaign_id, title, start_time, template_id, subject, from_email, from_name, initial,
                     description=None):
