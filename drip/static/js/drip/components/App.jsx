@@ -38,8 +38,8 @@ var App = React.createClass({
   },
 
   handleSaveNode: function (dispatch) {
-    return (id) => {
-      dispatch({type: NODE_SAVE, node: {id: id}});
+    return (node) => {
+      dispatch({type: NODE_SAVE, node: node});
       this.updateNodeState();
     };
   },
@@ -62,12 +62,6 @@ var App = React.createClass({
     return () => {
       dispatch({type: BLOCK_ADD});
       this.updateNodeState();
-    };
-  },
-
-  handleNodeChange: function(dispatch) {
-    return (node) => {
-      dispatch({type: NODE_CHANGE, node});
     };
   },
 
@@ -99,7 +93,6 @@ var App = React.createClass({
                     templates={templates}
                     actions={actions}
 
-                    onNodeChange={this.handleNodeChange(dispatch)}
                     addNode={this.handleAddNode(dispatch)}
                     onDelete={this.handleDeleteNode(dispatch)}
                     onEdit={this.handleEditNode(dispatch)}
@@ -128,11 +121,9 @@ App.propTypes = {
    * :userLists: Array of available recipiant lists
    */
   campaign: React.PropTypes.shape({
-    id: React.PropTypes.string,
-    name: React.PropTypes.string,
-    userList: React.PropTypes.shape({
-      id: React.PropTypes.string
-    })
+    id: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string.isRequired,
+    userListId: React.PropTypes.string
   }),
 
   /**
@@ -158,13 +149,11 @@ App.propTypes = {
    * :triggers: couples actions with nodes
    */
   nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
-    id: React.PropTypes.string,
-    name: React.PropTypes.string,
+    id: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string.isRequired,
     description: React.PropTypes.string,
 
-    template: React.PropTypes.shape({
-      id: React.PropTypes.string
-    }),
+    templateId: React.PropTypes.string.isRequired,
 
     triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.string,

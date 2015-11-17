@@ -68,7 +68,6 @@ var Block = React.createClass({
                         templates={this.props.templates}
                         actions={this.props.actions}
 
-                        onNodeChange={this.props.onNodeChange}
                         onSave={this.props.onSave}
                         onEdit={this.props.onEdit}
                         onDelete={this.handleDeleteNode()}
@@ -133,6 +132,5 @@ Block.propTypes = {
   onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onDelete: React.PropTypes.func.isRequired,
-  addNode: React.PropTypes.func.isRequired,
-  onNodeChange: React.PropTypes.func.isRequired
+  addNode: React.PropTypes.func.isRequired
 };

@@ -3,8 +3,14 @@ import { Input } from 'react-bootstrap';
 
 
 var Campaign = React.createClass({
+  getInitialState() {
+    return {
+      name: this.props.campaign.name
+    }
+  },
+
   render() {
-    let selected = this.props.campaign.userList ? this.props.campaign.userList.id : '';
+    let selected = this.props.campaign.userListId;
 
     return (
       <div>
@@ -37,9 +43,7 @@ Campaign.propTypes = {
   campaign: React.PropTypes.shape({
     id: React.PropTypes.string.isRequired,
     name: React.PropTypes.string,
-    userList: React.PropTypes.shape({
-      id: React.PropTypes.string
-    })
+    userListId: React.PropTypes.string
   }).isRequired
 };
 

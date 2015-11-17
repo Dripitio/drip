@@ -22,7 +22,9 @@ import {
 
 let campaignState = {
   campaign: {
-    id: 'abc'
+    id: 'abc',
+    name: '',
+    userListId: ''
   },
   userLists: [
     {id: 'abclist', name: 'Default List'},
@@ -68,7 +70,9 @@ let campaignState = {
   nodes: [
     {
       id: 'nodeid1',
+      name: '',
       complete: false,
+      templateId: '',
       triggers: [{id: 'trigger1'}]
     }
   ]
@@ -83,7 +87,7 @@ var reducer = (state = campaignState, action) => {
     case NODE_SAVE:
       newState = Object.assign({}, state);
       // Set node as completed
-      _.findWhere(newState.nodes, {id: action.node.id}).complete = true;
+      _.assign(_.findWhere(newState.nodes, {id: action.node.id}), action.node);
       return newState;
     case NODE_EDIT:
       newState = Object.assign({}, state);
@@ -92,7 +96,13 @@ var reducer = (state = campaignState, action) => {
       return newState;
     case NODE_ADD:
       newState = Object.assign({}, state);
-      var node = {id: _.uniqueId('node_'), triggers: [{id: _.uniqueId('trigger_')}]};
+      var node = {
+        id: _.uniqueId('node_'),
+        name: '',
+        description: '',
+        templateId: '',
+        triggers: [{id: _.uniqueId('trigger_')}]
+      };
       newState.nodes.push(node);
       _.findWhere(newState.blocks, {id: action.block.id}).nodeIds.push(node.id);
       return newState;

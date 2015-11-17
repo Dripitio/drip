@@ -4,46 +4,33 @@ import { Input, Grid, Row, Col, FormControls } from 'react-bootstrap';
 import * as _ from 'lodash';
 
 import Controls from './Controls.jsx';
-
-var FormControleStaticInput = React.createClass({
-  handleChange() {
-    this.props.onChange(this.refs.input.getValue());
-  },
-
-  render() {
-    if (this.props.complete) {
-      return (
-        <FormControls.Static
-          value={this.props.defaultValue}
-          label={this.props.label}/>
-      );
-    } else {
-      return (
-        <Input
-          type={this.props.type}
-          placeholder={this.props.placeholder}
-          defaultValue={this.props.defaultValue}
-          label={this.props.label}
-          ref="input"
-          onChange={this.handleChange}
-        />
-      );
-    }
-  }
-});
+import { DripInput, DripSelect } from './Fields.jsx';
 
 
 var Node = React.createClass({
   getInitialState: function () {
     return {
-      name: this.props.node.name,
       complete: this.props.node.complete
     };
   },
 
+  validate: function () {
+    return !!(this.refs.name.state.valid
+    && this.refs.description.state.valid
+    && this.refs.template.state.valid);
+  },
+
   handleSave: function () {
-    this.props.onSave(this.props.node.id);
-    // TODO: validate fields before saving
+    if (!this.validate()) {
+      return;
+    }
+    this.props.onSave({
+      id: this.props.node.id,
+      name: this.refs.name.state.value,
+      description: this.refs.description.state.value,
+      templateId: this.refs.template.state.value,
+      complete: true
+    });
     this.setState({
       complete: this.props.node.complete
     });
@@ -60,64 +47,69 @@ var Node = React.createClass({
     this.props.onDelete(this.props.node.id);
   },
 
-  handleInputChange: function (value) {
-    return (data) => {
-      let update = {id: this.props.node.id};
-      update[value] = data;
-      this.props.onNodeChange(update);
-      this.setState(update);
-    };
-  },
-
   render: function () {
-    let templates = this.props.templates;
-
-    return (
-      <form action="">
+    let template = _.find(this.props.templates, {id: this.props.node.templateId});
+    const staticForm = (
+      <form>
         <Controls
           complete={this.state.complete}
           onSave={this.handleSave}
           onEdit={this.handleEdit}
           onDelete={this.handleDelete}
         />
-        <FormControleStaticInput
-          type="text"
-          placeholder="Name"
-          defaultValue={this.state.name}
+        <FormControls.Static
           label="Name"
+          value={this.props.node.name}/>
+        <FormControls.Static
+          label="Description"
+          value={this.props.node.description}/>
+        <FormControls.Static
+          label="Template"
+          value={(() => {
+            if (template && template.name) {
+              return template.name;
+            }
+            return '';
+          })()}/>
+      </form>
+    );
+    if (this.state.complete) {
+      return staticForm;
+    }
+
+    return (
+      <form>
+        <Controls
           complete={this.state.complete}
-          onChange={this.handleInputChange('name')}
+          onSave={this.handleSave}
+          onEdit={this.handleEdit}
+          onDelete={this.handleDelete}
         />
-        <FormControleStaticInput
-          type="text"
+        <DripInput
+          label="Name"
+          placeholder="Name"
+          defaultValue={this.props.node.name}
+          validate={(value) => {
+            return value.length > 0;
+          }}
+          ref="name"
+        />
+        <DripInput
+          label="Description"
           placeholder="Description"
           defaultValue={this.props.node.description}
-          label="Description"
-          complete={this.props.node.complete}
-          onChange={this.handleInputChange('description')}
+          validate={() => {
+            return true;
+          }}
+          ref="description"
         />
-        {(() => {
-          if (this.props.node.complete) {
-            return (
-            <FormControleStaticInput
-              defaultValue={(() => _.findWhere(templates, {id: this.props.node.template.id}))()}
-              label="Template"
-              complete={this.props.node.complete}
-            />
-              );
-            }
-            else {
-            return (
-            <Input type="select"
-                   label="Templates"
-                   onChange={(e) => this.handleInputChange('template')({id: e.target.value})}
-                   defaultValue={this.props.node.template ? this.props.node.template.id : ''}>
-              <option value="">Select Template</option>
-              {templates.map((t) => {return <option key={t.id} value={t.id}>{t.name}</option>})}
-            </Input>
-              );
-            }
-          })()}
+        <DripSelect
+          label="Templates"
+          defaultValue={this.props.node.templateId}
+          defaultOption="Select Template"
+          options={this.props.templates}
+          ref="template"
+        />
       </form>
     )
   }
@@ -175,8 +167,7 @@ Node.propTypes = {
 
   onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
-  onDelete: React.PropTypes.func.isRequired,
-  onNodeChange: React.PropTypes.func.isRequired
+  onDelete: React.PropTypes.func.isRequired
 };
 
 export default Node;
