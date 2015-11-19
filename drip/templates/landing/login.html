@@ -1,12 +1,30 @@
 {% extends "landing/base.html" %}
 
 {% block content_middle %}
-    <h1>login page</h1>
-    <form action="" method="post" id="signin_form" name="signin">
-        {{ form.csrf_token() }}
-        {{ form.email() }}
-        {{ form.password() }}
-        {{ form.remember_me() }}
-        <button type="submit" class="main-cta login-form-cta">SIGN IN</button>
-    </form>
+    <div class="row">
+        <div class="col-md-12 header-col" style="height: 100%">
+            {% include "partials/_navbar.html" %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="container login">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
+                    <form action="" class="login-form" method="post" id="signin_form" name="signin">
+                        {{ form.csrf_token() }}
+                        <div class="form-group">
+                            {{ form.email(placeholder="Email", class="form-email form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.password(placeholder="Password", class="form-password form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.remember_me() }} Remember me
+                        </div>
+                        <button type="submit" class="btn btn-default">SIGN IN</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -1,33 +1,13 @@
 {% extends "base.html" %}
 
 {% block assets_head %}
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 {% endblock %}
 
 {% block content %}
-    <!-- Top menu -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#top-navbar-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('main.index') }}">Dripper</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="top-navbar-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a class="scroll-link" href="{{ url_for('main.login') }}">Login</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-
-    {% block content_middle %}{% endblock %}
+    <div class="container-fluid">
+        {% block content_middle %}{% endblock %}
+    </div>
 {% endblock %}
 
 {% block assets_foot %}
