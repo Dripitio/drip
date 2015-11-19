@@ -19,21 +19,20 @@ def get_user(user_id):
     return u
 
 
-def create_app(env=''):
+def create_app(testing=False):
     app = Flask(__name__)
 
-    if env == 'DEVELOPMENT' or env == 'TESTING':
-        app.config.from_object('drip.config.Development')
-    else:
+    if os.environ.get('DRIP_ENV', '') == 'production':
         app.config.from_object('drip.config.Production')
-
-
-    # Monitoring.
-    newrelic.agent.initialize(os.path.join(PATH, '..', 'newrelic-web.ini'), 'development')
+    else:
+        app.config.from_object('drip.config.Development')
 
     app.template_folder = os.path.join(PATH, 'templates')
 
-    if not env == 'TESTING':
+    if not testing:
+        # Monitoring.
+        newrelic.agent.initialize(os.path.join(PATH, '..', 'newrelic-web.ini'), 'development')
+
         db = create_mongo(app)
 
     login_manager = LoginManager()

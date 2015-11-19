@@ -9,7 +9,7 @@ from drip.views.main import LoginForm
 
 class AppTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app(env='TESTING')
+        self.app = create_app(testing=True)
         self.app.config['WTF_CSRF_ENABLED'] = False
         self.tc = self.app.test_client()
 
