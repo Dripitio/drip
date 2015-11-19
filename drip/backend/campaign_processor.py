@@ -39,6 +39,7 @@ def process_campaigns(logger):
             "name": drip_campaign.name,
             "campaign_id": drip_campaign.id,
         }
+        critical = False
         try:
             user_id = drip_campaign["user_id"]
             data_campaign["user_id"] = user_id
@@ -64,6 +65,9 @@ def process_campaigns(logger):
                 }
                 data_node.update(data_campaign)
                 logger.info(get_log_info("processing node..", additional=data_node))
+                # from now on an occurring error will be considered critical
+                # because we have started changing client's mailchimp data
+                critical = True
                 # create user segment for the node
                 dc.form_segment(node.id)
                 # prepare a mailchimp campaign for the node
@@ -79,5 +83,12 @@ def process_campaigns(logger):
                 logger.info(get_log_info("node processing finished!", additional=data_node))
         except Exception, e:
             logger.error(get_log_info("failed processing drip campaign..", data_campaign, e))
+            if critical:
+                logger.error(get_log_info("campaign had reached a critical state, so we deactivate it",
+                                          data_campaign))
+                drip_campaign.update(set__active=False)
+            else:
+                logger.error(get_log_info("campaign had NOT reached a critical state, so we just leave it as it is",
+                                          data_campaign))
 
     logger.info(get_log_info("drip campaign processing finished!"))
