@@ -1,0 +1,46 @@
+---
+
+- name: Ensure Web Nginx config is in place
+  sudo: yes
+  template:
+    src: drip.conf.j2
+    dest: '/etc/nginx/sites-available/drip.conf'
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Reload Nginx
+  tags: [ 'app', 'app:nginx' ]
+
+- name: Ensure Web Nginx config is activated
+  sudo: yes
+  file:
+    src: '/etc/nginx/sites-available/drip.conf'
+    dest: '/etc/nginx/sites-enabled/drip.conf'
+    owner: root
+    group: root
+    state: link
+  notify: Restart Nginx
+  tags: [ 'app', 'app:nginx' ]
+
+- name: Ensure Web uWSGI config is in place
+  sudo: yes
+  template:
+    src: drip.uwsgi.ini.j2
+    dest: '/etc/uwsgi/apps-available/drip.uwsgi.ini'
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Reload uWSGI
+  tags: [ 'app', 'app:uwsgi' ]
+
+- name: Ensure Web uWSGI config is activated
+  sudo: yes
+  file:
+    src: '/etc/uwsgi/apps-available/drip.uwsgi.ini'
+    dest: '/etc/uwsgi/apps-enabled/drip.uwsgi.ini'
+    owner: root
+    group: root
+    state: link
+  notify: Reload uWSGI
+  tags: [ 'app', 'app:uwsgi' ]
+

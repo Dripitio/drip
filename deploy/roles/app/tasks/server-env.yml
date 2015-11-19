@@ -1,0 +1,48 @@
+---
+
+- name: Install common packages needed for Python application development
+  sudo: yes
+  apt:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - git
+    - libffi-dev
+    - python-dev
+    - python-setuptools
+    - python-pip
+    - npm
+    - nodejs-legacy
+  tags: ['app', 'app:env']
+
+- name: Install virtualenv
+  sudo: yes
+  pip: name=virtualenv state=present
+  tags: ['app', 'app:env']
+
+- name: Ensure web file and directory basic structure is in place
+  sudo: yes
+  file:
+    path: '{{ item.path }}'
+    state: '{{ item.state}}'
+    owner: '{{ item.owner }}'
+    group: '{{ item.group }}'
+    mode: '{{ item.mode }}'
+  with_items:
+    - path: /var/log/drip
+      owner: www-data
+      group: www-data
+      state: directory
+      mode: '0755'
+    - path: /opt/drip
+      owner: www-data
+      group: www-data
+      state: directory
+      mode: '0755'
+    - path: /opt/drip/app
+      owner: www-data
+      group: www-data
+      state: directory
+      mode: '0755'
+  tags: [ 'app', 'app:env' ]
+
