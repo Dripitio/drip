@@ -4,7 +4,7 @@
   remote_user: ubuntu
 
   roles:
-    - nginx
     - mongodb
+    - nginx
     - uwsgi
     - app
