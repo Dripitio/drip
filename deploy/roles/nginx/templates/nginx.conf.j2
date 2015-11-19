@@ -2,9 +2,6 @@ user www-data;
 
 pid /run/nginx.pid;
 
-# don't send the nginx version number in error pages and Server header
-server_tokens off;
-
 worker_processes auto;
 
 events {
@@ -12,6 +9,9 @@ events {
 }
 
 http {
+    # don't send the nginx version number in error pages and Server header
+    server_tokens off;
+
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
 
