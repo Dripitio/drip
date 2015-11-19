@@ -9,4 +9,15 @@ def process_drip_campaigns_task():
         conf.MONGODB_SETTINGS["db"],
         host=conf.MONGODB_SETTINGS["host"],
         port=conf.MONGODB_SETTINGS["port"])
-    process_campaigns()
+
+    import logging
+    from logging.handlers import RotatingFileHandler
+    file_handler = RotatingFileHandler(filename="nice.log")
+    logger = logging.getLogger(name="nice")
+    logger.addHandler(file_handler)
+    logger.setLevel(logging.INFO)
+    process_campaigns(logger)
+
+
+if __name__ == "__main__":
+    process_drip_campaigns_task()
