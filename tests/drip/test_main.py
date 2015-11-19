@@ -4,7 +4,7 @@ from mock import patch, MagicMock
 
 from drip.app import create_app
 from drip.db.user import User
-from drip.views.index import LoginForm
+from drip.views.main import LoginForm
 
 
 class AppTestCase(unittest.TestCase):
@@ -26,7 +26,7 @@ class MockForm(object):
 
 
 class LoginTestCase(AppTestCase):
-    @patch('drip.views.index.LoginForm')
+    @patch('drip.views.main.LoginForm')
     def test_get_login_page(self, mock_login_form):
         # HACK: LoginForm needs app context on init, so create tmp one
         with self.app.test_request_context('/login'):
@@ -38,8 +38,8 @@ class LoginTestCase(AppTestCase):
         assert rv.status_code == 200
         assert login_form.validate_on_submit.called
 
-    @patch('drip.views.index.login_user')
-    @patch('drip.views.index.LoginForm')
+    @patch('drip.views.main.login_user')
+    @patch('drip.views.main.LoginForm')
     @patch.object(User, 'from_email')
     def test_post_valid_login(self, mock_from_email, mock_login_form, mock_login_user):
         email = 'example@example.com'
@@ -64,7 +64,7 @@ class LoginTestCase(AppTestCase):
         assert mock_from_email.called
         assert mock_login_user.called
 
-    @patch('drip.views.index.User')
+    @patch('drip.views.main.User')
     def test_valid_signup(self, mock_user):
         email = 'example@example.com'
         password = 'testing'
