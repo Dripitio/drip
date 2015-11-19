@@ -4,71 +4,33 @@ import { Input, Grid, Row, Col, FormControls } from 'react-bootstrap';
 import * as _ from 'lodash';
 
 import Controls from './Controls.jsx';
-
-var FormControleStaticInput = React.createClass({
-  render() {
-    if (this.props.complete) {
-      return (
-        <FormControls.Static
-          value={this.props.defaultValue}
-          label={this.props.label}/>
-      );
-    } else {
-      return (
-        <Input
-          type={this.props.type}
-          placeholder={this.props.placeholder}
-          defaultValue={this.props.defaultValue}
-          label={this.props.label}
-          onChange={this.props.onChange}
-        />
-      );
-    }
-  }
-});
+import { DripInput, DripSelect } from './Fields.jsx';
 
 
-class Trigger extends Component {
-  render() {
-    let actions = this.props.actions;
-
-    return (
-      <Row>
-        <Col md={6}>
-          <Input type="select" label="Events">
-            <option value="">Select List</option>
-            {actions.map((action) => {
-              return (
-              <option key={action.id} value={action.id}>{action.name}</option>
-                );
-              })}
-          </Input>
-        </Col>
-        <Col md={6}>
-          <Input type="select" label="Actions">
-            <option value="">Select List</option>
-            {this.props.nodes.map((node) => {
-              return (
-              <option key={node.id} value={node.id}>{node.name}</option>
-                );
-              })}
-          </Input>
-        </Col>
-      </Row>
-    );
-  }
-}
-
-export default Node = React.createClass({
+var Node = React.createClass({
   getInitialState: function () {
     return {
       complete: this.props.node.complete
     };
   },
 
+  validate: function () {
+    return !!(this.refs.name.state.valid
+    && this.refs.description.state.valid
+    && this.refs.template.state.valid);
+  },
+
   handleSave: function () {
-    this.props.onSave(this.props.node.id);
-    // TODO: validate fields before saving
+    if (!this.validate()) {
+      return;
+    }
+    this.props.onSave({
+      id: this.props.node.id,
+      name: this.refs.name.state.value,
+      description: this.refs.description.state.value,
+      templateId: this.refs.template.state.value,
+      complete: true
+    });
     this.setState({
       complete: this.props.node.complete
     });
@@ -86,94 +48,126 @@ export default Node = React.createClass({
   },
 
   render: function () {
-    let templates = this.props.templates,
-      triggers = this.props.node.triggers,
-      actions = this.props.actions;
-
-    var template;
-    if (this.props.node.complete) {
-      template = _.result(_.findWhere(templates, {selected: true}), 'name');
-    }
-
-    return (
-      <form action="">
+    let template = _.find(this.props.templates, {id: this.props.node.templateId});
+    const staticForm = (
+      <form>
         <Controls
-          complete={this.props.node.complete}
+          complete={this.state.complete}
           onSave={this.handleSave}
           onEdit={this.handleEdit}
           onDelete={this.handleDelete}
         />
-        <FormControleStaticInput
-          type="text"
+        <FormControls.Static
+          label="Name"
+          value={this.props.node.name}/>
+        <FormControls.Static
+          label="Description"
+          value={this.props.node.description}/>
+        <FormControls.Static
+          label="Template"
+          value={(() => {
+            if (template && template.name) {
+              return template.name;
+            }
+            return '';
+          })()}/>
+      </form>
+    );
+    if (this.state.complete) {
+      return staticForm;
+    }
+
+    return (
+      <form>
+        <Controls
+          complete={this.state.complete}
+          onSave={this.handleSave}
+          onEdit={this.handleEdit}
+          onDelete={this.handleDelete}
+        />
+        <DripInput
+          label="Name"
           placeholder="Name"
           defaultValue={this.props.node.name}
-          label="Name"
-          complete={this.props.node.complete}
-          onChange={this.handleInput}
+          validate={(value) => {
+            return value.length > 0;
+          }}
+          ref="name"
         />
-        <FormControleStaticInput
-          type="text"
+        <DripInput
+          label="Description"
           placeholder="Description"
           defaultValue={this.props.node.description}
-          label="Description"
-          complete={this.props.node.complete}
+          validate={() => {
+            return true;
+          }}
+          ref="description"
         />
-        {(() => {
-          if (this.props.node.complete) {
-            return (
-            <FormControleStaticInput
-              defaultValue={template}
-              label="Template"
-              complete={this.props.node.complete}
-            />
-              );
-            }
-            else {
-            return (
-            <Input type="select" label="Templates" ref="template">
-              <option value="">Select Template</option>
-              {templates.map((t) => {return <option key={t.id} value={t.id}>{t.name}</option>})}
-            </Input>
-              );
-            }
-          })()}
-        {triggers.map((trigger) => {
-          if (this.props.node.complete) {
-            return (
-            <Row key={trigger.id}>
-              <Col md={6}>
-                <FormControleStaticInput
-                  label="Event"
-                  defaultValue={_.result(_.findWhere(actions, {id: trigger.actionId}), 'name')}
-                  complete={this.props.node.complete}
-                />
-              </Col>
-              <Col md={6}>
-                <FormControleStaticInput
-                  label="Action"
-                  defaultValue={_.result(_.findWhere(this.props.nodes, {id: trigger.nodeId}), 'name')}
-                  complete={this.props.node.complete}
-                />
-              </Col>
-            </Row>
-              );
-            } else {
-
-            return (
-            <Trigger key={trigger.id}
-                     trigger={trigger}
-                     actions={actions}
-                     nodes={this.props.nodes}
-            />);
-            }
-          })}
+        <DripSelect
+          label="Templates"
+          defaultValue={this.props.node.templateId}
+          defaultOption="Select Template"
+          options={this.props.templates}
+          ref="template"
+        />
       </form>
     )
   }
 });
 
 Node.propTypes = {
+  node: React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string,
+    description: React.PropTypes.string,
+
+    template: React.PropTypes.shape({
+      id: React.PropTypes.string
+    }),
+
+    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.string,
+      actionId: React.PropTypes.string,
+      nodeId: React.PropTypes.string
+    })),
+
+    // if form not complete show edit form
+    complete: React.PropTypes.bool
+  }),
+
+  nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string,
+    description: React.PropTypes.string,
+
+    template: React.PropTypes.shape({
+      id: React.PropTypes.string
+    }),
+
+    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.string,
+      actionId: React.PropTypes.string,
+      nodeId: React.PropTypes.string
+    })),
+
+    // if form not complete show edit form
+    complete: React.PropTypes.bool
+  })).isRequired,
+
+  templates: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.string,
+    name: React.PropTypes.string
+  })).isRequired,
+
+  actions: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.string,
+    name: React.PropTypes.string,
+    templates: React.PropTypes.arrayOf(React.PropTypes.string)
+  })).isRequired,
+
   onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onDelete: React.PropTypes.func.isRequired
 };
+
+export default Node;

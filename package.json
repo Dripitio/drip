@@ -24,6 +24,7 @@
     "babel-runtime": "^6.0.14",
     "bootstrap": "^3.3.5",
     "css-loader": "^0.22.0",
+    "es6-promise": "^3.0.2",
     "file-loader": "^0.8.4",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.1",

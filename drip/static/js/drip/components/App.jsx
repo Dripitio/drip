@@ -3,12 +3,14 @@ import { Input, Grid, Row, Col,  ButtonToolbar, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import Block from './Block.jsx';
+import Campaign from './Campaign.jsx';
 
 import {
   NODE_EDIT,
   NODE_SAVE,
   NODE_ADD,
   NODE_DELETE,
+  NODE_CHANGE,
   BLOCK_ADD
 } from '../constants/actions.jsx';
 
@@ -28,28 +30,28 @@ var App = React.createClass({
     });
   },
 
-  handleEditNode: function(dispatch) {
+  handleEditNode: function (dispatch) {
     return (id) => {
       dispatch({type: NODE_EDIT, node: {id: id}});
       this.updateNodeState();
     };
   },
 
-  handleSaveNode: function(dispatch) {
-    return (id) => {
-      dispatch({type: NODE_SAVE, node: {id: id}});
+  handleSaveNode: function (dispatch) {
+    return (node) => {
+      dispatch({type: NODE_SAVE, node: node});
       this.updateNodeState();
     };
   },
 
-  handleAddNode: function(dispatch) {
+  handleAddNode: function (dispatch) {
     return (id) => {
       dispatch({type: NODE_ADD, block: {id: id}});
       this.updateNodeState();
     };
   },
 
-  handleDeleteNode: function(dispatch) {
+  handleDeleteNode: function (dispatch) {
     return (id) => {
       dispatch({type: NODE_DELETE, node: {id: id}});
       this.updateNodeState();
@@ -63,7 +65,7 @@ var App = React.createClass({
     };
   },
 
-  render: function() {
+  render: function () {
     const { dispatch, campaign, blocks, nodes, userLists, templates, actions } = this.props;
     return (
       <Grid fluid={true}>
@@ -76,19 +78,9 @@ var App = React.createClass({
                     Save campaign
                   </Button>
                 </ButtonToolbar>
-                <Input
-                  type="text"
-                  placeholder="Campaign name"
-                  defaultValue={campaign.name}
-                  label="Campaing name"/>
-                <Input
-                  type="select"
-                  label="List">
-                  <option value="">Select List</option>
-                  {userLists.map((list) =>
-                  <option key={list.id} value={list.id}>{list.name}</option>
-                    )}
-                </Input>
+                <Campaign
+                  userLists={userLists}
+                  campaign={campaign}/>
               </div>
             </div>
             <div className="drip-blocks">
@@ -129,11 +121,9 @@ App.propTypes = {
    * :userLists: Array of available recipiant lists
    */
   campaign: React.PropTypes.shape({
-    id: React.PropTypes.string,
-    name: React.PropTypes.string,
-    userList: React.PropTypes.shape({
-      id: React.PropTypes.string
-    })
+    id: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string.isRequired,
+    userListId: React.PropTypes.string
   }),
 
   /**
@@ -159,13 +149,11 @@ App.propTypes = {
    * :triggers: couples actions with nodes
    */
   nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
-    id: React.PropTypes.string,
-    name: React.PropTypes.string,
+    id: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string.isRequired,
     description: React.PropTypes.string,
 
-    template: React.PropTypes.shape({
-      id: React.PropTypes.string
-    }),
+    templateId: React.PropTypes.string.isRequired,
 
     triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.string,

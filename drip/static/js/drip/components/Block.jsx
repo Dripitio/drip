@@ -93,6 +93,31 @@ export default Block;
 
 
 Block.propTypes = {
+  block: React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
+    datetime: React.PropTypes.string,
+    nodeIds: React.PropTypes.arrayOf(React.PropTypes.string)
+  }).isRequired,
+
+  nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string,
+    description: React.PropTypes.string,
+
+    template: React.PropTypes.shape({
+      id: React.PropTypes.string
+    }),
+
+    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.string,
+      actionId: React.PropTypes.string,
+      nodeId: React.PropTypes.string
+    })),
+
+    // if form not complete show edit form
+    complete: React.PropTypes.bool
+  })).isRequired,
+
   templates: React.PropTypes.arrayOf(React.PropTypes.shape({
     id: React.PropTypes.string,
     name: React.PropTypes.string
@@ -106,6 +131,6 @@ Block.propTypes = {
 
   onEdit: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
-  addNode: React.PropTypes.func.isRequired,
-  onDelete: React.PropTypes.func.isRequired
+  onDelete: React.PropTypes.func.isRequired,
+  addNode: React.PropTypes.func.isRequired
 };
