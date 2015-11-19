@@ -57,13 +57,28 @@ body {
   margin-left: auto;
   margin-right: auto;
 
-  .navbar-brand,
-  ul.nav li a {
+  .navbar-brand {
     color: white;
+  }
+
+  ul.nav li a {
+    color: rgba(255, 255, 255, 0.6);;
+    font-size: 18px;
+    line-height: 28.1333px;
+    margin-left: 50px;
 
     &:hover {
+      color: rgba(255, 255, 255, 1);;
       background-color: inherit;
     }
+
+    &.signup {
+      color: #66d6c5;
+    }
+  }
+
+  nav {
+    margin-bottom: 0;
   }
 }
 
@@ -117,4 +132,8 @@ footer {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.login {
+  margin-top: 10%;
 }

@@ -6,57 +6,7 @@
 
 {% block content %}
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 header-col">
-                <div class="nav-wrapper">
-                    <nav class="navbar transperant">
-                        <div class="container-fluid">
-                            <!-- Brand and toggle get grouped for better mobile display -->
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed"
-                                        data-toggle="collapse"
-                                        data-target="#bs-example-navbar-collapse-1"
-                                        aria-expanded="false">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="#">DRIP IT</a>
-                            </div>
-                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li><a href="{{ url_for('main.login') }}">Login</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-                <div class="container header-text">
-                    <div class="row">
-                        <div class="col-md-8 col-sm-offset-2">
-                            <h1>PERSONALISED AND ENGAGING EMAILS</h1>
-
-                            <div class="description">
-                                <p>Boost your sales by sending email drip campaigns!</p>
-                            </div>
-
-                            <div class="top-big-link">
-                                <a class="btn btn-link-1" href="{{ url_for('main.signup') }}">Get it</a>
-                                <a class="btn btn-link-2" href="#features">Why Drip campaigns?</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         {% block content_middle %}{% endblock %}
-
-        <footer>
-            <p class="pull-right"><a href="#">Back to top</a></p>
-
-            <p>© 2015 DripIt, Inc.</p>
-        </footer>
     </div>
 {% endblock %}
 

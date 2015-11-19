@@ -1,17 +1,30 @@
 {% extends "landing/base.html" %}
 
 {% block content_middle %}
-    <h1>Signup page</h1>
-
-    <form action="" method="post" id="signup_form" name="signup">
-        {{ form.csrf_token() }}
-        {{ form.email() }}
-        {{ form.password() }}
-        {{ form.password_repeat() }}
-        <button type="submit">SIGN UP</button>
-    </form>
-
-    <a href="{{ url_for('main.login', next=next) }}">
-        Already got account?
-    </a>
+    <div class="row">
+        <div class="col-md-12 header-col" style="height: 100%">
+            {% include "partials/_navbar.html" %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="container login">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
+                    <form action="" class="login-form" method="post" id="signin_form" name="signin">
+                        {{ form.csrf_token() }}
+                        <div class="form-group">
+                            {{ form.email(placeholder="Email", class="form-email form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.password(placeholder="Password", class="form-password form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.password(placeholder="Password repeat", class="form-password form-control") }}
+                        </div>
+                        <button type="submit" class="btn btn-default">SIGN UP</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

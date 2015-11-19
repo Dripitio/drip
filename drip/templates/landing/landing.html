@@ -1,8 +1,29 @@
 {% extends "landing/base.html" %}
 
 {% block content_middle %}
+    <div class="row">
+        <div class="col-md-12 header-col">
+            {% include "partials/_navbar.html" %}
+            <div class="container header-text">
+                <div class="row">
+                    <div class="col-md-8 col-sm-offset-2">
+                        <h1>PERSONALISED AND ENGAGING EMAILS</h1>
+
+                        <div class="description">
+                            <p>Boost your sales by sending email drip campaigns!</p>
+                        </div>
+
+                        <div class="top-big-link">
+                            <a class="btn btn-link-1" href="{{ url_for('main.signup') }}">Get it</a>
+                            <a class="btn btn-link-2" href="#features">Why Drip campaigns?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row row-header">
-        <h2>FEATURES</h2>
+        <h2 id="features">FEATURES</h2>
 
         <div class="divider-1">
             <span></span>
@@ -68,4 +89,9 @@
             >
         </div>
     </div>
+    <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+
+        <p>© 2015 DripIt, Inc.</p>
+    </footer>
 {% endblock %}
