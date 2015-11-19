@@ -45,14 +45,3 @@ def process_campaigns():
             # mark node as processed
             node.update(set__done=True, set__updated_at=datetime.utcnow())
             print "   ", "   ", "node processing finished!"
-
-
-# def start_process():
-#     from drip.config import Config
-#     conf = Config()
-#     import mongoengine
-#     mongoengine.connect(
-#         conf.MONGODB_SETTINGS["db"],
-#         host=conf.MONGODB_SETTINGS["host"],
-#         port=conf.MONGODB_SETTINGS["port"])
-#     process_campaigns()
