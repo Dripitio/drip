@@ -22,10 +22,10 @@ def get_user(user_id):
 def create_app(env=''):
     app = Flask(__name__)
 
-    if os.environ.get('DRIP_ENV', '') == 'PRODUCTION':
-        app.config.from_object('drip.config.Production')
-    else:
+    if env == 'DEVELOPMENT' or env == 'TESTING':
         app.config.from_object('drip.config.Development')
+    else:
+        app.config.from_object('drip.config.Production')
 
 
     # Monitoring.
