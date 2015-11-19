@@ -1,127 +1,71 @@
 {% extends "landing/base.html" %}
 
 {% block content_middle %}
-    <!-- Top content -->
-    <div class="top-content">
-        <div class="inner-bg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-8 col-sm-offset-2 text">
-                        <h1>Personalised and engaging <strong>emails</strong></h1>
+    <div class="row row-header">
+        <h2>FEATURES</h2>
 
-                        <div class="description">
-                            <p>
-                                Boost your sales by sending email drip campaigns!
-                            </p>
-                        </div>
-                        <div class="top-big-link">
-                            <a class="btn btn-link-1" href="{{ url_for('main.signup') }}">Get it</a>
-                            <a class="btn btn-link-2 scroll-link" href="#features">Why Drip
-                                campaigns?</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="backstretch"
-             style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 785px; width: 1218px; z-index: -999998; position: absolute;">
-            <img src="{{ url_for('static', filename='img/backgrounds/1.jpg') }}"
-                 style="position: absolute; margin: 0px; padding: 0px; border: none; width: 1218px; height: 812px; max-height: none; max-width: none; z-index: -999999; left: 0px; top: -13.5px;">
-        </div>
-
-    </div>
-
-    <!-- Features -->
-    <div class="features-container section-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 features section-description">
-                    <h2><strong>Best</strong> features</h2>
-
-                    <div class="divider-1"><span></span></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 features-box">
-                    <div class="features-box-icon">
-                        <i class="fa fa-magic"></i>
-                    </div>
-                    <h3>Right timing</h3>
-
-                    <p>Set right time for each of your emails to reach your customer at the right
-                        time.</p>
-                </div>
-                <div class="col-sm-4 features-box">
-                    <div class="features-box-icon">
-                        <i class="fa fa-thumbs-o-up"></i>
-                    </div>
-                    <h3>Adaptive content</h3>
-
-                    <p>Personalise your email campaign by changing content based on reciepient
-                        behaviour</p>
-                </div>
-                <div class="col-sm-4 features-box">
-                    <div class="features-box-icon">
-                        <i class="fa fa-cog"></i>
-                    </div>
-                    <h3>Track performance</h3>
-
-                    <p>Measure campaign performance and know what is working and where changes are
-                        needed!</p>
-                </div>
-            </div>
+        <div class="divider-1">
+            <span></span>
         </div>
     </div>
+    <div class="row marketing">
+        <div class="col-md-4">
+            <img class="img-circle"
+                 src="{{ url_for('static', filename='img/landingpage/animat-lightbulb-color.gif') }}"
+                 alt="Generic placeholder image" width="140" height="140">
 
-    <!-- Great support -->
-    <div class="great-support-container section-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 great-support section-description">
-                    <h2><strong>Great</strong> support</h2>
+            <h2>RIGHT TIMING</h2>
 
-                    <div class="divider-1"><span></span></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-7 great-support-box">
-                    <div class="great-support-box-text great-support-box-text-left">
-                        <h3>Why drip campaigns?</h3>
+            <p>Set right time for each of your emails to reach your customer at the right time.</p>
+        </div>
+        <div class="col-md-4">
+            <img class="img-circle"
+                 src="{{ url_for('static', filename='img/landingpage/animat-image-color.gif') }}"
+                 alt="Generic placeholder image" width="140" height="140">
 
-                        <p>
-                            Drip e-mail campaigns are part of marketing automation tools.
-                        </p>
+            <h2>ADAPTIVE CONTENT</h2>
 
-                        <p>
-                            Campaign usually consists of series of emails which are scheduled with
-                            aim to move customer down the sales funnel. The main goal is to build
-                            build relationship gradually and not trying to put every piece of
-                            content in one hard sales email.. Because campaign consists of set of
-                            emails it is possible to adapt content on the way. For example based on
-                            customer click history or purchase behaviour.
-                        </p>
+            <p>Personalise your email campaign by changing content based on recipient behaviour.</p>
+        </div>
+        <div class="col-md-4">
+            <img class="img-circle"
+                 src="{{ url_for('static', filename='img/landingpage/animat-linechart-color.gif') }}"
+                 alt="Generic placeholder image" width="140" height="140">
 
-                        <p>
-                            As a result customers have personalised experience and store owners have
-                            boosted revenue and increased customer loyalty!
-                        </p>
-                    </div>
-                </div>
-                <div class="col-sm-5 great-support-box">
-                    <img src="{{ url_for('static', filename='img/devices/pc.png') }}" alt="">
-                </div>
-            </div>
+            <h2>TRACK PERFORMANCE</h2>
+
+            <p>Measure campaign performance and know what is working and where changes are
+                needed!</p>
         </div>
     </div>
+    <div class="row row-header">
+        <h2>GREAT SUPPORT</h2>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 footer-copyright">
-                    &copy; Dripit.
-                </div>
-            </div>
+        <div class="divider-1">
+            <span></span>
         </div>
-    </footer>
+    </div>
+    <div class="row support">
+        <div class="col-md-6">
+            <h3>WHY DRIP CAMPAIGNS?</h3>
+
+            <p>Drip e-mail campaigns are part of marketing automation tools.</p>
+
+            <p>Campaign usually consists of series of emails which are scheduled with aim to move
+                customer down the sales funnel. The main goal is to build build relationship
+                gradually and not trying to put every piece of content in one hard sales email..
+                Because campaign consists of set of emails it is possible to adapt content on the
+                way. For example based on customer click history or purchase behaviour.</p>
+
+            <p>As a result customers have personalised experience and store owners have boosted
+                revenue and increased customer loyalty!</p>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ url_for('static', filename="img/landingpage/dashboard.png") }}"
+                 class="img-responsive"
+                 alt=""
+                 style="max-width: 100%"
+            >
+        </div>
+    </div>
 {% endblock %}
