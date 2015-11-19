@@ -22,7 +22,11 @@ def get_user(user_id):
 def create_app(env=''):
     app = Flask(__name__)
 
-    app.config.from_object('drip.config.Config')
+    if os.environ.get('DRIP_ENV', '') == 'PRODUCTION':
+        app.config.from_object('drip.config.Production')
+    else:
+        app.config.from_object('drip.config.Development')
+
 
     # Monitoring.
     newrelic.agent.initialize(os.path.join(PATH, '..', 'newrelic-web.ini'), 'development')

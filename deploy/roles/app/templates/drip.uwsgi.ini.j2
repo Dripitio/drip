@@ -14,7 +14,7 @@ logto = /var/log/drip/uwsgi.log
 chdir = %(base_dir)/app
 module = server:app
 
-env = REACHLY_ENV=production
+env = DRIP_ENV=PRODUCTION
 virtualenv = %(base_dir)/env
 
 socket = /var/run/uwsgi/web.sock
