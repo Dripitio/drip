@@ -11,3 +11,8 @@ class Config(object):
         'host': '192.168.99.100',
         'port': 27017
     }
+
+    LOG_SETTINGS = {
+        "log_dir": "/var/log/drip",
+        "log_name": "drip",
+    }
