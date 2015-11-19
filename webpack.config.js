@@ -1,6 +1,9 @@
 var path = require('path'),
   webpack = require('webpack');
 
+// required because of failing build on ubuntu
+require('es6-promise').polyfill();
+
 var staticPath = './drip/static';
 
 module.exports = {
