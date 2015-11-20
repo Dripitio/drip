@@ -1,7 +1,7 @@
 import os
 from drip.backend.campaign_processor import process_campaigns
 from logging.handlers import RotatingFileHandler
-from drip.config import Config
+from drip.config import Production, Development
 import mongoengine
 import logging
 
@@ -9,9 +9,7 @@ import logging
 # initiates a single drip campaign processor run
 # currently initializes mongo connection and logger independently
 # based on config (so that we can run this as cron job)
-def process_drip_campaigns_task():
-    # get config
-    conf = Config()
+def process_drip_campaigns_task(conf):
     # initialize mongo connection
     mongoengine.connect(
         conf.MONGODB_SETTINGS["db"],
@@ -33,4 +31,9 @@ def process_drip_campaigns_task():
 
 
 if __name__ == "__main__":
-    process_drip_campaigns_task()
+    # get config
+    if os.environ.get('DRIP_ENV', '') == 'production':
+        conf = Production()
+    else:
+        conf = Development()
+    process_drip_campaigns_task(conf)
