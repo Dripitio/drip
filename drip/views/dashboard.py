@@ -54,13 +54,12 @@ def drip_create():
     mc = MailchimpWrapper(current_user.mailchimp_integration.api_key)
     dc = DataCaptain(current_user.id, mc)
 
-    dc.update_lists()
-    dc.update_templates()
-
-    lists = List.objects(user_id=current_user.id).all()
+    lists = dc.update_lists()
+    templates = dc.update_templates()
 
     preload = {
-        'userLists': [{'id': l.list_id, 'name': l.name} for l in lists]
+        'userLists': lists,
+        'templates': templates,
     }
     return render_template('dashboard/drip.html', active_nav='index', preload=preload)
 
