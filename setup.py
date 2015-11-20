@@ -25,6 +25,15 @@ install_requires = [
     'newrelic==2.56.0.42',
 ]
 
+backend_install_requires = [
+    "BeautifulSoup==3.2.1",
+    "blinker==1.4",
+    "docopt==0.4.0",
+    "mailchimp==2.0.9",
+    "mongoengine==0.10.0",
+    "pymongo==3.1",
+    "requests==2.8.1",
+]
 
 class DevelopWithBuildStatic(develop):
     def install_for_development(self):
@@ -36,7 +45,7 @@ setup(
     version='1.0.0',
     packages=find_packages(),
     zip_safe=False,
-    install_requires=install_requires,
+    install_requires=install_requires + backend_install_requires,
     extras_require={
         'dev': dev_requires,
     },
