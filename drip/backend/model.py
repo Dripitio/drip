@@ -43,6 +43,12 @@ class Content(EmbeddedDocument):
     from_name = StringField()
 
 
+class Block(Document):
+    drip_campaign_id = ObjectIdField()
+    start_time = DateTimeField()
+    nodes_id = ListField(ObjectIdField())
+
+
 class Node(Document):
     drip_campaign_id = ObjectIdField()
     title = StringField()

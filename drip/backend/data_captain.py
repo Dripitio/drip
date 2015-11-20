@@ -4,7 +4,7 @@ import re
 from BeautifulSoup import BeautifulSoup as soup
 
 from model import List, Template, DripCampaign, Node, Content, Trigger, \
-    Member, Segment
+    Member, Segment, Block
 
 from datetime import datetime
 
@@ -17,6 +17,8 @@ class DataCaptain:
     def __init__(self, user_id, mailchimp_wrapper):
         self.user_id = user_id
         self.mw = mailchimp_wrapper
+        # no need to call this externally every time
+        self.get_folder()
 
     def update_lists(self):
         """
@@ -102,6 +104,13 @@ class DataCaptain:
                 all_links.add(urls[0])
         return sorted(list(all_links))
 
+    def get_links(self, template_id):
+        """
+        get links for template 'template_id'
+        see parse_links() for details
+        """
+        return self.parse_links(Template.objects(template_id=template_id)[0]["source"])
+
     def get_folder(self):
         """
         get folder id to work with
@@ -182,6 +191,17 @@ class DataCaptain:
             default=default,
         )
         new_trigger.save()
+
+    def save_block(self, drip_campaign_id, start_time, nodes_id):
+        """
+        save basic block info
+        """
+        new_block = Block(
+            drip_campaign_id=drip_campaign_id,
+            start_time=start_time,
+            nodes_id-nodes_id
+        )
+        new_block.save()
 
     def fetch_members_for_list(self, list_id):
         """
@@ -343,3 +363,80 @@ class DataCaptain:
         send campaign campaign_id
         """
         self.mw.send_campaign(campaign_id)
+
+    def save_entire_campaign(self, campaign, blocks, nodes, triggers):
+        """
+        helps frontend with saving entire campaigns
+        takes drip campaign and its components as is from frontend
+        and saves them properly through data captain
+        returns drip campaign id
+        """
+        # save campaign
+        drip_campaign_id = self.create_drip_campaign(campaign["name"], campaign["list_id"])
+        # helper
+        node_id_to_node = {node["id"]: node for node in nodes}
+        # iterate over blocks and save their nodes, node triggers, and the blocks themselves
+        for block in blocks:
+            nodes_oid = []
+            for node_id in block["nodeIds"]:
+                node = node_id_to_node[node_id]
+                node_oid = self.create_node(
+                    drip_campaign_id=drip_campaign_id,
+                    title=node["name"],
+                    start_time=block["datetime"],
+                    template_id=node["templateId"],
+                    subject=None,
+                    from_email=None,
+                    from_name=None,
+                    initial=None,
+                    description=None,
+                )
+                nodes_oid.append(node_oid)
+                for trigger in node["triggers"]:
+                    # TODO: save trigger
+                    pass
+            self.save_block(drip_campaign_id, block["datetime"], nodes_oid)
+        # return campaign's id
+        return drip_campaign_id
+
+    def load_entire_campaign(self, drip_campaign_id):
+        """
+        helps frontend with loading entire campaigns
+        takes drip campaign id and loads all of its components
+        in the form frontend wants them
+        """
+        # load campaign
+        drip_campaign = DripCampaign.objects(id=drip_campaign_id)[0]
+        drip_campaign_frontend = {
+            "id": drip_campaign["id"],
+            "name": drip_campaign["name"],
+            "userListId": drip_campaign["list_id"],
+        }
+        # load blocks
+        blocks = Block.objects(drip_campaign_id=drip_campaign_id)
+        blocks_frontend = [
+            {
+                "id": block["id"],
+                "datetime": block["start_time"],
+                "nodeIds": block["nodes_id"],
+            }
+            for block in blocks]
+        # load nodes
+        nodes = Node.objects(drip_campaign_id=drip_campaign_id)
+        nodes_frontend = [
+            {
+                "id": node["id"],
+                "name": node["title"],
+                "templateId": node["content"]["template_id"],
+                "triggers": []
+            }
+            for node in nodes]
+        # TODO: load triggers
+        triggers = None
+        triggers_frontend = triggers
+        return {
+            "campaign": drip_campaign_frontend,
+            "blocks": blocks_frontend,
+            "nodes": nodes_frontend,
+            "triggers": triggers_frontend,
+        }
