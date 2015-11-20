@@ -1,0 +1,51 @@
+{% extends "dashboard/base.html" %}
+
+{% block content_middle %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <div class="row">
+                            <div class="container-fluid">
+                                <div class="col-md-6">
+                                    <h4 class="title">Drip Campaigns</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{ url_for('dashboard.drip_create') }}">
+                                        <button class="btn btn-success pull-right">
+                                            Create Campaign
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                {% for campaign in campaigns %}
+                                    <td>{{ campaign.name }}</td>
+                                {% endfor %}
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block assets_foot %}
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='dist/dashboard.bundle.js') }}"
+            charset="utf-8"></script>
+{% endblock %}
