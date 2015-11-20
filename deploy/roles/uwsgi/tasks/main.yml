@@ -7,20 +7,8 @@
     state: present
   with_items:
     - uwsgi
-    - uwsgi-emperor
     - uwsgi-plugin-python
   tags: ['uwsgi']
-
-- name: Set config file
-  sudo: yes
-  template:
-    src: emperor.ini.j2
-    dest: /etc/uwsgi-emperor/emperor.ini
-    mode: '0644'
-    owner: root
-    group: root
-  tags: ['uwsgi']
-  notify: Restart uWSGI
 
 - name: Ensure uwsgi/run dir has correct permissions so we can create socket without sudo perms
   sudo: yes
@@ -46,5 +34,4 @@
     state: started
   with_items:
     - uwsgi
-    - uwsgi-emperor
   tags: ['uwsgi']
