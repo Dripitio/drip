@@ -21,7 +21,7 @@ class Development(Config):
 
 
 class Production(Config):
-    DEBUG = True
+    DEBUG = False
     TESTING = False
     SECRET_KEY = '1d55c8f69430064fdb822549693361890361ab17'
 
