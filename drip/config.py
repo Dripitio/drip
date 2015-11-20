@@ -10,12 +10,14 @@ class Development(Config):
 
     MONGODB_SETTINGS = {
         'db': 'drip',
-        'host': '192.168.99.100',
-        'port': 27017
+        # 'host': '192.168.99.100',
+        # 'port': 27021
+        'port': 27017,
+        'host': 'localhost',
     }
 
     LOG_SETTINGS = {
-        "log_dir": "/var/log/drip",
+        "log_dir": "/home/normunds/Projects/drip/log",
         "log_name": "drip",
     }
 
