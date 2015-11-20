@@ -14,7 +14,7 @@ logto = /var/log/drip/uwsgi.log
 chdir = %(base_dir)/app
 module = server:app
 
-env = REACHLY_ENV=production
+env = DRIP_ENV=production
 virtualenv = %(base_dir)/env
 
 socket = /var/run/uwsgi/web.sock
@@ -32,5 +32,7 @@ touch-reload = %(base_dir)/touch-reload
 # For newrelic.
 enable-threads = true
 single-interpreter = true
+
+stats = /tmp/drip.stats.socket
 
 plugins = python

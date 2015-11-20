@@ -3,6 +3,7 @@ from flask.ext.login import current_user, login_required
 from flask.ext.wtf import Form
 from wtforms import StringField
 
+from drip.db.drip import Campaign
 from drip.db.user import MailChimpIntegration
 
 dashboard = Blueprint('dashboard', __name__)
@@ -39,6 +40,14 @@ def additional_context():
 @dashboard.route('/drip')
 @include_notifications
 def drip():
+    campaigns = Campaign.objects(user_id=current_user.id).all()
+    return render_template('dashboard/drip_list.html', active_nav='index', campaigns=campaigns)
+
+
+@login_required
+@dashboard.route('/drip/create')
+@include_notifications
+def drip_create():
     return render_template('dashboard/drip.html', active_nav='index')
 
 

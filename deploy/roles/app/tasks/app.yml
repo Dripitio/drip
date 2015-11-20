@@ -1,0 +1,52 @@
+---
+
+# Deploy latest master branch
+
+- name: Ensure we have latest Drip source
+  sudo: yes
+  sudo_user: root
+  git: repo=git@bitbucket.org:r5y/drip.git
+       dest=/opt/drip/app
+       accept_hostkey=True
+       key_file=/home/ubuntu/.ssh/id_rsa
+  tags: [ 'app', 'app:code' ]
+
+- name: Ensure Drip source has correct permisions
+  sudo: yes
+  file: path=/opt/drip/app state=directory recurse=yes owner=www-data group=www-data
+  tags: [ 'app', 'app:code' ]
+
+- name: Add empty virtualenv
+  sudo: yes
+  sudo_user: www-data
+  file:
+    path: /opt/drip/env
+    state: directory
+  tags: [ 'app', 'app:code' ]
+
+- name: Install virtualenv
+  sudo: yes
+  sudo_user: www-data
+  pip:
+    name: /opt/drip/app
+    virtualenv: /opt/drip/env
+  tags: [ 'app', 'app:code' ]
+
+- name: Install npm deps
+  sudo: yes
+  npm: path=/opt/drip/app
+  tags: [ 'app', 'app:code' ]
+
+- name: Build static assets
+  sudo: yes
+  command: 'node /opt/drip/app/node_modules/gulp/bin/gulp.js dist'
+  args:
+    chdir: /opt/drip/app
+  tags: [ 'app', 'app:code' ]
+
+- name: Restart uWSGI emperor
+  sudo: yes
+  service:
+    name: uwsgi-emperor
+    state: reloaded
+  tags: ['app', 'app:code']

@@ -15,12 +15,29 @@
   sudo: yes
   template:
     src: emperor.ini.j2
-    dest: /etc/uwsgi/emperor.ini
+    dest: /etc/uwsgi-emperor/emperor.ini
     mode: '0644'
     owner: root
     group: root
   tags: ['uwsgi']
   notify: Restart uWSGI
+
+- name: Ensure uwsgi/run dir has correct permissions so we can create socket without sudo perms
+  sudo: yes
+  file:
+    path: '{{ item.path }}'
+    state: '{{ item.state}}'
+    owner: '{{ item.owner }}'
+    group: '{{ item.group }}'
+    mode: '{{ item.mode }}'
+  with_items:
+    - path: /var/run/uwsgi
+      owner: www-data
+      group: www-data
+      state: directory
+      recurse: yes
+      mode: '0755'
+  tags: [ 'uwsgi' ]
 
 - name: Start uWSGI
   sudo: yes
