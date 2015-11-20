@@ -14,6 +14,11 @@ class Development(Config):
         'port': 27017
     }
 
+    try:
+        from drip.local_config import *
+    except ImportError:
+        pass
+
 
 class Production(Config):
     DEBUG = True
