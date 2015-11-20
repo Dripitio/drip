@@ -1,5 +1,6 @@
 var path = require('path'),
-  webpack = require('webpack');
+  webpack = require('webpack'),
+  ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 // required because of failing build on ubuntu
 require('es6-promise').polyfill();
@@ -8,15 +9,18 @@ var staticPath = './drip/static';
 
 module.exports = {
   context: path.join(__dirname, staticPath),
+
   entry: {
     dashboard: './js/dashboard/dashboard.jsx',
     landingpage: './js/landingpage/landingpage.jsx',
     drip: './js/drip/drip.jsx'
   },
+
   module: {
     loaders: [
       {
         test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader'),
         loaders: ['style', 'css', 'sass']
       },
       {
@@ -29,10 +33,16 @@ module.exports = {
       }
     ]
   },
+
   resolve: {
     root: path.join(__dirname, staticPath),
     extensions: ['', '.scss', '.js', '.jsx']
   },
+
+  plugins: [
+    new ExtractTextPlugin("[name].css")
+  ],
+
   output: {
     filename: '[name].bundle.js'
   }

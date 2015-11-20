@@ -1,6 +1,7 @@
 {% extends "dashboard/base.html" %}
 
 {% block assets_head %}
+    {{ super() }}
     {% if preload %}
         <script>
             window.preload = {{ preload | tojson | safe }};

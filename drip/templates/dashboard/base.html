@@ -7,6 +7,8 @@ Dashboard Base View
 #}
 
 {% block assets_head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename="dist/dashboard.css") }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename="dist/drip.css") }}">
 {% endblock %}
 
 {% block content %}
