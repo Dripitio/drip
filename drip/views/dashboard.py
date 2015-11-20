@@ -48,7 +48,8 @@ def drip():
 @dashboard.route('/drip/create')
 @include_notifications
 def drip_create():
-    return render_template('dashboard/drip.html', active_nav='index')
+    preload = {}
+    return render_template('dashboard/drip.html', active_nav='index', preload=preload)
 
 
 @login_required

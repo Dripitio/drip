@@ -1,5 +1,13 @@
 {% extends "dashboard/base.html" %}
 
+{% block assets_head %}
+    {% if preload %}
+        <script>
+            window.preload = {{ preload | tojson | safe }};
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block content_middle %}
     <div id="drip"></div>
 {% endblock %}

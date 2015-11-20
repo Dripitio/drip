@@ -21,9 +21,14 @@ class Development(Config):
         "log_name": "drip",
     }
 
+    try:
+        from drip.local_config import *
+    except ImportError:
+        pass
+
 
 class Production(Config):
-    DEBUG = True
+    DEBUG = False
     TESTING = False
     SECRET_KEY = '1d55c8f69430064fdb822549693361890361ab17'
 
