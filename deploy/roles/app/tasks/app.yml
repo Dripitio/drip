@@ -44,9 +44,9 @@
     chdir: /opt/drip/app
   tags: [ 'app', 'app:code' ]
 
-- name: Restart uWSGI emperor
+- name: Restart uWSGI
   sudo: yes
   service:
-    name: uwsgi-emperor
-    state: reloaded
+    name: uwsgi
+    state: restarted
   tags: ['app', 'app:code']
