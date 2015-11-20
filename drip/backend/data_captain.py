@@ -24,6 +24,7 @@ class DataCaptain:
         * not in db but in current list - get, save, set active
         * in db and in current list - set active
         * in db but not in current list - set inactive
+        returns all active lists
         """
         current_lists = self.mw.get_lists()
         current_list_ids = set([lst["list_id"] for lst in current_lists])
@@ -39,12 +40,24 @@ class DataCaptain:
                             members_euid=[])
             new_list.save()
 
+        # return all active lists
+        return self.get_lists()
+
+    def get_lists(self):
+        """
+        get all active lists for this user
+        return in form of dicts with list id "id" and name "name"
+        """
+        return [{"id": lst["list_id"], "name": lst["name"]}
+                for lst in List.objects(user_id=self.user_id, active=True)]
+
     def update_templates(self):
         """
         there are three types of templates:
         * not in db but in current list - get, save, set active
         * in db and in current list - set active
         * in db but not in current list - set inactive
+        returns all active templates
         """
         current_templates = self.mw.get_templates()
         current_template_ids = set([tmplt["template_id"] for tmplt in current_templates])
@@ -61,6 +74,17 @@ class DataCaptain:
             new_template = Template(user_id=self.user_id, name=tmplt["name"], template_id=tmplt["template_id"],
                                     source=source, links=links, active=True)
             new_template.save()
+
+        # return all active templates
+        return self.get_templates()
+
+    def get_templates(self):
+        """
+        get all active templates for this user
+        return in form of dicts with template id "id" and name "name"
+        """
+        return [{"id": tmplt["template_id"], "name": tmplt["name"]}
+                for tmplt in Template.objects(user_id=self.user_id, active=True)]
 
     def parse_links(self, source):
         """
