@@ -3,6 +3,9 @@ from flask.ext.login import current_user, login_required
 from flask.ext.wtf import Form
 from wtforms import StringField
 
+from drip.backend.data_captain import DataCaptain
+from drip.backend.mailchimp_wrapper import MailchimpWrapper
+from drip.backend.model import List
 from drip.db.drip import Campaign
 from drip.db.user import MailChimpIntegration
 
@@ -48,7 +51,17 @@ def drip():
 @dashboard.route('/drip/create')
 @include_notifications
 def drip_create():
-    preload = {}
+    mc = MailchimpWrapper(current_user.mailchimp_integration.api_key)
+    dc = DataCaptain(current_user.id, mc)
+
+    dc.update_lists()
+    dc.update_templates()
+
+    lists = List.objects(user_id=current_user.id).all()
+
+    preload = {
+        'userLists': [{'id': l.list_id, 'name': l.name} for l in lists]
+    }
     return render_template('dashboard/drip.html', active_nav='index', preload=preload)
 
 
