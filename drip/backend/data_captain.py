@@ -203,8 +203,8 @@ class DataCaptain:
 
         # # intersect euids with current state of the list
         # # it might be the case that some people are removed from the list since previous email
-        # self.fetch_members_for_list(list_id)
-        # all_euids = all_euids - set(List.objects(list_id=list_id)[0]["members_euid"])
+        self.fetch_members_for_list(list_id)
+        all_euids = all_euids - set(List.objects(list_id=list_id)[0]["members_euid"])
 
         all_euids = list(all_euids)
 
