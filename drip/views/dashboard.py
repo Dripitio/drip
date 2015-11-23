@@ -68,15 +68,4 @@ def drip_create():
 @dashboard.route('/settings', methods=['GET', 'POST'])
 @include_notifications
 def settings():
-    mc_form = MailChimpForm(request.form)
-
-    if mc_form.validate_on_submit():
-        current_user.mailchimp_integration = MailChimpIntegration()
-        current_user.mailchimp_integration.api_key = mc_form.api_key.data
-        current_user.save()
-
-    # prefill mailchimp form
-    if current_user.mailchimp_integration:
-        mc_form.api_key.data = current_user.mailchimp_integration.api_key
-
-    return render_template('dashboard/settings.html', active_nav='settings', mc_form=mc_form)
+    return render_template('dashboard/settings.html', active_nav='settings')
