@@ -42,6 +42,7 @@ nosetests.xml
 
 # Project
 # No need to store these in repo.
+log/
 reachly/static/vendor
 reachly/static/gen
 node_modules
