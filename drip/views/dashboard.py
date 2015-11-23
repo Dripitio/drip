@@ -51,21 +51,22 @@ def drip():
 @dashboard.route('/drip/create')
 @include_notifications
 def drip_create():
-    mc = MailchimpWrapper(current_user.mailchimp_integration.api_key)
-    dc = DataCaptain(current_user.id, mc)
-
-    lists = dc.update_lists()
-    templates = dc.update_templates()
-
-    preload = {
-        'userLists': lists,
-        'templates': templates,
-    }
-    return render_template('dashboard/drip.html', active_nav='index', preload=preload)
+    return render_template('dashboard/drip.html', active_nav='index')
 
 
 @login_required
 @dashboard.route('/settings', methods=['GET', 'POST'])
 @include_notifications
 def settings():
-    return render_template('dashboard/settings.html', active_nav='settings')
+    mc_form = MailChimpForm(request.form)
+
+    if mc_form.validate_on_submit():
+        current_user.mailchimp_integration = MailChimpIntegration()
+        current_user.mailchimp_integration.api_key = mc_form.api_key.data
+        current_user.save()
+
+    # prefill mailchimp form
+    if current_user.mailchimp_integration:
+        mc_form.api_key.data = current_user.mailchimp_integration.api_key
+
+    return render_template('dashboard/settings.html', active_nav='settings', mc_form=mc_form)
