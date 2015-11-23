@@ -25,7 +25,7 @@ import {
 
 let campaignState = {
   campaign: {
-    id: 'abc',
+    id: '',
     name: '',
     userListId: ''
   },
@@ -66,19 +66,11 @@ let campaignState = {
     {
       id: 'blockid1',
       datetime: moment.utc().add(1, 'days').toISOString(),
-      nodeIds: ['nodeid2']
+      nodeIds: []
     }
   ],
 
   nodes: [
-    {
-      id: 'nodeid2',
-      name: 'Fake node',
-      description: 'fake fake faak',
-      complete: true,
-      templateId: 'template3',
-      triggers: [{id: 'trigger1', actionId: 'actionOpen', nodeId: ''}]
-    }
   ]
 };
 

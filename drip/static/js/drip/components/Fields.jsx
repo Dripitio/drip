@@ -77,6 +77,10 @@ export var DripSelect = React.createClass({
     let valid = this.validate(value);
 
     this.setState({value: value, valid: valid});
+
+    if (this.props.onChange) {
+      this.props.onChange()
+    }
   },
 
   render() {

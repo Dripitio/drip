@@ -1,8 +1,55 @@
 import React from 'react';
 import { Row, Col, Modal, ButtonToolbar, Button } from 'react-bootstrap';
+import * as _ from 'lodash';
 
 import { DripInput, DripSelect } from './Fields.jsx';
 
+
+var Trigger = React.createClass({
+  getInitialState() {
+    return {
+      actionId: this.props.trigger.actionId,
+      nodeId: this.props.trigger.nodeId
+    }
+  },
+
+  handleChange() {
+    this.props.onValueChange({
+      id: this.props.trigger.id,
+      actionId: this.refs.event.refs.input.getValue(),
+      nodeId: this.refs.action.refs.input.getValue()
+    });
+  },
+
+  render() {
+    return (
+      <div className="trigger">
+        <Col md={5}>
+          <DripSelect
+            defaultValue={this.props.trigger.actionId}
+            defaultOption="Select Event"
+            options={this.props.actions}
+            onChange={this.handleChange}
+            ref="event"
+          />
+        </Col>
+        <Col md={5}>
+          <DripSelect
+            defaultValue={this.props.trigger.nodeId}
+            defaultOption="Select Action"
+            options={this.props.nodes}
+            onChange={this.handleChange}
+            ref="action"
+          />
+        </Col>
+        <Col md={2}>
+              <span className="removeTrigger"
+                    onClick={() => console.log('remove trigger')}>Remove</span>
+        </Col>
+      </div>
+    );
+  }
+});
 
 export var NodeModal = React.createClass({
   getInitialState() {
@@ -32,7 +79,8 @@ export var NodeModal = React.createClass({
       blockId: this.props.block.id,
       name: this.refs.name.state.value,
       description: this.refs.description.state.value,
-      templateId: this.refs.template.state.value
+      templateId: this.refs.template.state.value,
+      triggers: this.state.triggers
     });
     this.modalClose();
   },
@@ -46,7 +94,8 @@ export var NodeModal = React.createClass({
       id: this.state.id,
       name: this.refs.name.state.value,
       description: this.refs.description.state.value,
-      templateId: this.refs.template.state.value
+      templateId: this.refs.template.state.value,
+      triggers: this.state.triggers
     });
     this.modalClose();
   },
@@ -68,6 +117,26 @@ export var NodeModal = React.createClass({
     }
   },
 
+  handleAddTrigger: function () {
+    this.setState((previousState, currentProps) => {
+      previousState.triggers.push({
+        id: _.uniqueId('trigger'),
+        actionId: '',
+        nodeId: ''
+      });
+      return previousState;
+    });
+  },
+
+  handleValueChange: function (trigger) {
+    this.setState((previousState, currentProps) => {
+      let t = previousState.triggers.find((t) => t.id === trigger.id);
+      t.actionId = trigger.actionId;
+      t.nodeId = trigger.nodeId;
+      return previousState;
+    });
+  },
+
   render() {
     let btn, triggers;
     if (this.state.edit) {
@@ -76,36 +145,18 @@ export var NodeModal = React.createClass({
       btn = <Button bsStyle="success" onClick={this.handleSave}>Save</Button>
     }
 
-    if (this.state.edit) {
-      triggers = this.state.triggers.map(((trigger) => {
-        return (
-          <div className="trigger">
-            <Col md={5}>
-              <DripSelect
-                defaultValue={trigger.actionId}
-                defaultOption="Select Event"
-                options={this.props.actions}
-              />
-            </Col>
-            <Col md={5}>
-              <DripSelect
-                defaultValue={trigger.nodeId}
-                defaultOption="Select Action"
-                options={this.props.nodes}
-              />
-            </Col>
-            <Col md={2}>
-              <span className="removeTrigger"
-                    onClick={() => console.log('remove trigger')}>Remove</span>
-            </Col>
-          </div>
-        )
-      }).bind(this));
-    } else {
-      triggers = this.state.triggers.map((trigger) => {
-        debugger;
-      });
-    }
+    triggers = this.state.triggers.map(((trigger) => {
+      return (
+        <Trigger
+          ref="trigger"
+          key={trigger.id}
+          actions={this.props.actions}
+          nodes={this.props.nodes}
+          trigger={trigger}
+          onValueChange={this.handleValueChange}
+        />
+      );
+    }).bind(this));
 
     return (
       <Modal show={this.state.show} onHide={this.modalClose}>
@@ -136,10 +187,17 @@ export var NodeModal = React.createClass({
               ref="template"
             />
             <Row>
+              <Col md={12}>
+                <div className="form-group">
+                  <label className="control-label">
+                    <span>Triggers</span>
+                  </label>
+                </div>
+              </Col>
               {triggers}
               <Col md={12}>
                 <span className="addTrigger"
-                      onClick={() => console.log('add trigger')}>Add trigger</span>
+                      onClick={this.handleAddTrigger}>Add trigger</span>
               </Col>
             </Row>
           </form>

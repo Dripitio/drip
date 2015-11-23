@@ -55,7 +55,7 @@ var Block = React.createClass({
       <Row>
         <div>
           <Col md={3}>
-            <DripDatetime datetime={this.props.block.datetime}/>
+          DripDatetime datetime={this.props.block.datetime}/>
           </Col>
           <Col md={9}>
             <div className="drip-blocks">
