@@ -199,7 +199,7 @@ class DataCaptain:
         new_block = Block(
             drip_campaign_id=drip_campaign_id,
             start_time=start_time,
-            nodes_id-nodes_id
+            nodes_id=nodes_id
         )
         new_block.save()
 
