@@ -11,7 +11,10 @@ import {
   NODE_ADD,
   NODE_DELETE,
   NODE_CHANGE,
-  BLOCK_ADD
+
+  BLOCK_ADD,
+
+  CAMPAIGN_SAVE
 } from '../constants/actions.jsx';
 
 
@@ -65,6 +68,18 @@ var App = React.createClass({
     };
   },
 
+  handleSaveCampaign: function (dispatch) {
+    return () => {
+      dispatch({
+        type: CAMPAIGN_SAVE,
+        campaign: {
+          name: this.refs.campaign.refs.name.state.value,
+          userListId: this.refs.campaign.refs.userList.state.value
+        }
+      });
+    };
+  },
+
   render: function () {
     const { dispatch, campaign, blocks, nodes, userLists, templates, actions } = this.props;
     return (
@@ -74,13 +89,17 @@ var App = React.createClass({
             <div className="card">
               <div className="content">
                 <ButtonToolbar>
-                  <Button bsStyle="success" className="btn-fill pull-right">
+                  <Button bsStyle="success"
+                          className="btn-fill pull-right"
+                          onClick={this.handleSaveCampaign(dispatch)}
+                  >
                     Save campaign
                   </Button>
                 </ButtonToolbar>
                 <Campaign
                   userLists={userLists}
-                  campaign={campaign}/>
+                  campaign={campaign}
+                  ref="campaign"/>
               </div>
             </div>
             <div className="drip-blocks">

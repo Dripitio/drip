@@ -16,7 +16,10 @@ import {
   NODE_ADD,
   NODE_DELETE,
   NODE_CHANGE,
-  BLOCK_ADD
+
+  BLOCK_ADD,
+
+  CAMPAIGN_SAVE
 } from './constants/actions.jsx';
 
 
@@ -99,6 +102,7 @@ var reducer = (state = campaignState, action) => {
       _.findWhere(newState.blocks, {id: action.node.blockId}).nodeIds.push(nodeId);
 
       return newState;
+
     case NODE_EDIT:
       newState = Object.assign({}, state);
 
@@ -106,6 +110,7 @@ var reducer = (state = campaignState, action) => {
       _.assign(_.findWhere(newState.nodes, {id: action.node.id}), action.node);
 
       return newState;
+
     case NODE_ADD:
       newState = Object.assign({}, state);
       var node = {
@@ -118,6 +123,7 @@ var reducer = (state = campaignState, action) => {
       newState.nodes.push(node);
       _.findWhere(newState.blocks, {id: action.block.id}).nodeIds.push(node.id);
       return newState;
+
     case NODE_DELETE:
       newState = Object.assign({}, state);
       // remove node and references to from ALL nodes in ALL blocks
@@ -126,11 +132,13 @@ var reducer = (state = campaignState, action) => {
         _.remove(block.nodeIds, (id) => id == action.node.id);
       });
       return newState;
+
     case NODE_CHANGE:
       newState = Object.assign({}, state);
       let node = newState.nodes.find((node) => node.id === action.node.id);
       _.assign(node, action.node);
       return newState;
+
     case BLOCK_ADD:
       newState = Object.assign({}, state);
       newState.blocks.push({
@@ -139,6 +147,15 @@ var reducer = (state = campaignState, action) => {
         nodeIds: []
       });
       return newState;
+
+    case CAMPAIGN_SAVE:
+      newState = Object.assign({}, state);
+
+      _.assign(newState.campaign, action.campaign);
+
+      console.log('saving state');
+      return newState;
+
     default:
       console.log('default');
       console.log(action);

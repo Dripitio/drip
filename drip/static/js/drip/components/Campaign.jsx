@@ -1,33 +1,27 @@
 import React from 'react';
 import { Input } from 'react-bootstrap';
 
+import { DripInput, DripSelect } from './Fields.jsx';
+
 
 var Campaign = React.createClass({
-  getInitialState() {
-    return {
-      name: this.props.campaign.name
-    }
-  },
-
   render() {
-    let selected = this.props.campaign.userListId;
-
     return (
       <div>
-        <Input
-          type="text"
+        <DripInput
+          label="Campaing name"
           placeholder="Campaign name"
           defaultValue={this.props.campaign.name}
-          label="Campaing name"/>
-        <Input
-          type="select"
-          defaultValue={selected}
-          label="List">
-          <option value="">Select List</option>
-          {this.props.userLists.map((list) =>
-          <option key={list.id} value={list.id}>{list.name}</option>
-            )}
-        </Input>
+          validate={(value) => value.length > 0}
+          ref="name"
+        />
+        <DripSelect
+          label="List"
+          defaultValue={this.props.campaign.userListId}
+          defaultOption="Select List"
+          options={this.props.userLists}
+          ref="userList"
+        />
       </div>
     )
   }
