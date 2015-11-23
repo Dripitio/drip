@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Input, Grid, Row, Col, FormControls } from 'react-bootstrap';
+import { Input, Grid, Row, Col, FormControls, ButtonToolbar, Button } from 'react-bootstrap';
 import * as _ from 'lodash';
 
 import Controls from './Controls.jsx';
@@ -74,6 +74,11 @@ var Node = React.createClass({
             return '';
           })()}/>
         <Row>
+          <Col md={12}>
+            <div className="form-group">
+              <label className="control-label"><span>Triggers</span></label>
+            </div>
+          </Col>
           {this.props.node.triggers.map((trigger) => {
             let action = actions.find((action) => action.id === trigger.actionId);
             let node = nodes.find((node) => node.id === trigger.nodeId);
@@ -131,6 +136,48 @@ var Node = React.createClass({
           options={this.props.templates}
           ref="template"
         />
+        <Row>
+          <Col md={12}>
+            <div className="form-group">
+              <label className="control-label"><span>Triggers</span></label>
+            </div>
+          </Col>
+          {this.props.node.triggers.map((trigger) => {
+            let action = actions.find((action) => action.id === trigger.actionId);
+            let node = nodes.find((node) => node.id === trigger.nodeId);
+
+            if (!action || !node) {return;}
+
+            return (
+            <div key={trigger.id} className="trigger">
+              <Col md={5}>
+                <DripSelect
+                  defaultValue={trigger.actionId}
+                  defaultOption="Select Event"
+                  options={actions}
+                />
+              </Col>
+              <Col md={5}>
+                <DripSelect
+                  defaultValue={trigger.nodeId}
+                  defaultOption="Select Action"
+                  options={nodes}
+                />
+              </Col>
+              <Col md={2}>
+                <ButtonToolbar>
+                  <Button bsStyle="danger">-</Button>
+                </ButtonToolbar>
+              </Col>
+            </div>
+              );
+            })}
+          <Col md={12}>
+            <ButtonToolbar>
+              <Button bsStyle="success">Add trigger</Button>
+            </ButtonToolbar>
+          </Col>
+        </Row>
       </form>
     )
   }
