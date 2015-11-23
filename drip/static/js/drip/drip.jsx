@@ -64,16 +64,29 @@ let campaignState = {
       id: 'blockid1',
       datetime: moment.utc().add(1, 'days').toISOString(),
       nodeIds: ['nodeid1']
+    },
+    {
+      id: 'blockid2',
+      datetime: moment.utc().add(1, 'days').toISOString(),
+      nodeIds: ['nodeid2']
     }
   ],
 
   nodes: [
     {
       id: 'nodeid1',
-      name: '',
+      name: 'Foobar',
       complete: false,
-      templateId: '',
-      triggers: [{id: 'trigger1'}]
+      templateId: 'template2',
+      triggers: [{id: 'trigger1', actionId: 'actionOpen', nodeId: 'nodeid2'}]
+    },
+    {
+      id: 'nodeid2',
+      name: 'Fake node',
+      description: 'fake fake faak',
+      complete: true,
+      templateId: 'template3',
+      triggers: [{id: 'trigger1', actionId: 'actionOpen', nodeId: 'nodeid1'}]
     }
   ]
 };

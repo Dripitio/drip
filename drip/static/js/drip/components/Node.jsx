@@ -49,6 +49,8 @@ var Node = React.createClass({
 
   render: function () {
     let template = _.find(this.props.templates, {id: this.props.node.templateId});
+    let actions = this.props.actions, nodes = this.props.nodes;
+
     const staticForm = (
       <form>
         <Controls
@@ -71,6 +73,25 @@ var Node = React.createClass({
             }
             return '';
           })()}/>
+        <Row>
+          {this.props.node.triggers.map((trigger) => {
+            let action = actions.find((action) => action.id === trigger.actionId);
+            let node = nodes.find((node) => node.id === trigger.nodeId);
+
+            if (!action || !node) {return;}
+
+            return (
+            <div key={trigger.id} className="trigger">
+              <Col md={6}>
+                <FormControls.Static value={action.name}/>
+              </Col>
+              <Col md={6}>
+                <FormControls.Static value={node.name}/>
+              </Col>
+            </div>
+              );
+            })}
+        </Row>
       </form>
     );
     if (this.state.complete) {
