@@ -5,22 +5,10 @@ export default class Controls extends Component {
   render() {
     return (
       <div className="node-controle">
-        {(() => {
-          if (this.props.complete) {
-            return (
-            <div className="btn controle-btn primary"
-                 onClick={this.props.onEdit}>
-              <i className="fa fa-pencil"></i>
-            </div>
-              );
-            }
-          return (
-          <div className="btn controle-btn success"
-               onClick={this.props.onSave}>
-            <i className="fa fa-check"></i>
-          </div>
-            );
-          })()}
+        <div className="btn controle-btn primary"
+             onClick={this.props.onEdit}>
+          <i className="fa fa-pencil"></i>
+        </div>
         <div className="btn controle-btn danger"
              onClick={this.props.onDelete}>
           <i className="fa fa-trash"></i>
@@ -32,7 +20,5 @@ export default class Controls extends Component {
 
 Controls.propTypes = {
   onEdit: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
   onDelete: React.PropTypes.func.isRequired
-
 };

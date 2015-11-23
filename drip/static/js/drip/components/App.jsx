@@ -31,8 +31,8 @@ var App = React.createClass({
   },
 
   handleEditNode: function (dispatch) {
-    return (id) => {
-      dispatch({type: NODE_EDIT, node: {id: id}});
+    return (node) => {
+      dispatch({type: NODE_EDIT, node});
       this.updateNodeState();
     };
   },

@@ -8,39 +8,8 @@ import { DripInput, DripSelect } from './Fields.jsx';
 
 
 var Node = React.createClass({
-  getInitialState: function () {
-    return {
-      complete: this.props.node.complete
-    };
-  },
-
-  validate: function () {
-    return !!(this.refs.name.state.valid
-    && this.refs.description.state.valid
-    && this.refs.template.state.valid);
-  },
-
-  handleSave: function () {
-    if (!this.validate()) {
-      return;
-    }
-    this.props.onSave({
-      id: this.props.node.id,
-      name: this.refs.name.state.value,
-      description: this.refs.description.state.value,
-      templateId: this.refs.template.state.value,
-      complete: true
-    });
-    this.setState({
-      complete: this.props.node.complete
-    });
-  },
-
   handleEdit: function () {
     this.props.onEdit(this.props.node.id);
-    this.setState({
-      complete: this.props.node.complete
-    });
   },
 
   handleDelete: function () {
@@ -51,11 +20,10 @@ var Node = React.createClass({
     let template = _.find(this.props.templates, {id: this.props.node.templateId});
     let actions = this.props.actions, nodes = this.props.nodes;
 
-    const staticForm = (
+    return (
       <form>
         <Controls
-          complete={this.state.complete}
-          onSave={this.handleSave}
+          complete={true}
           onEdit={this.handleEdit}
           onDelete={this.handleDelete}
         />
@@ -73,113 +41,8 @@ var Node = React.createClass({
             }
             return '';
           })()}/>
-        <Row>
-          <Col md={12}>
-            <div className="form-group">
-              <label className="control-label"><span>Triggers</span></label>
-            </div>
-          </Col>
-          {this.props.node.triggers.map((trigger) => {
-            let action = actions.find((action) => action.id === trigger.actionId);
-            let node = nodes.find((node) => node.id === trigger.nodeId);
-
-            if (!action || !node) {return;}
-
-            return (
-            <div key={trigger.id} className="trigger">
-              <Col md={6}>
-                <FormControls.Static value={action.name}/>
-              </Col>
-              <Col md={6}>
-                <FormControls.Static value={node.name}/>
-              </Col>
-            </div>
-              );
-            })}
-        </Row>
       </form>
     );
-    if (this.state.complete) {
-      return staticForm;
-    }
-
-    return (
-      <form>
-        <Controls
-          complete={this.state.complete}
-          onSave={this.handleSave}
-          onEdit={this.handleEdit}
-          onDelete={this.handleDelete}
-        />
-        <DripInput
-          label="Name"
-          placeholder="Name"
-          defaultValue={this.props.node.name}
-          validate={(value) => {
-            return value.length > 0;
-          }}
-          ref="name"
-        />
-        <DripInput
-          label="Description"
-          placeholder="Description"
-          defaultValue={this.props.node.description}
-          validate={() => {
-            return true;
-          }}
-          ref="description"
-        />
-        <DripSelect
-          label="Templates"
-          defaultValue={this.props.node.templateId}
-          defaultOption="Select Template"
-          options={this.props.templates}
-          ref="template"
-        />
-        <Row>
-          <Col md={12}>
-            <div className="form-group">
-              <label className="control-label"><span>Triggers</span></label>
-            </div>
-          </Col>
-          {this.props.node.triggers.map((trigger) => {
-            let action = actions.find((action) => action.id === trigger.actionId);
-            let node = nodes.find((node) => node.id === trigger.nodeId);
-
-            if (!action || !node) {return;}
-
-            return (
-            <div key={trigger.id} className="trigger">
-              <Col md={5}>
-                <DripSelect
-                  defaultValue={trigger.actionId}
-                  defaultOption="Select Event"
-                  options={actions}
-                />
-              </Col>
-              <Col md={5}>
-                <DripSelect
-                  defaultValue={trigger.nodeId}
-                  defaultOption="Select Action"
-                  options={nodes}
-                />
-              </Col>
-              <Col md={2}>
-                <ButtonToolbar>
-                  <Button bsStyle="danger">-</Button>
-                </ButtonToolbar>
-              </Col>
-            </div>
-              );
-            })}
-          <Col md={12}>
-            <ButtonToolbar>
-              <Button bsStyle="success">Add trigger</Button>
-            </ButtonToolbar>
-          </Col>
-        </Row>
-      </form>
-    )
   }
 });
 

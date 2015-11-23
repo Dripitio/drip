@@ -63,30 +63,18 @@ let campaignState = {
     {
       id: 'blockid1',
       datetime: moment.utc().add(1, 'days').toISOString(),
-      nodeIds: ['nodeid1']
-    },
-    {
-      id: 'blockid2',
-      datetime: moment.utc().add(1, 'days').toISOString(),
       nodeIds: ['nodeid2']
     }
   ],
 
   nodes: [
     {
-      id: 'nodeid1',
-      name: 'Foobar',
-      complete: false,
-      templateId: 'template2',
-      triggers: [{id: 'trigger1', actionId: 'actionOpen', nodeId: 'nodeid2'}]
-    },
-    {
       id: 'nodeid2',
       name: 'Fake node',
       description: 'fake fake faak',
       complete: true,
       templateId: 'template3',
-      triggers: [{id: 'trigger1', actionId: 'actionOpen', nodeId: 'nodeid1'}]
+      triggers: [{id: 'trigger1', actionId: 'actionOpen', nodeId: ''}]
     }
   ]
 };
@@ -99,13 +87,24 @@ var reducer = (state = campaignState, action) => {
   switch (action.type) {
     case NODE_SAVE:
       newState = Object.assign({}, state);
-      // Set node as completed
-      _.assign(_.findWhere(newState.nodes, {id: action.node.id}), action.node);
+
+      const nodeId = _.uniqueId('node_');
+      newState.nodes.push({
+        id: nodeId,
+        name: action.node.name,
+        description: action.node.description,
+        templateId: action.node.templateId
+      });
+
+      _.findWhere(newState.blocks, {id: action.node.blockId}).nodeIds.push(nodeId);
+
       return newState;
     case NODE_EDIT:
       newState = Object.assign({}, state);
+
       // Set node as incomplete
-      _.findWhere(newState.nodes, {id: action.node.id}).complete = false;
+      _.assign(_.findWhere(newState.nodes, {id: action.node.id}), action.node);
+
       return newState;
     case NODE_ADD:
       newState = Object.assign({}, state);

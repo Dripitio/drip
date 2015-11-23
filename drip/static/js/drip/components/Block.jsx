@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Input, Grid, Row, Col } from 'react-bootstrap';
+import { Input, Grid, Row, Col, Modal, Button } from 'react-bootstrap';
 
 import moment from 'moment';
 
 import Node from './Node.jsx';
+import { NodeModal } from './Modal.jsx';
 
 
 class DripDatetime extends Component {
@@ -26,15 +27,17 @@ class DripDatetime extends Component {
 var Block = React.createClass({
   getInitialState: function () {
     return {
-      blockNodes: this.props.block.nodeIds
+      blockNodes: this.props.block.nodeIds,
+      modalShow: false
     }
   },
 
   handleAddNode: function () {
-    this.props.addNode(this.props.block.id);
-    this.setState({
-      blockNodes: this.props.block.nodeIds
-    });
+    this.refs.nodeModal.modalShow();
+  },
+
+  handleEditNode: function (nodeId) {
+    this.refs.nodeModal.editNode(nodeId);
   },
 
   handleDeleteNode: function () {
@@ -52,7 +55,7 @@ var Block = React.createClass({
       <Row>
         <div>
           <Col md={3}>
-            <DripDatetime datetime={this.props.block.datetime}></DripDatetime>
+            <DripDatetime datetime={this.props.block.datetime}/>
           </Col>
           <Col md={9}>
             <div className="drip-blocks">
@@ -69,7 +72,7 @@ var Block = React.createClass({
                         actions={this.props.actions}
 
                         onSave={this.props.onSave}
-                        onEdit={this.props.onEdit}
+                        onEdit={this.handleEditNode}
                         onDelete={this.handleDeleteNode()}
                       />
                       })()}
@@ -84,6 +87,21 @@ var Block = React.createClass({
             </div>
           </Col>
         </div>
+        <NodeModal
+          show={this.state.modalShow}
+          onHide={this.modalClose}
+
+          templates={this.props.templates}
+          actions={this.props.actions}
+          nodes={this.props.nodes}
+
+          block={this.props.block}
+
+          onSave={this.props.onSave}
+          onEdit={this.props.onEdit}
+
+          ref="nodeModal"
+        />
       </Row>
     );
   }
