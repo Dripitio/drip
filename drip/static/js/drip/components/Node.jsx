@@ -41,6 +41,29 @@ var Node = React.createClass({
             }
             return '';
           })()}/>
+        <Row>
+          <Col md={12}>
+            <div className="form-group">
+              <label className="control-label">
+                <span>Triggers</span>
+              </label>
+            </div>
+          </Col>
+          {this.props.node.triggers.map((trigger) => {
+            return (
+              <div key={trigger.id} className="trigger">
+                <Col md={6}>
+                  <FormControls.Static
+                    value={trigger.actionId}/>
+                </Col>
+                <Col md={6}>
+                  <FormControls.Static
+                    value={trigger.nodeId}/>
+                </Col>
+              </div>
+              );
+            })}
+        </Row>
       </form>
     );
   }

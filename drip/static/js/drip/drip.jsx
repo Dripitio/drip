@@ -88,7 +88,8 @@ var reducer = (state = campaignState, action) => {
         id: nodeId,
         name: action.node.name,
         description: action.node.description,
-        templateId: action.node.templateId
+        templateId: action.node.templateId,
+        triggers: action.node.triggers
       });
 
       _.findWhere(newState.blocks, {id: action.node.blockId}).nodeIds.push(nodeId);
