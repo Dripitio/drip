@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ButtonToolbar, Button } from 'react-bootstrap';
+import { Row, Col, Modal, ButtonToolbar, Button } from 'react-bootstrap';
 
 import { DripInput, DripSelect } from './Fields.jsx';
 
@@ -69,12 +69,44 @@ export var NodeModal = React.createClass({
   },
 
   render() {
-    let btn;
+    let btn, triggers;
     if (this.state.edit) {
       btn = <Button bsStyle="primary" onClick={this.handleEdit}>Update</Button>
     } else {
       btn = <Button bsStyle="success" onClick={this.handleSave}>Save</Button>
     }
+
+    if (this.state.edit) {
+      triggers = this.state.triggers.map(((trigger) => {
+        return (
+          <div className="trigger">
+            <Col md={5}>
+              <DripSelect
+                defaultValue={trigger.actionId}
+                defaultOption="Select Event"
+                options={this.props.actions}
+              />
+            </Col>
+            <Col md={5}>
+              <DripSelect
+                defaultValue={trigger.nodeId}
+                defaultOption="Select Action"
+                options={this.props.nodes}
+              />
+            </Col>
+            <Col md={2}>
+              <span className="removeTrigger"
+                    onClick={() => console.log('remove trigger')}>Remove</span>
+            </Col>
+          </div>
+        )
+      }).bind(this));
+    } else {
+      triggers = this.state.triggers.map((trigger) => {
+        debugger;
+      });
+    }
+
     return (
       <Modal show={this.state.show} onHide={this.modalClose}>
         <Modal.Header closeButton>
@@ -103,6 +135,13 @@ export var NodeModal = React.createClass({
               options={this.props.templates}
               ref="template"
             />
+            <Row>
+              {triggers}
+              <Col md={12}>
+                <span className="addTrigger"
+                      onClick={() => console.log('add trigger')}>Add trigger</span>
+              </Col>
+            </Row>
           </form>
         </Modal.Body>
         <Modal.Footer>

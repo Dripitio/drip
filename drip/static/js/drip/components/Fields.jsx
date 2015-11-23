@@ -49,7 +49,7 @@ export var DripInput = React.createClass({
 export var DripSelect = React.createClass({
   propTypes: {
     placeholder: React.PropTypes.string,
-    label: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string,
     defaultValue: React.PropTypes.string,
     defaultOption: React.PropTypes.string.isRequired,
     options: React.PropTypes.arrayOf(React.PropTypes.shape({

@@ -612,3 +612,9 @@ body > .navbar-collapse[data-color="purple"]:after {
     }
   }
 }
+
+.removeTrigger,
+.addTrigger {
+  cursor: pointer;
+  line-height: 2;
+}
