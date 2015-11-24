@@ -13,6 +13,7 @@ import {
   NODE_CHANGE,
 
   BLOCK_ADD,
+  BLOCK_SET_DATETIME,
 
   CAMPAIGN_SAVE
 } from '../constants/actions.jsx';
@@ -68,6 +69,12 @@ var App = React.createClass({
     };
   },
 
+  handleSetDatetime: function (dispatch) {
+    return (block) => {
+      dispatch({type: BLOCK_SET_DATETIME, block});
+    };
+  },
+
   handleSaveCampaign: function (dispatch) {
     return () => {
       dispatch({
@@ -113,6 +120,7 @@ var App = React.createClass({
                     actions={actions}
 
                     addNode={this.handleAddNode(dispatch)}
+                    setBlockDatetime={this.handleSetDatetime(dispatch)}
                     onDelete={this.handleDeleteNode(dispatch)}
                     onEdit={this.handleEditNode(dispatch)}
                     onSave={this.handleSaveNode(dispatch)}/>

@@ -16,6 +16,7 @@ import {
   NODE_CHANGE,
 
   BLOCK_ADD,
+  BLOCK_SET_DATETIME,
 
   CAMPAIGN_SAVE
 } from './constants/actions.jsx';
@@ -125,6 +126,12 @@ var reducer = (state = campaignState, action) => {
         datetime: moment.utc().add(1, 'days').toISOString(),
         nodeIds: []
       });
+      return newState;
+
+    case BLOCK_SET_DATETIME:
+      newState = Object.assign({}, state);
+      let block = newState.blocks.find((b) => b.id === action.block.id);
+      block.datetime = action.block.datetime;
       return newState;
 
     case CAMPAIGN_SAVE:

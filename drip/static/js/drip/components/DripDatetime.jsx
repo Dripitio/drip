@@ -4,15 +4,32 @@ import moment from 'moment';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 
 
-export default class DripDatetime extends React.Component {
+var DripDatetime = React.createClass({
+  getInitialState() {
+    return {
+      datetime: this.props.datetime,
+      minDate: this.props.datetime
+    }
+  },
+
+  handleDatetimeChange(e, datetime) {
+    this.setState({
+      datetime: datetime.startDate.toISOString()
+    });
+    this.props.handleSetBlockDatetime(this.state.datetime)
+  },
+
   render() {
-    let datetime = moment(this.props.datetime);
+    let datetime = moment(this.state.datetime);
     return (
       <div className="drip-datetime-box">
         <DateRangePicker startDate={datetime}
-                         minDate={datetime}
+                         minDate={moment(this.state.minDate)}
                          singleDatePicker
-                         timePicker>
+                         timePicker
+                         autoApply
+                         onApply={this.handleDatetimeChange}
+        >
           <div className="date">
             {datetime.format('D MMM')}
           </div>
@@ -23,4 +40,6 @@ export default class DripDatetime extends React.Component {
       </div>
     )
   }
-}
+});
+
+export default DripDatetime;

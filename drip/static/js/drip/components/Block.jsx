@@ -40,12 +40,19 @@ var Block = React.createClass({
     }
   },
 
+  handleSetBlockDatetime: function (datetime) {
+    this.props.setBlockDatetime({
+      id: this.props.block.id, datetime: datetime
+    });
+  },
+
   render: function () {
     const { nodes, block, templates, actions } = this.props;
     return (
       <Row>
         <Col md={3}>
-          <DripDatetime datetime={block.datetime}/>
+          <DripDatetime datetime={block.datetime}
+                        handleSetBlockDatetime={this.handleSetBlockDatetime}/>
         </Col>
         <Col md={9}>
           <div className="drip-blocks">
