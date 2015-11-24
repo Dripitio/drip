@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Input, Grid, Row, Col, FormControls, ButtonToolbar, Button } from 'react-bootstrap';
-import * as _ from 'lodash';
+import React from 'react';
+import { Row, Col, FormControls } from 'react-bootstrap';
 
 import Controls from './Controls.jsx';
-import { DripInput, DripSelect } from './Fields.jsx';
 
 
 var Node = React.createClass({
+  getDefaultProps: function () {
+    return {
+      nodes: [],
+      templates: [],
+      actions: []
+    }
+  },
+
   handleEdit: function () {
     this.props.onEdit(this.props.node.id);
   },
@@ -17,13 +22,13 @@ var Node = React.createClass({
   },
 
   render: function () {
-    let template = _.find(this.props.templates, {id: this.props.node.templateId});
-    let actions = this.props.actions, nodes = this.props.nodes;
+    const template = this.props.templates.find(
+      (template) => template.id === this.props.node.templateId
+    );
 
     return (
       <form>
         <Controls
-          complete={true}
           onEdit={this.handleEdit}
           onDelete={this.handleDelete}
         />
@@ -35,12 +40,7 @@ var Node = React.createClass({
           value={this.props.node.description}/>
         <FormControls.Static
           label="Template"
-          value={(() => {
-            if (template && template.name) {
-              return template.name;
-            }
-            return '';
-          })()}/>
+          value={template.name}/>
         <Row>
           <Col md={12}>
             <div className="form-group">
@@ -51,16 +51,16 @@ var Node = React.createClass({
           </Col>
           {this.props.node.triggers.map((trigger) => {
             return (
-              <div key={trigger.id} className="trigger">
-                <Col md={6}>
-                  <FormControls.Static
-                    value={trigger.actionId}/>
-                </Col>
-                <Col md={6}>
-                  <FormControls.Static
-                    value={trigger.nodeId}/>
-                </Col>
-              </div>
+            <div key={trigger.id} className="trigger">
+              <Col md={6}>
+                <FormControls.Static
+                  value={trigger.actionId}/>
+              </Col>
+              <Col md={6}>
+                <FormControls.Static
+                  value={trigger.nodeId}/>
+              </Col>
+            </div>
               );
             })}
         </Row>
@@ -68,60 +68,5 @@ var Node = React.createClass({
     );
   }
 });
-
-Node.propTypes = {
-  node: React.PropTypes.shape({
-    id: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string,
-    description: React.PropTypes.string,
-
-    template: React.PropTypes.shape({
-      id: React.PropTypes.string
-    }),
-
-    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      actionId: React.PropTypes.string,
-      nodeId: React.PropTypes.string
-    })),
-
-    // if form not complete show edit form
-    complete: React.PropTypes.bool
-  }),
-
-  nodes: React.PropTypes.arrayOf(React.PropTypes.shape({
-    id: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string,
-    description: React.PropTypes.string,
-
-    template: React.PropTypes.shape({
-      id: React.PropTypes.string
-    }),
-
-    triggers: React.PropTypes.arrayOf(React.PropTypes.shape({
-      id: React.PropTypes.string,
-      actionId: React.PropTypes.string,
-      nodeId: React.PropTypes.string
-    })),
-
-    // if form not complete show edit form
-    complete: React.PropTypes.bool
-  })).isRequired,
-
-  templates: React.PropTypes.arrayOf(React.PropTypes.shape({
-    id: React.PropTypes.string,
-    name: React.PropTypes.string
-  })).isRequired,
-
-  actions: React.PropTypes.arrayOf(React.PropTypes.shape({
-    id: React.PropTypes.string,
-    name: React.PropTypes.string,
-    templates: React.PropTypes.arrayOf(React.PropTypes.string)
-  })).isRequired,
-
-  onEdit: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  onDelete: React.PropTypes.func.isRequired
-};
 
 export default Node;

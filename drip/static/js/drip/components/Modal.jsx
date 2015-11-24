@@ -101,6 +101,8 @@ export var NodeModal = React.createClass({
   },
 
   modalClose: function () {
+    // because modal component just stays in background -  clear it's state, so next time
+    // we open it without previous garbage
     this.setState(this.getInitialState());
   },
 
@@ -108,7 +110,12 @@ export var NodeModal = React.createClass({
     this.setState({show: true});
   },
 
+
   editNode: function (nodeId) {
+    /**
+     * External method called from parent when we want to initialize
+     * modal state with existing nodes state
+     */
     const node = this.props.nodes.find((node) => node.id === nodeId);
     if (node) {
       this.setState(node);
@@ -117,8 +124,13 @@ export var NodeModal = React.createClass({
     }
   },
 
+  /**
+   * Trigger api
+   *
+   * add new trigger to current state
+   */
   handleAddTrigger: function () {
-    this.setState((previousState, currentProps) => {
+    this.setState((previousState) => {
       previousState.triggers.push({
         id: _.uniqueId('trigger'),
         actionId: '',
@@ -128,8 +140,14 @@ export var NodeModal = React.createClass({
     });
   },
 
+  /**
+   * Trigger api
+   *
+   * update trigger state  value
+   * @param trigger
+   */
   handleValueChange: function (trigger) {
-    this.setState((previousState, currentProps) => {
+    this.setState((previousState) => {
       let t = previousState.triggers.find((t) => t.id === trigger.id);
       t.actionId = trigger.actionId;
       t.nodeId = trigger.nodeId;
@@ -139,12 +157,15 @@ export var NodeModal = React.createClass({
 
   render() {
     let btn, triggers;
+
+    // depending on how modal is opened show right button
     if (this.state.edit) {
       btn = <Button bsStyle="primary" onClick={this.handleEdit}>Update</Button>
     } else {
       btn = <Button bsStyle="success" onClick={this.handleSave}>Save</Button>
     }
 
+    // Show existing triggers if any
     triggers = this.state.triggers.map(((trigger) => {
       return (
         <Trigger
