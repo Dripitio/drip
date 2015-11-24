@@ -364,18 +364,25 @@ class DataCaptain:
         """
         self.mw.send_campaign(campaign_id)
 
-    def save_entire_campaign(self, campaign, blocks, nodes, triggers):
+    def save_entire_campaign(self, drip_campaign):
         """
         helps frontend with saving entire campaigns
-        takes drip campaign and its components as is from frontend
+        takes drip campaign superstructure as is from frontend
         and saves them properly through data captain
+        works under assumption that all data is accurate with respect
+        to backend data (existing lists, templates, etc.) and correctly formed
         returns drip campaign id
         """
+        # get necessary substructures
+        campaign = drip_campaign["campaign"]
+        blocks = drip_campaign["blocks"]
+        nodes = drip_campaign["nodes"]
         # save campaign
-        drip_campaign_id = self.create_drip_campaign(campaign["name"], campaign["list_id"])
-        # helper
+        drip_campaign_id = self.create_drip_campaign(campaign["name"], campaign["userListId"])
+        # helpers
         node_id_to_node = {node["id"]: node for node in nodes}
-        # iterate over blocks and save their nodes, node triggers, and the blocks themselves
+        node_id_to_oid = {}
+        # iterate over blocks and save their nodes, and the blocks themselves
         for block in blocks:
             nodes_oid = []
             for node_id in block["nodeIds"]:
@@ -389,13 +396,23 @@ class DataCaptain:
                     from_email=None,
                     from_name=None,
                     initial=None,
-                    description=None,
+                    description=node["description"],
                 )
+                node_id_to_oid[node_id] = node_oid
                 nodes_oid.append(node_oid)
-                for trigger in node["triggers"]:
-                    # TODO: save trigger
-                    pass
             self.save_block(drip_campaign_id, block["datetime"], nodes_oid)
+        # iterate over all triggers of all nodes and save them accordingly
+        for node in nodes:
+            for trigger in node["triggers"]:
+                # TODO: fix trigger types
+                self.create_trigger(
+                    drip_campaign_id=drip_campaign_id,
+                    node_from=node_id_to_oid[node["id"]],
+                    node_to=node_id_to_oid[trigger["nodeId"]],
+                    opened=None,
+                    clicked=None,
+                    default=None,
+                )
         # return campaign's id
         return drip_campaign_id
 
@@ -403,7 +420,7 @@ class DataCaptain:
         """
         helps frontend with loading entire campaigns
         takes drip campaign id and loads all of its components
-        in the form frontend wants them
+        in a drip superstructure as frontend wants
         """
         # load campaign
         drip_campaign = DripCampaign.objects(id=drip_campaign_id)[0]
