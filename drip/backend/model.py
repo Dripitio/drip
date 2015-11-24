@@ -70,6 +70,7 @@ class Trigger(Document):
     node_to = ObjectIdField()
     opened = BooleanField()
     clicked = StringField()
+    any_click = BooleanField()
     default = BooleanField()
 
     created_at = DateTimeField()

@@ -176,18 +176,19 @@ class DataCaptain:
         new_node.save()
         return new_node.id
 
-    def create_trigger(self, drip_campaign_id, node_from, node_to, opened, clicked, default):
+    def create_trigger(self, drip_campaign_id, node_from, node_to, opened, clicked, any_click, default):
         """
         create a single drip campaign trigger link, save to mongo
-        exactly two of [opened, clicked, default] must be None!!
+        exactly three of [opened, clicked, any_click, default] must be None!!
         """
-        # assert int(opened is None) + int(clicked is None) + int(default is None) == 2
+        # assert int(opened is None) + int(clicked is None) + int(any_click is None) + int(default is None) == 2
         new_trigger = Trigger(
             drip_campaign_id=drip_campaign_id,
             node_from=node_from,
             node_to=node_to,
             opened=opened,
             clicked=clicked,
+            any_click=any_click,
             default=default,
         )
         new_trigger.save()
@@ -364,6 +365,20 @@ class DataCaptain:
         """
         self.mw.send_campaign(campaign_id)
 
+    FRONTEND_ACTION_ID_MAP = {
+        "open": "actionOpen",
+        "click": "{url}",
+        "any click": "actionAnyClicked",
+        "default": "actionDefault",
+    }
+
+    FRONTEND_ACTION_NAME_MAP = {
+        "open": "Open",
+        "click": "Clicks {url}",
+        "any click": "Clicks any link",
+        "default": "Default",
+    }
+
     def save_entire_campaign(self, drip_campaign):
         """
         helps frontend with saving entire campaigns
@@ -404,14 +419,28 @@ class DataCaptain:
         # iterate over all triggers of all nodes and save them accordingly
         for node in nodes:
             for trigger in node["triggers"]:
-                # TODO: fix trigger types
+                # get trigger defining params
+                opened, clicked, any_click, default = None, None, None, None
+                action_id = trigger["action_id"]
+                if action_id == self.FRONTEND_ACTION_ID_MAP["open"]:
+                    opened = True
+                elif action_id == self.FRONTEND_ACTION_ID_MAP["any click"]:
+                    any_click = True
+                elif action_id == self.FRONTEND_ACTION_ID_MAP["default"]:
+                    default = True
+                else:
+                    clicked = action_id
+                # save trigger for each click variant
+                # normally there is only one, thus, a single trigger is created
+                # if `any click` is set, we make a new trigger for each link
                 self.create_trigger(
                     drip_campaign_id=drip_campaign_id,
                     node_from=node_id_to_oid[node["id"]],
                     node_to=node_id_to_oid[trigger["nodeId"]],
-                    opened=None,
-                    clicked=None,
-                    default=None,
+                    opened=opened,
+                    clicked=clicked,
+                    any_click=any_click,
+                    default=default,
                 )
         # return campaign's id
         return drip_campaign_id
@@ -441,12 +470,19 @@ class DataCaptain:
         ]
         # load nodes
         nodes_frontend = []
-        # TODO: fix actions
         for node in Node.objects(drip_campaign_id=drip_campaign_id):
+            def get_trigger_action_id(trigger):
+                if trigger.opened:
+                    return self.FRONTEND_ACTION_ID_MAP["open"]
+                if trigger.any_click:
+                    return self.FRONTEND_ACTION_ID_MAP["any click"]
+                if trigger.default:
+                    return self.FRONTEND_ACTION_ID_MAP["default"]
+                return self.FRONTEND_ACTION_ID_MAP["click"].format(url=trigger.clicked)
             triggers = [
                 {
                     "id": trigger["id"],
-                    "actionId": None,
+                    "actionId":  get_trigger_action_id(trigger),
                     "nodeId": trigger["node_to"],
                 }
                 for trigger in Trigger.objects(node_from=node["id"])
@@ -475,10 +511,45 @@ class DataCaptain:
             }
             for tmplt in templates
         ]
+
+        # create actions for frontend
+        # set default actions that apply to all templates
+        default_actions = ["open", "any click", "default"]
+        actions = {
+            self.FRONTEND_ACTION_ID_MAP[action_type]: {
+                "id": self.FRONTEND_ACTION_ID_MAP[action_type],
+                "name": self.FRONTEND_ACTION_NAME_MAP[action_type],
+                "templates": [],
+            }
+            for action_type in default_actions
+        }
+        # iterate over all tempaltes and update actions
+        for tmplt in templates:
+            # first, add the template to all default actions
+            for action_type in default_actions:
+                action_frontend_id = self.FRONTEND_ACTION_ID_MAP[action_type]
+                actions[action_frontend_id]["templates"].append(tmplt["id"])
+            # second, add template to all its link click actions
+            for link in self.get_links(tmplt["template_id"]):
+                action_frontend_id = self.FRONTEND_ACTION_ID_MAP["click"].format(url=link)
+                # if this link is new, add a new action
+                if action_frontend_id not in actions:
+                    actions[action_frontend_id] = {
+                        "id": action_frontend_id,
+                        "name": self.FRONTEND_ACTION_NAME_MAP["click"].format(url=link),
+                        "templates": [],
+                    }
+                # add the template to this link's click action
+                actions[action_frontend_id]["templates"].append(tmplt["id"])
+        # ditch the mapping
+        actions_frontend = actions.values()
+
+        # form the resulting frontend superstructure
         return {
             "campaign": drip_campaign_frontend,
             "userLists": lists_frontend,
             "templates": templates_frontend,
+            "actions": actions_frontend,
             "blocks": blocks_frontend,
             "nodes": nodes_frontend,
         }
