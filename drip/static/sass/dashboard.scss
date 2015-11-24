@@ -1,3 +1,5 @@
+@import 'css!~bootstrap-daterangepicker/daterangepicker.css';
+
 /*           Font Smoothing      */
 body,
 h1, .h1,
@@ -534,6 +536,7 @@ body > .navbar-collapse[data-color="purple"]:after {
   border: 1px solid #e5e5e5;
   border-radius: 6px;
   background-color: white;
+  cursor: pointer;
 
   .date {
     font-weight: 700;
