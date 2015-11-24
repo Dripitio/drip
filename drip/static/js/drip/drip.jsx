@@ -24,29 +24,17 @@ import {
 
 
 let campaignState = {
-  campaign: {
-    id: '',
-    name: '',
-    userListId: ''
-  },
+  campaign: { id: '', name: '', userListId: '' },
+
   userLists: [
     {id: 'abclist', name: 'Default List'},
-    {id: 'abccustomlist', name: 'Shopify Orders List'}
+    {id: 'abccust', name: 'Shopify Orders List'}
   ],
 
   templates: [
-    {
-      id: 'template1',
-      name: 'ML Template 1'
-    },
-    {
-      id: 'template2',
-      name: 'ML Template 2'
-    },
-    {
-      id: 'template3',
-      name: 'ML Template 3'
-    }
+    { id: 'template1', name: 'ML Template 1' },
+    { id: 'template2', name: 'ML Template 2' },
+    { id: 'template3', name: 'ML Template 3' }
   ],
 
   actions: [
