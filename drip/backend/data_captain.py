@@ -437,23 +437,48 @@ class DataCaptain:
                 "datetime": block["start_time"],
                 "nodeIds": block["nodes_id"],
             }
-            for block in blocks]
+            for block in blocks
+        ]
         # load nodes
-        nodes = Node.objects(drip_campaign_id=drip_campaign_id)
-        nodes_frontend = [
-            {
+        nodes_frontend = []
+        # TODO: fix actions
+        for node in Node.objects(drip_campaign_id=drip_campaign_id):
+            triggers = [
+                {
+                    "id": trigger["id"],
+                    "actionId": None,
+                    "nodeId": trigger["node_to"],
+                }
+                for trigger in Trigger.objects(node_from=node["id"])
+            ]
+            nodes_frontend.append({
                 "id": node["id"],
                 "name": node["title"],
+                "description": node["description"],
                 "templateId": node["content"]["template_id"],
-                "triggers": []
+                "triggers": triggers,
+            })
+        # update and load lists and templates
+        lists = self.update_lists()
+        lists_frontend = [
+            {
+                "id": lst["id"],
+                "name": lst["name"],
             }
-            for node in nodes]
-        # TODO: load triggers
-        triggers = None
-        triggers_frontend = triggers
+            for lst in lists
+        ]
+        templates = self.update_templates()
+        templates_frontend = [
+            {
+                "id": tmplt["id"],
+                "name": tmplt["name"],
+            }
+            for tmplt in templates
+        ]
         return {
             "campaign": drip_campaign_frontend,
+            "userLists": lists_frontend,
+            "templates": templates_frontend,
             "blocks": blocks_frontend,
             "nodes": nodes_frontend,
-            "triggers": triggers_frontend,
         }
