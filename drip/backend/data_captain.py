@@ -365,6 +365,8 @@ class DataCaptain:
         """
         self.mw.send_campaign(campaign_id)
 
+    DEFAULT_ACTIONS = ["open", "any click", "default"]
+
     FRONTEND_ACTION_ID_MAP = {
         "open": "actionOpen",
         "click": "{url}",
@@ -372,12 +374,30 @@ class DataCaptain:
         "default": "actionDefault",
     }
 
+    def get_frontend_action_id(self, val):
+        """
+        helper to get action id that frontend understands
+        """
+        if val in self.DEFAULT_ACTIONS:
+            return self.FRONTEND_ACTION_ID_MAP[val]
+        # if not default, then it's a click of a specific link
+        return self.FRONTEND_ACTION_ID_MAP["click"].format(url=val)
+
     FRONTEND_ACTION_NAME_MAP = {
         "open": "Open",
         "click": "Clicks {url}",
         "any click": "Clicks any link",
         "default": "Default",
     }
+
+    def get_frontend_action_name(self, val):
+        """
+        helper to get action name that frontend understands
+        """
+        if val in self.DEFAULT_ACTIONS:
+            return self.FRONTEND_ACTION_NAME_MAP[val]
+        # if not default, then it's a click of a specific link
+        return self.FRONTEND_ACTION_NAME_MAP["click"].format(url=val)
 
     def save_entire_campaign(self, drip_campaign):
         """
@@ -422,11 +442,11 @@ class DataCaptain:
                 # get trigger defining params
                 opened, clicked, any_click, default = None, None, None, None
                 action_id = trigger["action_id"]
-                if action_id == self.FRONTEND_ACTION_ID_MAP["open"]:
+                if action_id == self.get_frontend_action_id("open"):
                     opened = True
-                elif action_id == self.FRONTEND_ACTION_ID_MAP["any click"]:
+                elif action_id == self.get_frontend_action_id("any click"):
                     any_click = True
-                elif action_id == self.FRONTEND_ACTION_ID_MAP["default"]:
+                elif action_id == self.get_frontend_action_id("default"):
                     default = True
                 else:
                     clicked = action_id
@@ -473,12 +493,12 @@ class DataCaptain:
         for node in Node.objects(drip_campaign_id=drip_campaign_id):
             def get_trigger_action_id(trigger):
                 if trigger.opened:
-                    return self.FRONTEND_ACTION_ID_MAP["open"]
+                    return self.get_frontend_action_id("open")
                 if trigger.any_click:
-                    return self.FRONTEND_ACTION_ID_MAP["any click"]
+                    return self.get_frontend_action_id("any click")
                 if trigger.default:
-                    return self.FRONTEND_ACTION_ID_MAP["default"]
-                return self.FRONTEND_ACTION_ID_MAP["click"].format(url=trigger.clicked)
+                    return self.get_frontend_action_id("default")
+                return self.get_frontend_action_id(trigger.clicked)
             triggers = [
                 {
                     "id": trigger["id"],
@@ -514,29 +534,28 @@ class DataCaptain:
 
         # create actions for frontend
         # set default actions that apply to all templates
-        default_actions = ["open", "any click", "default"]
         actions = {
-            self.FRONTEND_ACTION_ID_MAP[action_type]: {
-                "id": self.FRONTEND_ACTION_ID_MAP[action_type],
-                "name": self.FRONTEND_ACTION_NAME_MAP[action_type],
+            self.get_frontend_action_id(action_type): {
+                "id": self.get_frontend_action_id(action_type),
+                "name": self.get_frontend_action_name(action_type),
                 "templates": [],
             }
-            for action_type in default_actions
+            for action_type in self.DEFAULT_ACTIONS
         }
         # iterate over all tempaltes and update actions
         for tmplt in templates:
             # first, add the template to all default actions
-            for action_type in default_actions:
-                action_frontend_id = self.FRONTEND_ACTION_ID_MAP[action_type]
+            for action_type in self.DEFAULT_ACTIONS:
+                action_frontend_id = self.get_frontend_action_id(action_type)
                 actions[action_frontend_id]["templates"].append(tmplt["id"])
             # second, add template to all its link click actions
             for link in self.get_links(tmplt["template_id"]):
-                action_frontend_id = self.FRONTEND_ACTION_ID_MAP["click"].format(url=link)
+                action_frontend_id = self.get_frontend_action_id(link)
                 # if this link is new, add a new action
                 if action_frontend_id not in actions:
                     actions[action_frontend_id] = {
                         "id": action_frontend_id,
-                        "name": self.FRONTEND_ACTION_NAME_MAP["click"].format(url=link),
+                        "name": self.get_frontend_action_name(link),
                         "templates": [],
                     }
                 # add the template to this link's click action
