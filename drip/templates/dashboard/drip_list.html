@@ -31,7 +31,11 @@
                             <tbody>
                             <tr>
                                 {% for campaign in campaigns %}
-                                    <td>{{ campaign.name }}</td>
+                                    <td>
+                                        <a href="{{ url_for('dashboard.drip_edit', campaign_id=campaign.id) }}">
+                                            {{ campaign.name }}
+                                        </a>
+                                    </td>
                                 {% endfor %}
                             </tr>
                             </tbody>

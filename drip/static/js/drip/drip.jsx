@@ -23,7 +23,7 @@ import {
 
 
 let campaignState = {
-  campaign: { id: '', name: '', userListId: '' },
+  campaign: {name: '', userListId: ''},
 
   userLists: [
     {id: 'abclist', name: 'Default List'},
@@ -31,9 +31,9 @@ let campaignState = {
   ],
 
   templates: [
-    { id: 'template1', name: 'ML Template 1' },
-    { id: 'template2', name: 'ML Template 2' },
-    { id: 'template3', name: 'ML Template 3' }
+    {id: 'template1', name: 'ML Template 1'},
+    {id: 'template2', name: 'ML Template 2'},
+    {id: 'template3', name: 'ML Template 3'}
   ],
 
   actions: [
@@ -57,12 +57,11 @@ let campaignState = {
     }
   ],
 
-  nodes: [
-  ]
+  nodes: []
 };
 
 
-var reducer = (state = campaignState, action) => {
+var reducer = (state = window.preload ? window.preload : campaignState, action) => {
   "use strict";
   var newState;
   console.log('reducing');
@@ -138,6 +137,29 @@ var reducer = (state = campaignState, action) => {
       newState = Object.assign({}, state);
 
       _.assign(newState.campaign, action.campaign);
+
+      // FIXME
+      if (window.preload) {
+        fetch('/api/campaigns/' + newState.id, {
+          method: 'put',
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newState)
+        });
+      } else {
+        fetch('/api/campaigns', {
+          method: 'post',
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newState)
+        });
+      }
 
       console.log('saving state');
       return newState;

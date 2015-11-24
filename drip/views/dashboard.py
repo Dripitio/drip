@@ -1,11 +1,8 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, abort, jsonify
 from flask.ext.login import current_user, login_required
 from flask.ext.wtf import Form
 from wtforms import StringField
 
-from drip.backend.data_captain import DataCaptain
-from drip.backend.mailchimp_wrapper import MailchimpWrapper
-from drip.backend.model import List
 from drip.db.drip import Campaign
 from drip.db.user import MailChimpIntegration
 
@@ -52,6 +49,56 @@ def drip():
 @include_notifications
 def drip_create():
     return render_template('dashboard/drip.html', active_nav='index')
+
+
+@login_required
+@dashboard.route('/drip/edit/<string:campaign_id>', methods=['GET', 'PUT'])
+@include_notifications
+def drip_edit(campaign_id):
+    campaign = Campaign.objects(id=campaign_id).first()
+    state = campaign.state
+    state.update({'id': str(campaign.id)})
+    return render_template('dashboard/drip.html',
+                           active_nav='index',
+                           preload=state)
+
+
+@login_required
+@dashboard.route('/api/campaigns', methods=['POST'])
+@include_notifications
+def api_create_campaign():
+    if not request.json:
+        abort(400)
+
+    campaign = Campaign()
+    campaign.user_id = current_user.id
+
+    data = request.json
+
+    campaign.name = data['campaign']['name']
+    campaign.state = data
+
+    campaign.save()
+
+    return '', 201
+
+
+@login_required
+@dashboard.route('/api/campaigns/<string:campaign_id>', methods=['PUT'])
+@include_notifications
+def api_edit_campaign(campaign_id):
+    if not request.json:
+        abort(400)
+
+    campaign = Campaign.objects(id=campaign_id).first()
+    data = request.json
+
+    campaign.name = data['campaign']['name']
+    campaign.state = data
+
+    campaign.save()
+
+    return '', 200
 
 
 @login_required
