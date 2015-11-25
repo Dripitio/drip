@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Block from './Block.jsx';
 import Campaign from './Campaign.jsx';
+import CampaignControls from './CampaignControls.jsx';
 
 import {
   CAMPAIGN_SAVE
@@ -23,7 +24,8 @@ import {
 var App = React.createClass({
   getInitialState: function () {
     return {
-      nodes: this.props.nodes
+      nodes: this.props.nodes,
+      saved: this.props.saved
     };
   },
 
@@ -37,6 +39,18 @@ var App = React.createClass({
         userListId: this.refs.campaign.refs.userList.state.value
       };
       handleSaveCampaign(dispatch, campaign)();
+    }).bind(this);
+  },
+
+  handleUpdateCampaign: function (dispatch) {
+    return (() => {
+      console.log('lets update');
+    }).bind(this);
+  },
+
+  handlePublishCampaign: function (dispatch) {
+    return (() => {
+      console.log('lets publish');
     }).bind(this);
   },
 
@@ -58,14 +72,12 @@ var App = React.createClass({
           <Col md={12}>
             <div className="card">
               <div className="content">
-                <ButtonToolbar>
-                  <Button bsStyle="success"
-                          className="btn-fill pull-right"
-                          onClick={this.handleSaveCampaign(dispatch)}
-                  >
-                    Save campaign
-                  </Button>
-                </ButtonToolbar>
+                <CampaignControls
+                  saved={this.state.saved}
+                  save={this.handleSaveCampaign(dispatch)}
+                  update={this.handleUpdateCampaign(dispatch)}
+                  publish={this.handlePublishCampaign(dispatch)}
+                />
                 <Campaign
                   userLists={userLists}
                   campaign={campaign}

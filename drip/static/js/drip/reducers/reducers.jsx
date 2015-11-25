@@ -16,6 +16,8 @@ import {
 
 
 const campaignState = {
+  saved: false,
+
   campaign: {name: '', userListId: ''},
 
   userLists: [
@@ -129,9 +131,8 @@ export var dripReducer = (state = window.preload ? window.preload : campaignStat
       return newState;
 
     case CAMPAIGN_SAVE:
-      newState = Object.assign({}, state);
-      console.log('saving state');
-      return newState;
+      window.location.href = "/drip/campaigns/" + action.campaign.id;
+      break;
 
     default:
       console.log('default');

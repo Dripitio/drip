@@ -59,7 +59,7 @@ export function handleSaveCampaign(dispatch, campaign) {
       },
       body: JSON.stringify(campaign)
     })
-    .then(response => response.json)
+    .then(response => response.json())
     .then((json) => {
       dispatch({
         type: CAMPAIGN_SAVE,

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, abort
+from flask import Blueprint, render_template, request, abort, jsonify
 from flask.ext.login import current_user, login_required
 from flask.ext.wtf import Form
 from wtforms import StringField
@@ -48,19 +48,26 @@ def drip():
 
 
 @login_required
-@dashboard.route('/drip/create')
+@dashboard.route('/drip/campaigns')
 @include_notifications
 def drip_create():
     return render_template('dashboard/drip.html', active_nav='index')
 
 
 @login_required
-@dashboard.route('/drip/edit/<string:campaign_id>', methods=['GET', 'PUT'])
+@dashboard.route('/drip/campaigns/<string:campaign_id>', methods=['GET', 'PUT'])
 @include_notifications
 def drip_edit(campaign_id):
     campaign = Campaign.objects(id=campaign_id).first()
+
+    if not campaign:
+        abort(400)
+
     state = campaign.state
-    state.update({'id': str(campaign.id)})
+    state.update({
+        'id': str(campaign.id),
+        'saved': True
+    })
     return render_template('dashboard/drip.html',
                            active_nav='index',
                            preload=state)
@@ -83,7 +90,7 @@ def api_create_campaign():
 
     campaign.save()
 
-    return '', 201
+    return jsonify({'id': str(campaign.id)})
 
 
 @login_required
