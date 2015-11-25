@@ -25,19 +25,29 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>NAME</th>
+                                <th>CREATED</th>
+                                <th>STATUS</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for campaign in campaigns %}
-                                <tr>
-                                    <td>
-                                        <a href="{{ url_for('dashboard.drip_edit', campaign_id=campaign.id) }}">
-                                            {{ campaign.name }}
-                                        </a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                            {% if campaigns %}
+                                {% for campaign in campaigns %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ url_for('dashboard.drip_edit', campaign_id=campaign.id) }}">
+                                                {{ campaign.name }}
+                                            </a>
+                                        </td>
+                                        <td>{{ campaign.created_at }}</td>
+                                        <td style="text-transform: capitalize;">{{ campaign.status }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <td>No campaigns found</td>
+                                <td></td>
+                                <td></td>
+                            {% endif %}
                             </tbody>
                         </table>
 

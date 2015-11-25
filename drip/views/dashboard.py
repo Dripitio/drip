@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, abort, jsonify
+from flask import Blueprint, render_template, request, abort
 from flask.ext.login import current_user, login_required
 from flask.ext.wtf import Form
 from wtforms import StringField
@@ -41,6 +41,9 @@ def additional_context():
 @include_notifications
 def drip():
     campaigns = Campaign.objects(user_id=current_user.id).all()
+    for campaign in campaigns:
+        campaign.created_at = campaign.created_at.strftime('%b %d, %Y')
+
     return render_template('dashboard/drip_list.html', active_nav='index', campaigns=campaigns)
 
 
