@@ -181,6 +181,10 @@ class DataCaptain:
         create a single drip campaign trigger link, save to mongo
         exactly three of [opened, clicked, any_click, default] must be None!!
         """
+        # if any click, set it to a list of all links in the template
+        if any_click:
+            node = Node.objects(id=node_from)[0]
+            any_click = self.get_links(node["content"]["template_id"])
         # assert int(opened is None) + int(clicked is None) + int(any_click is None) + int(default is None) == 2
         new_trigger = Trigger(
             drip_campaign_id=drip_campaign_id,
@@ -269,6 +273,9 @@ class DataCaptain:
         deals with trigger priorities correctly
         each euid will be assigned to 0 or 1 succeeding node
 
+        we assume triggers are not broken (e.g., a node has triggers for both specific links
+        and any_click at the same time)
+
         returns a list of (euids, node_oid) pairs that describe that
         the set of euids are assigned to node node_oid after segmentation by triggers
         (there might be multiple sets of euids assigned to the same node)
@@ -286,6 +293,10 @@ class DataCaptain:
                 check_opened = True
             elif trg["clicked"]:
                 check_clicked.add(trg["clicked"])
+            elif trg["any_click"]:
+                # if any click, add all links to interesting actions
+                for link in trg["any_click"]:
+                    check_clicked.add(link)
 
         # check if specific action is interesting to us
         def is_interesting(action):
@@ -321,6 +332,7 @@ class DataCaptain:
                     segments["opened"].append(ma["euid"])
                 elif last_click is not None:
                     segments[last_click["url"]].append(ma["euid"])
+                    segments["any_click"].append(ma["euid"])
 
         # go through defined triggers again and assign sets of users
         split = []
@@ -331,6 +343,8 @@ class DataCaptain:
                 split.append((segments[trg["clicked"]], trg.node_to))
             elif trg["default"]:
                 split.append((segments["default"], trg.node_to))
+            elif trg["any_click"]:
+                split.append((segments["any_click"], trg.node_to))
 
         return split
 

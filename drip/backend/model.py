@@ -36,17 +36,17 @@ class DripCampaign(Document):
     updated_at = DateTimeField()
 
 
+class Block(Document):
+    drip_campaign_id = ObjectIdField()
+    start_time = DateTimeField()
+    nodes_id = ListField(ObjectIdField())
+
+
 class Content(EmbeddedDocument):
     template_id = IntField()
     subject = StringField()
     from_email = StringField()
     from_name = StringField()
-
-
-class Block(Document):
-    drip_campaign_id = ObjectIdField()
-    start_time = DateTimeField()
-    nodes_id = ListField(ObjectIdField())
 
 
 class Node(Document):
@@ -70,7 +70,7 @@ class Trigger(Document):
     node_to = ObjectIdField()
     opened = BooleanField()
     clicked = StringField()
-    any_click = BooleanField()
+    any_click = ListField(StringField())
     default = BooleanField()
 
     created_at = DateTimeField()
