@@ -431,8 +431,16 @@ class DataCaptain:
         # helpers
         node_id_to_node = {node["id"]: node for node in nodes}
         node_id_to_oid = {}
+        # find the first block
+        first_block = None
+        for block in blocks:
+            if first_block is None or block["datetime"] < first_block["datetime"]:
+                first_block = block
         # iterate over blocks and save their nodes, and the blocks themselves
         for block in blocks:
+            # set nodes to initial if this is the first block chronologically
+            initial = True if block["id"] == first_block["id"] else None
+            # collect oids for all new nodes for block saving
             nodes_oid = []
             for node_id in block["nodeIds"]:
                 node = node_id_to_node[node_id]
@@ -444,7 +452,7 @@ class DataCaptain:
                     subject=None,
                     from_email=None,
                     from_name=None,
-                    initial=None,
+                    initial=initial,
                     description=node["description"],
                 )
                 node_id_to_oid[node_id] = node_oid
