@@ -6,76 +6,28 @@ import Block from './Block.jsx';
 import Campaign from './Campaign.jsx';
 
 import {
-  NODE_EDIT,
-  NODE_SAVE,
-  NODE_ADD,
-  NODE_DELETE,
-  NODE_CHANGE,
-
-  BLOCK_ADD,
-  BLOCK_SET_DATETIME,
-
   CAMPAIGN_SAVE
 } from '../constants/actions.jsx';
+
+import {
+  handleAddBlock,
+  handleAddNode,
+  handleDeleteNode,
+  handleEditNode,
+  handleSaveNode,
+  handleSetDatetime
+} from '../actions/drip-actions.jsx';
 
 
 var App = React.createClass({
   getInitialState: function () {
-    // FIXME: do we really need to store nodes state? I think there is simpler solution for node
-    // list sync between blocks;
     return {
       nodes: this.props.nodes
     };
   },
 
-  updateNodeState: function () {
-    this.setState({
-      nodes: this.props.nodes
-    });
-  },
-
-  handleEditNode: function (dispatch) {
-    return (node) => {
-      dispatch({type: NODE_EDIT, node});
-      this.updateNodeState();
-    };
-  },
-
-  handleSaveNode: function (dispatch) {
-    return (node) => {
-      dispatch({type: NODE_SAVE, node: node});
-      this.updateNodeState();
-    };
-  },
-
-  handleAddNode: function (dispatch) {
-    return (id) => {
-      dispatch({type: NODE_ADD, block: {id: id}});
-      this.updateNodeState();
-    };
-  },
-
-  handleDeleteNode: function (dispatch) {
-    return (id) => {
-      dispatch({type: NODE_DELETE, node: {id: id}});
-      this.updateNodeState();
-    };
-  },
-
-  handleAddBlock: function (dispatch) {
-    return () => {
-      dispatch({type: BLOCK_ADD});
-      this.updateNodeState();
-    };
-  },
-
-  handleSetDatetime: function (dispatch) {
-    return (block) => {
-      dispatch({type: BLOCK_SET_DATETIME, block});
-    };
-  },
-
   handleSaveCampaign: function (dispatch) {
+    // FIXME: convert to action creator and make async call to BE
     return () => {
       dispatch({
         type: CAMPAIGN_SAVE,
@@ -89,6 +41,16 @@ var App = React.createClass({
 
   render: function () {
     const { dispatch, campaign, blocks, nodes, userLists, templates, actions } = this.props;
+
+    const iDispatch = (data) => {
+      // TODO: is this really only way to sync data?
+      // sync nodes on state change
+      this.setState({
+        nodes: this.props.nodes
+      });
+      return dispatch(data);
+    };
+
     return (
       <Grid fluid={true}>
         <Row>
@@ -98,7 +60,7 @@ var App = React.createClass({
                 <ButtonToolbar>
                   <Button bsStyle="success"
                           className="btn-fill pull-right"
-                          onClick={this.handleSaveCampaign(dispatch)}
+                          onClick={this.handleSaveCampaign(iDispatch)}
                   >
                     Save campaign
                   </Button>
@@ -119,18 +81,18 @@ var App = React.createClass({
                     templates={templates}
                     actions={actions}
 
-                    addNode={this.handleAddNode(dispatch)}
-                    setBlockDatetime={this.handleSetDatetime(dispatch)}
-                    onDelete={this.handleDeleteNode(dispatch)}
-                    onEdit={this.handleEditNode(dispatch)}
-                    onSave={this.handleSaveNode(dispatch)}/>
+                    addNode={handleAddNode(iDispatch)}
+                    setBlockDatetime={handleSetDatetime(iDispatch)}
+                    onDelete={handleDeleteNode(iDispatch)}
+                    onEdit={handleEditNode(iDispatch)}
+                    onSave={handleSaveNode(iDispatch)}/>
                   <hr/>
                 </div>
                   );
                 })}
             </div>
             <div className="add-node"
-                 onClick={this.handleAddBlock(dispatch)}>
+                 onClick={handleAddBlock(iDispatch)}>
               <div className="btn">+</div>
             </div>
           </Col>
@@ -142,13 +104,17 @@ var App = React.createClass({
 
 App.propTypes = {
   /**
+   * id is obtained if campaign has been saved to server
+   */
+  id: React.PropTypes.string,
+
+  /**
    * General campaign configuration fields
    *
    * :name: Campaign name
    * :userLists: Array of available recipiant lists
    */
   campaign: React.PropTypes.shape({
-    id: React.PropTypes.string.isRequired,
     name: React.PropTypes.string.isRequired,
     userListId: React.PropTypes.string
   }),

@@ -27,19 +27,4 @@ var Campaign = React.createClass({
   }
 });
 
-
-Campaign.propTypes = {
-  userLists: React.PropTypes.arrayOf(React.PropTypes.shape({
-    id: React.PropTypes.string,
-    name: React.PropTypes.string
-  })).isRequired,
-
-  campaign: React.PropTypes.shape({
-    id: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string,
-    userListId: React.PropTypes.string
-  }).isRequired
-};
-
-
 export default Campaign;
