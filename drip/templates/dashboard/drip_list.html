@@ -29,15 +29,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                {% for campaign in campaigns %}
+                            {% for campaign in campaigns %}
+                                <tr>
                                     <td>
                                         <a href="{{ url_for('dashboard.drip_edit', campaign_id=campaign.id) }}">
                                             {{ campaign.name }}
                                         </a>
                                     </td>
-                                {% endfor %}
-                            </tr>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
 

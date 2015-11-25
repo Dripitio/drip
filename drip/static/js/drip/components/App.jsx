@@ -15,8 +15,9 @@ import {
   handleDeleteNode,
   handleEditNode,
   handleSaveNode,
-  handleSetDatetime
-} from '../actions/drip-actions.jsx';
+  handleSetDatetime,
+  handleSaveCampaign
+} from '../actions/actions.jsx';
 
 
 var App = React.createClass({
@@ -28,15 +29,15 @@ var App = React.createClass({
 
   handleSaveCampaign: function (dispatch) {
     // FIXME: convert to action creator and make async call to BE
-    return () => {
-      dispatch({
-        type: CAMPAIGN_SAVE,
-        campaign: {
-          name: this.refs.campaign.refs.name.state.value,
-          userListId: this.refs.campaign.refs.userList.state.value
-        }
-      });
-    };
+    return (() => {
+      const campaign = Object.assign({}, this.props);
+      delete campaign.dispatch;
+      campaign['campaign'] = {
+        name: this.refs.campaign.refs.name.state.value,
+        userListId: this.refs.campaign.refs.userList.state.value
+      };
+      handleSaveCampaign(dispatch, campaign)();
+    }).bind(this);
   },
 
   render: function () {
@@ -60,7 +61,7 @@ var App = React.createClass({
                 <ButtonToolbar>
                   <Button bsStyle="success"
                           className="btn-fill pull-right"
-                          onClick={this.handleSaveCampaign(iDispatch)}
+                          onClick={this.handleSaveCampaign(dispatch)}
                   >
                     Save campaign
                   </Button>
@@ -82,7 +83,7 @@ var App = React.createClass({
                     actions={actions}
 
                     addNode={handleAddNode(iDispatch)}
-                    setBlockDatetime={handleSetDatetime(iDispatch)}
+                    setBlockDatetime={handleSetDatetime(dispatch)}
                     onDelete={handleDeleteNode(iDispatch)}
                     onEdit={handleEditNode(iDispatch)}
                     onSave={handleSaveNode(iDispatch)}/>

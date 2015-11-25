@@ -47,3 +47,25 @@ export function handleSetDatetime(dispatch) {
     dispatch({type: BLOCK_SET_DATETIME, block});
   };
 }
+
+export function handleSaveCampaign(dispatch, campaign) {
+  return () => {
+    fetch('/api/campaigns', {
+      method: 'post',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(campaign)
+    })
+    .then(response => response.json)
+    .then((json) => {
+      dispatch({
+        type: CAMPAIGN_SAVE,
+        campaign: json
+      });
+    })
+    ;
+  };
+}
