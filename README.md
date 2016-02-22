@@ -1,5 +1,13 @@
 # drip
 
+Advanced drip email campaign scheduler.
+
+Performs automatic email sending based on predefined schedule scheme.
+
+For each batch you define email template and the choice of next email according to recipient's actions (not opened, opened, clicked on link, etc.)
+
+Currently integrates with Mailchimp
+
 ## Development setup
 
 Run docker-compose from root directory
